@@ -2,7 +2,7 @@
   "name": "git-interfacil",
   "version": "1.0.0",
   "description": "Projeto de interface gráfica para o GIT.",
-  "main": "main.ts",
+  "main": "src/main.ts",
   "scripts": {
     "start": "electron-forge start",
     "test": "jest",
