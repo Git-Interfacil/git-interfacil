@@ -1,4 +1,4 @@
-name: Node.js Automated Tests
+name: Node.js Tests and Linting
 
 on:
   push:
@@ -31,3 +31,9 @@ jobs:
 
     - name: Run tests
       run: npm test
+
+    - name: Run format checker
+      run: npm run format-check
+
+    - name: Run ESLint
+      run: npm run lint
