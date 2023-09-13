@@ -1,4 +1,4 @@
-import testExample = require("../testExample");
+const testExample = require("../testExample");
 const { sum, multiply } = testExample;
 
 describe("testExample", () => {
