@@ -10,7 +10,8 @@
     "make": "electron-forge make",
     "format": "prettier . --write",
     "format-check": "prettier . --check",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,7 @@
     "@typescript-eslint/parser": "^6.7.0",
     "electron": "^26.2.1",
     "eslint": "^8.49.0",
+    "husky": "^8.0.3",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "prettier": "3.0.3"
