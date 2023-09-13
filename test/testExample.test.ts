@@ -1,4 +1,5 @@
-const { sum, multiply } = require("../testExample");
+import testExample = require("../testExample");
+const { sum, multiply } = testExample;
 
 describe("testExample", () => {
   it("sum should work correctly", () => {
