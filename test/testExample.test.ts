@@ -1,4 +1,4 @@
-const testExample = require("../testExample");
+const testExample = require("../src/testExample");
 const { sum, multiply } = testExample;
 
 describe("testExample", () => {
