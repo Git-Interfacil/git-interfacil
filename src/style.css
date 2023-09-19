@@ -1,0 +1,21 @@
+.branch {
+  border: 3px solid;
+  height: 100vh;
+  width: 0px;
+  position: relative;
+  display: inline-block;
+  margin-right: 32px;
+
+  > .commit {
+    border-radius: 100%;
+    border: 10px solid;
+    height: 0px;
+    width: 0px;
+    position: absolute;
+    left: -10px;
+  }
+}
+
+#branches-container {
+  padding: 32px;
+}
