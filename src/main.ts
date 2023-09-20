@@ -1,5 +1,6 @@
 const electron = require("electron");
 const path = require("node:path");
+const git_module = require("./git.ts");
 
 const { app, BrowserWindow } = electron;
 
@@ -17,6 +18,7 @@ const createWindow = () => {
 
 app.on("ready", () => {
   createWindow();
+  console.log(git_module.get_commit_info());
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
