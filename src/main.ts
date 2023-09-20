@@ -26,3 +26,11 @@ app.on("ready", () => {
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
 });
+
+const env = process.env.NODE_ENV || "development";
+if (env === "development") {
+  try {
+    require("electron-reloader")(module);
+    // eslint-disable-next-line no-empty
+  } catch (_) {}
+}
