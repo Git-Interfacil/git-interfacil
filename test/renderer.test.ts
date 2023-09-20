@@ -2,7 +2,7 @@ describe("renderer", () => {
   document.body.innerHTML = `
         <div id="branches-container"></div>
     `;
-  require("../renderer.ts");
+  require("../src/renderer.ts");
 
   it("should render correct amount of branches", () => {
     expect(document.querySelectorAll(".branch")).toHaveLength(3);
