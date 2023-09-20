@@ -1,3 +1,43 @@
+body {
+    margin: 0;
+}
+
+#app-container {
+    display: flex;
+    flex-direction: column;
+}
+
+#header {
+    display: flex;
+    flex-direction: column;
+}
+
+#content {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+#header #navigation {
+    height: 72px;
+    background-color: #aaa;
+}
+
+#header #actions {
+    height: 71px;
+    background-color: #bbb;
+}
+
+#content #sidebar {
+    width: 301px;
+    background-color: #ccc;
+}
+
+#content #main {
+    flex-grow: 1;
+    background-color: #ddd;
+}
+
 .branch {
     border: 3px solid;
     height: 100vh;
