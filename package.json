@@ -1,50 +1,50 @@
 {
-  "name": "git-interfacil",
-  "version": "1.0.0",
-  "description": "Projeto de interface gráfica para o GIT.",
-  "main": "src/main.ts",
-  "scripts": {
-    "start": "electron-forge start",
-    "test": "jest",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "format": "prettier . --write",
-    "format-check": "prettier . --check",
-    "lint": "eslint .",
-    "prepare": "husky install"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/josemayer/git-interfacil.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/josemayer/git-interfacil/issues"
-  },
-  "homepage": "https://github.com/josemayer/git-interfacil#readme",
-  "devDependencies": {
-    "@electron-forge/cli": "^6.4.2",
-    "@electron-forge/maker-deb": "^6.4.2",
-    "@electron-forge/maker-rpm": "^6.4.2",
-    "@electron-forge/maker-squirrel": "^6.4.2",
-    "@electron-forge/maker-zip": "^6.4.2",
-    "@electron-forge/plugin-auto-unpack-natives": "^6.4.2",
-    "@types/jest": "^29.5.5",
-    "@typescript-eslint/eslint-plugin": "^6.7.0",
-    "@typescript-eslint/parser": "^6.7.0",
-    "electron": "^26.2.1",
-    "electron-reloader": "^1.2.3",
-    "eslint": "^8.49.0",
-    "husky": "^8.0.3",
-    "jest": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0",
-    "prettier": "3.0.3"
-  },
-  "dependencies": {
-    "electron-squirrel-startup": "^1.0.0"
-  },
-  "jest": {
-    "testEnvironment": "jsdom"
-  }
+    "name": "git-interfacil",
+    "version": "1.0.0",
+    "description": "Projeto de interface gráfica para o GIT.",
+    "main": "src/main.ts",
+    "scripts": {
+        "start": "electron-forge start",
+        "test": "jest",
+        "package": "electron-forge package",
+        "make": "electron-forge make",
+        "format": "prettier . --write",
+        "format-check": "prettier . --check",
+        "lint": "eslint .",
+        "prepare": "husky install"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/josemayer/git-interfacil.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/josemayer/git-interfacil/issues"
+    },
+    "homepage": "https://github.com/josemayer/git-interfacil#readme",
+    "devDependencies": {
+        "@electron-forge/cli": "^6.4.2",
+        "@electron-forge/maker-deb": "^6.4.2",
+        "@electron-forge/maker-rpm": "^6.4.2",
+        "@electron-forge/maker-squirrel": "^6.4.2",
+        "@electron-forge/maker-zip": "^6.4.2",
+        "@electron-forge/plugin-auto-unpack-natives": "^6.4.2",
+        "@types/jest": "^29.5.5",
+        "@typescript-eslint/eslint-plugin": "^6.7.0",
+        "@typescript-eslint/parser": "^6.7.0",
+        "electron": "^26.2.1",
+        "electron-reloader": "^1.2.3",
+        "eslint": "^8.49.0",
+        "husky": "^8.0.3",
+        "jest": "^29.7.0",
+        "jest-environment-jsdom": "^29.7.0",
+        "prettier": "3.0.3"
+    },
+    "dependencies": {
+        "electron-squirrel-startup": "^1.0.0"
+    },
+    "jest": {
+        "testEnvironment": "jsdom"
+    }
 }
