@@ -1,7 +1,6 @@
 const constants = require("./constants.ts");
 const mocks = require("./mocks.ts");
 
-// console.log(require("./mocks.ts"))
 const commits = mocks.COMMITS_MOCK;
 
 const branches = Array.from(new Set(commits.map(({ branchId }) => branchId)));
