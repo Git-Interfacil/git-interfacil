@@ -1,61 +1,61 @@
 body {
-    margin: 0;
+  margin: 0;
 }
 
 #app-container {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 #header {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 #content {
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
 }
 
 #header #navigation {
-    height: 72px;
-    background-color: #aaa;
+  height: 72px;
+  background-color: #aaa;
 }
 
 #header #actions {
-    height: 71px;
-    background-color: #bbb;
+  height: 71px;
+  background-color: #bbb;
 }
 
 #content #sidebar {
-    width: 301px;
-    background-color: #ccc;
+  width: 301px;
+  background-color: #ccc;
 }
 
 #content #main {
-    flex-grow: 1;
-    background-color: #ddd;
+  flex-grow: 1;
+  background-color: #ddd;
 }
 
 .branch {
-    border: 3px solid;
-    height: 100vh;
-    width: 0px;
-    position: relative;
-    display: inline-block;
-    margin-right: 32px;
+  border: 3px solid;
+  height: 100vh;
+  width: 0px;
+  position: relative;
+  display: inline-block;
+  margin-right: 32px;
 
-    > .commit {
-        border-radius: 100%;
-        border: 10px solid;
-        height: 0px;
-        width: 0px;
-        position: absolute;
-        left: -10px;
-    }
+  > .commit {
+    border-radius: 100%;
+    border: 10px solid;
+    height: 0px;
+    width: 0px;
+    position: absolute;
+    left: -10px;
+  }
 }
 
 #branches-container {
-    padding: 32px;
+  padding: 32px;
 }

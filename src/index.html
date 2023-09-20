@@ -1,28 +1,28 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-        <meta
-            http-equiv="Content-Security-Policy"
-            content="default-src 'self'; script-src 'self' 'unsafe-inline'"
-        />
-        <title>Hello World!</title>
-        <link rel="stylesheet" href="style.css" />
-    </head>
-    <body>
-        <div id="app-container">
-            <header id="header">
-                <div id="navigation"></div>
-                <div id="actions"></div>
-            </header>
-            <div id="content">
-                <div id="sidebar"></div>
-                <div id="main">
-                    <div id="branches-container"></div>
-                </div>
-            </div>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline'"
+    />
+    <title>Hello World!</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="app-container">
+      <header id="header">
+        <div id="navigation"></div>
+        <div id="actions"></div>
+      </header>
+      <div id="content">
+        <div id="sidebar"></div>
+        <div id="main">
+          <div id="branches-container"></div>
         </div>
-        <script src="renderer.ts"></script>
-    </body>
+      </div>
+    </div>
+    <script src="renderer.ts"></script>
+  </body>
 </html>
