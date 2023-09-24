@@ -1,11 +1,11 @@
+/* eslint-disable no-undef */
 const testExample = require("../src/testExample");
-const { sum, multiply } = testExample;
 
 describe("testExample", () => {
   it("sum should work correctly", () => {
-    expect(sum(1, 2)).toBe(3);
+    expect(testExample.sum(1, 2)).toBe(3);
   });
   it("sum should work correctly", () => {
-    expect(multiply(2, 4)).toBe(8);
+    expect(testExample.multiply(2, 4)).toBe(8);
   });
 });

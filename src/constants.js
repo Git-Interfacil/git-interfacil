@@ -15,7 +15,11 @@ const COLORS = [
   "#FF8C00",
   "#FFD700",
 ];
+const LINE_HEIGHT = 30;
+const COLUMN_WIDTH = 25;
 
 module.exports = {
   COLORS,
+  LINE_HEIGHT,
+  COLUMN_WIDTH,
 };

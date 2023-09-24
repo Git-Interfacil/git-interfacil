@@ -2,7 +2,7 @@
   "name": "git-interfacil",
   "version": "1.0.0",
   "description": "Projeto de interface gráfica para o GIT.",
-  "main": "src/main.ts",
+  "main": "src/main.js",
   "scripts": {
     "start": "electron-forge start",
     "test": "jest",
@@ -30,9 +30,6 @@
     "@electron-forge/maker-squirrel": "^6.4.2",
     "@electron-forge/maker-zip": "^6.4.2",
     "@electron-forge/plugin-auto-unpack-natives": "^6.4.2",
-    "@types/jest": "^29.5.5",
-    "@typescript-eslint/eslint-plugin": "^6.7.0",
-    "@typescript-eslint/parser": "^6.7.0",
     "electron": "^26.2.1",
     "electron-reloader": "^1.2.3",
     "eslint": "^8.49.0",

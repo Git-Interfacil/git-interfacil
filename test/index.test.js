@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const fs = require("fs");
 const path = require("path");
 
@@ -73,12 +74,11 @@ describe("header skeleton interface", () => {
 });
 
 describe("content skeleton interface", () => {
-  let content, sidebar, main;
+  let content, canvas;
 
   beforeAll(() => {
     content = document.getElementById("content");
-    sidebar = content.querySelector("#sidebar");
-    main = content.querySelector("#main");
+    canvas = content.querySelector("canvas");
   });
 
   describe("with passing", () => {
@@ -86,16 +86,8 @@ describe("content skeleton interface", () => {
       expect(content).not.toBeNull();
     });
 
-    it("should render the sidebar", () => {
-      expect(sidebar).not.toBeNull();
-    });
-
-    it("should render the main container", () => {
-      expect(main).not.toBeNull();
-    });
-
-    it("should render the main container after the sidebar", () => {
-      expect(sidebar.nextElementSibling).toBe(main);
+    it("should render canvas", () => {
+      expect(canvas).not.toBeNull();
     });
   });
 });

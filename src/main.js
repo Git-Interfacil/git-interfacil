@@ -1,6 +1,7 @@
+/* eslint-disable no-undef */
 const electron = require("electron");
 const path = require("node:path");
-const git_module = require("./git.ts");
+const git_module = require("./git.js");
 
 const { app, BrowserWindow } = electron;
 
@@ -9,7 +10,7 @@ const createWindow = () => {
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, "preload.ts"),
+      preload: path.join(__dirname, "preload.js"),
       nodeIntegration: true,
       contextIsolation: false,
     },
