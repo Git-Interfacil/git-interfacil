@@ -61,10 +61,6 @@ body {
   padding: 32px;
 }
 
-body {
-  margin: 0;
-}
-
 canvas {
   background-color: #3e3e3e;
   display: block;
