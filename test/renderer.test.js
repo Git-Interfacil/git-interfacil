@@ -1,7 +1,9 @@
 /* eslint-disable no-undef */
 const { drawLine, drawCommit } = require("../src/canvasController.js");
+const { createMessage } = require("../src/messagesController.js");
 
 jest.mock("../src/canvasController.js");
+jest.mock("../src/messagesController.js");
 const ctxMock = jest.fn();
 const liMock = jest.fn();
 
@@ -34,5 +36,6 @@ describe("renderer", () => {
 
     expect(drawCommit).toHaveBeenCalledTimes(14);
     expect(drawLine).toHaveBeenCalledTimes(14);
+    expect(createMessage).toHaveBeenCalledTimes(14);
   });
 });
