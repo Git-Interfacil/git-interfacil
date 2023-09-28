@@ -3,6 +3,7 @@ const { drawLine, drawCommit } = require("../src/canvasController.js");
 
 jest.mock("../src/canvasController.js");
 const ctxMock = jest.fn();
+const liMock = jest.fn();
 
 describe("renderer", () => {
   beforeEach(() => jest.clearAllMocks());
@@ -28,6 +29,7 @@ describe("renderer", () => {
 
   it("should render correctly", () => {
     document.querySelector = () => ({ getContext: () => ctxMock });
+    document.getElementById = () => ({ appendChild: () => liMock });
     require("../src/renderer.js");
 
     expect(drawCommit).toHaveBeenCalledTimes(14);

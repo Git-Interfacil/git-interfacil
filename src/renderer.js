@@ -40,6 +40,28 @@ function drawBranches(ctx, head, commits, branches) {
   });
 }
 
+function fillMessages(messagesList, commits, branches) {
+  commits.forEach(({ message, branchId, author }) => {
+    const parentBranch = branches.find(({ id }) => id === branchId);
+
+    const li = document.createElement("li");
+
+    const spanMessage = document.createElement("span");
+    spanMessage.classList.add("message");
+    spanMessage.innerText = message;
+    li.appendChild(spanMessage);
+
+    const spanAuthor = document.createElement("span");
+    spanAuthor.innerText = author;
+    spanAuthor.classList.add("author");
+    li.appendChild(spanAuthor);
+
+    li.style.borderColor = parentBranch.color;
+
+    messagesList.appendChild(li);
+  });
+}
+
 function main() {
   const commits = mocks.COMMITS_MOCK.commits;
 
@@ -55,8 +77,11 @@ function main() {
   const ctx = canvas.getContext("2d");
   if (!ctx) throw Error("No 2d context found");
 
+  const messages = document.getElementById("messages");
+
   setCanvasSize(canvas, branches.length, commits.length);
   drawBranches(ctx, head, commits, branches);
+  fillMessages(messages, commits, branches);
 }
 
 main();

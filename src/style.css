@@ -50,13 +50,26 @@ body {
 #content #main #messages {
   list-style: none;
   padding: 0;
-  margin: 15px 0;
-  font-size: 16px;
+  margin: 13px 20px;
+}
+
+#content #main #messages .message {
+  font-size: 14px;
+}
+
+#content #main #messages .author {
+  font-size: 12px;
+  color: #999;
 }
 
 #content #main #messages li {
-  padding: 5px 10px;
+  margin: 4px 0;
+  height: 26px;
   border-left: 5px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
 }
 
 .branch {
