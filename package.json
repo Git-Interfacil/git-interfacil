@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
-    "nodegit": "^0.27.0"
+    "nodegit": "^0.28.0-alpha.21"
   },
   "jest": {
     "testEnvironment": "jsdom"
