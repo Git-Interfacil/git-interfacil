@@ -1,6 +1,7 @@
 const constants = require("./constants.js");
 const mocks = require("./mocks.js");
 const canvasController = require("./canvasController.js");
+const messagesController = require("./messagesController.js");
 
 function setCanvasSize(canvas, num_branches, num_commits) {
   canvas.width = constants.COLUMN_WIDTH * (num_branches + 1);
@@ -43,22 +44,12 @@ function drawBranches(ctx, head, commits, branches) {
 function fillMessages(messagesList, commits, branches) {
   commits.forEach(({ message, branchId, author }) => {
     const parentBranch = branches.find(({ id }) => id === branchId);
-
-    const li = document.createElement("li");
-
-    const spanMessage = document.createElement("span");
-    spanMessage.classList.add("message");
-    spanMessage.innerText = message;
-    li.appendChild(spanMessage);
-
-    const spanAuthor = document.createElement("span");
-    spanAuthor.innerText = author;
-    spanAuthor.classList.add("author");
-    li.appendChild(spanAuthor);
-
-    li.style.borderColor = parentBranch.color;
-
-    messagesList.appendChild(li);
+    const messageElement = messagesController.createMessage(
+      message,
+      author,
+      parentBranch.color,
+    );
+    messagesList.appendChild(messageElement);
   });
 }
 
