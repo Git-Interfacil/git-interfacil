@@ -47,14 +47,14 @@ body {
   flex-grow: 1;
 }
 
-#content #main #messages ul {
+#content #main #messages {
   list-style: none;
   padding: 0;
   margin: 15px 0;
   font-size: 16px;
 }
 
-#content #main #messages ul li {
+#content #main #messages li {
   padding: 5px 10px;
   border-left: 5px solid #fff;
 }
