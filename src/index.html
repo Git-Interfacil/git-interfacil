@@ -11,10 +11,18 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div id="branches-container"></div>
-    <!-- <div class="branch">
-      <div class="commit"></div>
-    </div> -->
+    <div id="app-container">
+      <header id="header">
+        <div id="navigation"></div>
+        <div id="actions"></div>
+      </header>
+      <div id="content">
+        <div id="sidebar"></div>
+        <div id="main">
+          <div id="branches-container"></div>
+        </div>
+      </div>
+    </div>
     <script src="renderer.ts"></script>
   </body>
 </html>
