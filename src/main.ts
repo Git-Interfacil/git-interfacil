@@ -21,6 +21,7 @@ const createWindow = () => {
 app.on("ready", () => {
   createWindow();
   const repo = new git_module.Repository("."); // TODO let user choose path
+  console.log(`HEAD = ${repo.get_repo_head()}`);
   console.log(repo.get_commit_info());
 
   app.on("activate", () => {

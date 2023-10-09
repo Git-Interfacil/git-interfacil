@@ -4,11 +4,17 @@ const formatStr = '{"hash":"%h","author":"%an","message":"%s"}';
 class Repository {
   update_repo_path(path) {
     this.path = path;
-    // TODO get HEAD
   }
 
   constructor(path) {
     this.update_repo_path(path);
+  }
+
+  get_repo_head() {
+    return execSync("git rev-parse HEAD", {
+      cwd: this.path,
+      encoding: "utf8",
+    });
   }
 
   // TODO
