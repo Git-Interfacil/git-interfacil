@@ -42,8 +42,7 @@
     "prettier": "3.0.3"
   },
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.0",
-    "nodegit": "^0.28.0-alpha.21"
+    "electron-squirrel-startup": "^1.0.0"
   },
   "jest": {
     "testEnvironment": "jsdom"
