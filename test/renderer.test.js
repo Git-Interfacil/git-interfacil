@@ -30,7 +30,10 @@ describe("renderer", () => {
   });
 
   it("should render correctly", () => {
-    document.querySelector = () => ({ getContext: () => ctxMock });
+    document.querySelector = () => ({
+      getContext: () => ctxMock,
+      addEventListener: jest.fn(),
+    });
     document.getElementById = () => ({ appendChild: () => liMock });
     require("../src/renderer.js");
 

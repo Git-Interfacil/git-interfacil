@@ -27,17 +27,32 @@ function generateBranches(commits) {
   return branches;
 }
 
-function drawBranches(ctx, head, commits, branches) {
-  commits.forEach(({ branchId, id: commitId }, ind) => {
-    const parentBranch = branches.find(({ id }) => id === branchId);
+function drawBranches(canvas, ctx, head, commits, branches) {
+  const commitsWithPos = commits.map((commit, ind) => {
+    const parentBranch = branches.find(({ id }) => id === commit.branchId);
 
     const pos = { x: parentBranch.pos.x, y: (ind + 1) * constants.LINE_HEIGHT };
 
-    if (head == commitId)
+    if (head == commit.id)
       canvasController.drawCommit(ctx, pos, parentBranch.color, 8, true);
     else canvasController.drawCommit(ctx, pos, parentBranch.color);
 
     canvasController.drawLine(ctx, pos, parentBranch.pos, parentBranch.color);
+    return { ...commit, pos };
+  });
+
+  canvas.addEventListener("click", (event) => {
+    const rect = canvas.getBoundingClientRect();
+    const x = event.x - rect.left;
+    const y = event.y - rect.top;
+    const commitClicked = commitsWithPos.find(
+      ({ pos: commitPosition }) =>
+        x >= commitPosition.x - 10 &&
+        x <= commitPosition.x + 10 &&
+        y >= commitPosition.y - 10 &&
+        y <= commitPosition.y + 10,
+    );
+    console.log({ commitClicked, commitsWithPos, x, y });
   });
 }
 
@@ -71,7 +86,7 @@ function main() {
   const messages = document.getElementById("messages");
 
   setCanvasSize(canvas, branches.length, commits.length);
-  drawBranches(ctx, head, commits, branches);
+  drawBranches(canvas, ctx, head, commits, branches);
   fillMessages(messages, commits, branches);
 }
 
