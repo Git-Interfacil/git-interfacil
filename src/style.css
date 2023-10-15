@@ -97,3 +97,32 @@ body {
 canvas {
   display: block;
 }
+
+#actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 230px;
+}
+
+#pushButton {
+  position: relative;
+  background: url(./assets/push-button.png) no-repeat;
+  background-size: contain;
+  width: 28px;
+  height: 28px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-right: 90px;
+  transition: background-color 0.5s;
+}
+
+#pushButton span {
+  display: block;
+  text-align: center;
+  margin-top: 28px;
+  text-indent: -5px;
+  color: #3e3e3e;
+  transition: color 0.3s;
+}
