@@ -42,6 +42,10 @@ class Repository {
     return this.shell_exec(`git switch "${branch}"`);
   }
 
+  push(remote, branch) {
+    return this.shell_exec(`git push "${remote}" "${branch}"`);
+  }
+
   shell_exec(command) {
     return execSync(command, {
       cwd: this.path,
