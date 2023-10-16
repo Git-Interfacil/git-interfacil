@@ -26,6 +26,14 @@ class Repository {
     return this.shell_exec(`git add ${files.join(" ")}`);
   }
 
+  commit(message) {
+    return this.shell_exec(`git commit -m "${message}"`);
+  }
+
+  commit_amend(message) {
+    return this.shell_exec(`git commit --amend -m "${message}"`);
+  }
+
   shell_exec(command) {
     return execSync(command, {
       cwd: this.path,
