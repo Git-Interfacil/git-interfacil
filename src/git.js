@@ -11,17 +11,23 @@ class Repository {
   }
 
   get_repo_head() {
-    return execSync("git rev-parse HEAD", {
-      cwd: this.path,
-      encoding: "utf8",
-    });
+    return this.shell_exec("git rev-parse HEAD");
   }
 
   // TODO
   // - change shell's current directory to where the user's project is
   // - get branch from commit hash
   get_commit_info() {
-    return execSync(`git log --format='format:${formatStr}'`, {
+    return this.shell_exec(`git log --format='format:${formatStr}'`);
+  }
+
+  // receive array with file names
+  add_files(files) {
+    return this.shell_exec(`git add ${files.join(" ")}`);
+  }
+
+  shell_exec(command) {
+    return execSync(command, {
       cwd: this.path,
       encoding: "utf8",
     });
