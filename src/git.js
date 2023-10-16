@@ -23,7 +23,7 @@ class Repository {
 
   // receive array with file names
   add_files(files) {
-    return this.shell_exec(`git add ${files.join(" ")}`);
+    return this.shell_exec(`git add "${files.join(" ")}"`);
   }
 
   commit(message) {
@@ -32,6 +32,14 @@ class Repository {
 
   commit_amend(message) {
     return this.shell_exec(`git commit --amend -m "${message}"`);
+  }
+
+  create_branch(branch) {
+    return this.shell_exec(`git switch -c "${branch}"`);
+  }
+
+  switch_branch(branch) {
+    return this.shell_exec(`git switch "${branch}"`);
   }
 
   shell_exec(command) {
