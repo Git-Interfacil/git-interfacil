@@ -105,6 +105,14 @@ canvas {
   /* padding-right: 230px; */
 }
 
+#buttons {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+
 .button {
   position: relative;
   width: 28px;
@@ -112,7 +120,6 @@ canvas {
   color: white;
   border: none;
   cursor: pointer;
-  margin-right: 90px;
   transition: background-color 0.5s;
   background-size: contain;
   background: transparent;
