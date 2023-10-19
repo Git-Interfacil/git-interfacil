@@ -21,7 +21,20 @@
         </div>
       </header>
       <div id="content">
-        <div id="sidebar"></div>
+        <div id="sidebar">
+          <div class="dropdown">
+            <div class="header opened">
+              <div class="name">
+                <span class="icon"><img src="assets/local-icon.svg" /></span>
+                Local
+              </div>
+              <div id="localCount"></div>
+            </div>
+            <div class="items opened">
+              <ul class="checklist" id="localList"></ul>
+            </div>
+          </div>
+        </div>
         <div id="main">
           <div id="graph">
             <canvas></canvas>
