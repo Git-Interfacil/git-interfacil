@@ -6,6 +6,7 @@ jest.mock("../src/canvasController.js");
 jest.mock("../src/messagesController.js");
 const ctxMock = jest.fn();
 const liMock = jest.fn();
+const elementsMock = jest.fn();
 
 describe("renderer", () => {
   beforeEach(() => jest.clearAllMocks());
@@ -34,7 +35,12 @@ describe("renderer", () => {
       getContext: () => ctxMock,
       addEventListener: jest.fn(),
     });
-    document.getElementById = () => ({ appendChild: () => liMock });
+    document.getElementById = () => ({
+      appendChild: () => liMock,
+      querySelectorAll: () => ({
+        forEach: () => elementsMock,
+      }),
+    });
     require("../src/renderer.js");
 
     expect(drawCommit).toHaveBeenCalledTimes(14);
