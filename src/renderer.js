@@ -2,6 +2,7 @@ const constants = require("./constants.js");
 const mocks = require("./mocks.js");
 const canvasController = require("./canvasController.js");
 const messagesController = require("./messagesController.js");
+const actionButtonHandlers = require("./actionsController.js");
 
 function setCanvasSize(canvas, num_branches, num_commits) {
   canvas.width = constants.COLUMN_WIDTH * (num_branches + 1);
@@ -53,6 +54,21 @@ function fillMessages(messagesList, commits, branches) {
   });
 }
 
+function addEventListenerToActionsBar(buttons, actionButtonHandlers) {
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      console.log("Clicked");
+      const buttonText = button.innerText;
+
+      if (buttonText in actionButtonHandlers) {
+        actionButtonHandlers[buttonText]();
+      } else {
+        console.log("Button not found");
+      }
+    });
+  });
+}
+
 function main() {
   const commits = mocks.COMMITS_MOCK.commits;
 
@@ -69,6 +85,9 @@ function main() {
   if (!ctx) throw Error("No 2d context found");
 
   const messages = document.getElementById("messages");
+  const buttonActions = document.querySelectorAll(".button");
+
+  addEventListenerToActionsBar(buttonActions, actionButtonHandlers);
 
   setCanvasSize(canvas, branches.length, commits.length);
   drawBranches(ctx, head, commits, branches);
