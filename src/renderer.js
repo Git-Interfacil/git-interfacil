@@ -10,7 +10,7 @@ class RepositoryRenderer {
     this.head = head;
     this.commits = commits;
     this.sortCommits();
-    this.branches = this.generateBranches();
+    this.branches = this.generateAllBranches();
 
     this.canvas = canvas;
     this.ctx = ctx;
@@ -30,11 +30,15 @@ class RepositoryRenderer {
   }
 
   setCanvasSize() {
-    this.canvas.width = constants.COLUMN_WIDTH * (this.branches.length + 1);
-    this.canvas.height = constants.LINE_HEIGHT * (this.commits.length + 1);
+    const filteredCommits = this.commits.filter(({ branchId }) =>
+      this.activeBranches.includes(branchId),
+    );
+
+    this.canvas.width = constants.COLUMN_WIDTH * (this.activeBranches.length + 1);
+    this.canvas.height = constants.LINE_HEIGHT * (filteredCommits.length + 1);
   }
 
-  generateBranches() {
+  generateAllBranches() {
     const branches = [];
     this.commits.forEach(({ branchId }, ind) => {
       let branch = branches.find(({ id }) => id === branchId);
@@ -53,12 +57,35 @@ class RepositoryRenderer {
     return branches;
   }
 
+  repositionBranches() {
+    const filteredCommits = this.commits.filter(({ branchId }) =>
+      this.activeBranches.includes(branchId),
+    );
+
+    filteredCommits.forEach(({ branchId }, ind) => {
+      const branch = this.branches.find(({ id }) => id === branchId);
+      branch.pos.y = (ind + 1) * constants.LINE_HEIGHT;
+    });
+
+    let ind = 0;
+    this.branches.forEach((branch) => {
+      if (this.activeBranches.includes(branch.id)) {
+        branch.pos.x = (ind + 1) * constants.COLUMN_WIDTH;
+        ind++;
+      }
+    });
+
+    this.setCanvasSize();
+  }
+
   clearCanvas() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
+
   drawBranches() {
     this.clearCanvas();
+    this.repositionBranches();
     const filteredCommits = this.commits.filter(({ branchId }) =>
       this.activeBranches.includes(branchId),
     );
