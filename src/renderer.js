@@ -34,7 +34,8 @@ class RepositoryRenderer {
       this.activeBranches.includes(branchId),
     );
 
-    this.canvas.width = constants.COLUMN_WIDTH * (this.activeBranches.length + 1);
+    this.canvas.width =
+      constants.COLUMN_WIDTH * (this.activeBranches.length + 1);
     this.canvas.height = constants.LINE_HEIGHT * (filteredCommits.length + 1);
   }
 
@@ -81,7 +82,6 @@ class RepositoryRenderer {
   clearCanvas() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
-
 
   drawBranches() {
     this.clearCanvas();
