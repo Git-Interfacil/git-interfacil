@@ -1,11 +1,14 @@
 /* eslint-disable no-undef */
 const { drawLine, drawCommit } = require("../src/canvasController.js");
 const { createMessage } = require("../src/messagesController.js");
+const { createBranch } = require("../src/localBranchesController.js");
 
 jest.mock("../src/canvasController.js");
 jest.mock("../src/messagesController.js");
+jest.mock("../src/localBranchesController.js");
 const ctxMock = jest.fn();
 const liMock = jest.fn();
+const elementsMock = jest.fn();
 
 describe("renderer", () => {
   beforeEach(() => jest.clearAllMocks());
@@ -30,12 +33,21 @@ describe("renderer", () => {
   });
 
   it("should render correctly", () => {
-    document.querySelector = () => ({ getContext: () => ctxMock });
-    document.getElementById = () => ({ appendChild: () => liMock });
+    document.querySelector = () => ({
+      getContext: () => ctxMock,
+      addEventListener: jest.fn(),
+    });
+    document.getElementById = () => ({
+      appendChild: () => liMock,
+      querySelectorAll: () => ({
+        forEach: () => elementsMock,
+      }),
+    });
     require("../src/renderer.js");
 
     expect(drawCommit).toHaveBeenCalledTimes(14);
     expect(drawLine).toHaveBeenCalledTimes(14);
     expect(createMessage).toHaveBeenCalledTimes(14);
+    expect(createBranch).toHaveBeenCalledTimes(3);
   });
 });
