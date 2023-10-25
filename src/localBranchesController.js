@@ -18,6 +18,9 @@ function decreaseCount(countElement) {
 
 function createBranch(branch) {
   const branchElement = document.createElement("li");
+
+  branchElement.dataset.branchId = branch.id;
+
   const checkbox = document.createElement("input");
 
   checkbox.type = "checkbox";

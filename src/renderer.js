@@ -5,69 +5,130 @@ const messagesController = require("./messagesController.js");
 const localBranchesController = require("./localBranchesController.js");
 const animationsController = require("./animationsController.js");
 
-function setCanvasSize(canvas, num_branches, num_commits) {
-  canvas.width = constants.COLUMN_WIDTH * (num_branches + 1);
-  canvas.height = constants.LINE_HEIGHT * (num_commits + 1);
-}
+class RepositoryRenderer {
+  constructor(commits, head, canvas, ctx, messagesElement) {
+    this.head = head;
+    this.commits = commits;
+    this.sortCommits();
+    this.branches = this.generateBranches();
 
-function generateBranches(commits) {
-  const branches = [];
-  commits.forEach(({ branchId }, ind) => {
-    let branch = branches.find(({ id }) => id === branchId);
-    if (!branch) {
-      branch = {
-        id: branchId,
-        pos: {
-          x: (branches.length + 1) * constants.COLUMN_WIDTH,
-          y: (ind + 1) * constants.LINE_HEIGHT,
-        },
-        color: constants.COLORS[branches.length],
+    this.canvas = canvas;
+    this.ctx = ctx;
+
+    this.messagesElement = messagesElement;
+
+    this.activeBranches = this.branches.map(({ id }) => id);
+
+    this.setCanvasSize();
+  }
+
+  sortCommits() {
+    this.commits.sort(
+      (a, b) =>
+        new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf(),
+    );
+  }
+
+  setCanvasSize() {
+    this.canvas.width = constants.COLUMN_WIDTH * (this.branches.length + 1);
+    this.canvas.height = constants.LINE_HEIGHT * (this.commits.length + 1);
+  }
+
+  generateBranches() {
+    const branches = [];
+    this.commits.forEach(({ branchId }, ind) => {
+      let branch = branches.find(({ id }) => id === branchId);
+      if (!branch) {
+        branch = {
+          id: branchId,
+          pos: {
+            x: (branches.length + 1) * constants.COLUMN_WIDTH,
+            y: (ind + 1) * constants.LINE_HEIGHT,
+          },
+          color: constants.COLORS[branches.length],
+        };
+        branches.push(branch);
+      }
+    });
+    return branches;
+  }
+
+  clearCanvas() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
+  drawBranches() {
+    this.clearCanvas();
+    const filteredCommits = this.commits.filter(({ branchId }) =>
+      this.activeBranches.includes(branchId),
+    );
+
+    const commitsWithPos = filteredCommits.map((commit, ind) => {
+      const parentBranch = this.branches.find(
+        ({ id }) => id === commit.branchId,
+      );
+
+      const pos = {
+        x: parentBranch.pos.x,
+        y: (ind + 1) * constants.LINE_HEIGHT,
       };
-      branches.push(branch);
-    }
-  });
-  return branches;
-}
 
-function drawBranches(canvas, ctx, head, commits, branches) {
-  const commitsWithPos = commits.map((commit, ind) => {
-    const parentBranch = branches.find(({ id }) => id === commit.branchId);
+      if (this.head == commit.id)
+        canvasController.drawCommit(this.ctx, pos, parentBranch.color, 8, true);
+      else canvasController.drawCommit(this.ctx, pos, parentBranch.color);
 
-    const pos = { x: parentBranch.pos.x, y: (ind + 1) * constants.LINE_HEIGHT };
+      canvasController.drawLine(
+        this.ctx,
+        pos,
+        parentBranch.pos,
+        parentBranch.color,
+      );
+      return { ...commit, pos };
+    });
 
-    if (head == commit.id)
-      canvasController.drawCommit(ctx, pos, parentBranch.color, 8, true);
-    else canvasController.drawCommit(ctx, pos, parentBranch.color);
+    this.canvas.addEventListener("click", (event) => {
+      const rect = this.canvas.getBoundingClientRect();
+      const x = event.x - rect.left;
+      const y = event.y - rect.top;
+      const commitClicked = commitsWithPos.find(
+        ({ pos: commitPosition }) =>
+          x >= commitPosition.x - 10 &&
+          x <= commitPosition.x + 10 &&
+          y >= commitPosition.y - 10 &&
+          y <= commitPosition.y + 10,
+      );
+      console.log({ commitClicked, commitsWithPos, x, y });
+    });
+  }
 
-    canvasController.drawLine(ctx, pos, parentBranch.pos, parentBranch.color);
-    return { ...commit, pos };
-  });
+  clearMessages() {
+    this.messagesElement.innerHTML = "";
+  }
 
-  canvas.addEventListener("click", (event) => {
-    const rect = canvas.getBoundingClientRect();
-    const x = event.x - rect.left;
-    const y = event.y - rect.top;
-    const commitClicked = commitsWithPos.find(
-      ({ pos: commitPosition }) =>
-        x >= commitPosition.x - 10 &&
-        x <= commitPosition.x + 10 &&
-        y >= commitPosition.y - 10 &&
-        y <= commitPosition.y + 10,
+  fillMessages() {
+    this.clearMessages();
+    const filteredCommits = this.commits.filter(({ branchId }) =>
+      this.activeBranches.includes(branchId),
     );
-    console.log({ commitClicked, commitsWithPos, x, y });
-  });
-}
 
-function fillMessages(messagesList, commits, branches) {
-  commits.forEach(({ message, branchId, author }) => {
-    const parentBranch = branches.find(({ id }) => id === branchId);
-    const messageElement = messagesController.createMessage(
-      message,
-      author,
-      parentBranch.color,
-    );
-    messagesList.appendChild(messageElement);
-  });
+    filteredCommits.forEach(({ message, branchId, author }) => {
+      const parentBranch = this.branches.find(({ id }) => id === branchId);
+      const messageElement = messagesController.createMessage(
+        message,
+        author,
+        parentBranch.color,
+      );
+      this.messagesElement.appendChild(messageElement);
+    });
+  }
+
+  activateBranch(branchId) {
+    this.activeBranches.push(branchId);
+  }
+
+  deactivateBranch(branchId) {
+    this.activeBranches = this.activeBranches.filter((id) => id !== branchId);
+  }
 }
 
 function fillLocalBranches(list, count, branches) {
@@ -100,35 +161,38 @@ function addListenersToSidebar(dropdowns) {
   });
 }
 
-function addListenersToLocalBranchesCheckboxes(list, counter) {
+function addListenersToLocalBranchesCheckboxes(
+  list,
+  counter,
+  repositoryRenderer,
+) {
   list.forEach((item) => {
     const checkbox = item.querySelector("input");
+    const branchId = item.dataset.branchId;
 
     checkbox.addEventListener("change", () => {
       if (!checkbox.checked) {
         localBranchesController.deactivateBranch(item);
         localBranchesController.decreaseCount(counter);
 
-        // TO-DO: remove branch from canvas
+        repositoryRenderer.deactivateBranch(branchId);
+        repositoryRenderer.drawBranches();
+        repositoryRenderer.fillMessages();
       } else {
         localBranchesController.activateBranch(item);
         localBranchesController.increaseCount(counter);
 
-        // TO-DO: add branch to canvas
+        repositoryRenderer.activateBranch(branchId);
+        repositoryRenderer.drawBranches();
+        repositoryRenderer.fillMessages();
       }
     });
   });
 }
 
 function main() {
-  const commits = mocks.COMMITS_MOCK.commits;
-
-  commits.sort(
-    (a, b) => new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf(),
-  );
-
-  const branches = generateBranches(commits);
   const head = mocks.COMMITS_MOCK.head;
+  const commits = mocks.COMMITS_MOCK.commits;
 
   const canvas = document.querySelector("canvas");
   if (!canvas) throw Error("No canvas found");
@@ -136,20 +200,34 @@ function main() {
   if (!ctx) throw Error("No 2d context found");
 
   const messages = document.getElementById("messages");
+
+  const repositoryRenderer = new RepositoryRenderer(
+    commits,
+    head,
+    canvas,
+    ctx,
+    messages,
+  );
+
+  const branches = repositoryRenderer.branches;
+
   const sidebar = document.getElementById("sidebar");
   const localBranches = document.getElementById("localList");
   const localBranchesCount = document.getElementById("localCount");
 
-  setCanvasSize(canvas, branches.length, commits.length);
   fillLocalBranches(localBranches, localBranchesCount, branches);
-  drawBranches(canvas, ctx, head, commits, branches);
-  fillMessages(messages, commits, branches);
+  repositoryRenderer.drawBranches();
+  repositoryRenderer.fillMessages(messages);
 
   const sidebarDropdowns = sidebar.querySelectorAll(".dropdown");
   const localBranchesList = localBranches.querySelectorAll("li");
 
   addListenersToSidebar(sidebarDropdowns);
-  addListenersToLocalBranchesCheckboxes(localBranchesList, localBranchesCount);
+  addListenersToLocalBranchesCheckboxes(
+    localBranchesList,
+    localBranchesCount,
+    repositoryRenderer,
+  );
 }
 
 main();

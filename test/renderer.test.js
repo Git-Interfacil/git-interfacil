@@ -34,7 +34,7 @@ describe("renderer", () => {
 
   it("should render correctly", () => {
     document.querySelector = () => ({
-      getContext: () => ctxMock,
+      getContext: () => ({ clearRect: () => ctxMock }),
       addEventListener: jest.fn(),
     });
     document.getElementById = () => ({
