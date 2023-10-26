@@ -15,8 +15,7 @@ class Repository {
   }
 
   // TODO
-  // - change shell's current directory to where the user's project is
-  // - get branch from commit hash
+  // - add branch field
   get_commit_info() {
     return this.shell_exec(`git log --format='format:${formatStr}'`);
   }
