@@ -17,7 +17,7 @@ class Repository {
   // TODO
   // - add branch field
   get_commit_info() {
-    return this.shell_exec(`git log --format='format:${formatStr}'`);
+    return this.shell_exec(`git log --branches --format='format:${formatStr}'`);
   }
 
   // receive array with file names
