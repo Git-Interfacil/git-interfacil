@@ -1,5 +1,5 @@
 const execSync = require("child_process").execSync;
-const formatStr = '{"hash":"%h","author":"%an","message":"%s"}';
+const formatStr = '{"id":"%h","author":"%an","message":"%s","createdAt":"%aI"}';
 
 class Repository {
   update_repo_path(path) {
