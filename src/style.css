@@ -158,28 +158,68 @@ canvas {
 #actions {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  padding-right: 230px;
+  justify-content: space-between;
+  /* padding-right: 230px; */
 }
 
-#pushButton {
+#buttons {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+
+.button {
   position: relative;
-  background: url(./assets/push-button.png) no-repeat;
-  background-size: contain;
   width: 28px;
   height: 28px;
   color: white;
   border: none;
   cursor: pointer;
-  margin-right: 90px;
   transition: background-color 0.5s;
+  background-size: contain;
+  background: transparent;
 }
 
-#pushButton span {
+.button span {
   display: block;
   text-align: center;
   margin-top: 28px;
   text-indent: -5px;
   color: #3e3e3e;
   transition: color 0.3s;
+}
+
+/* Individual button styles */
+#pushButton {
+  background-image: url(./assets/push-button.svg);
+}
+
+#pullButton {
+  background-image: url(./assets/pull-button.svg);
+}
+
+#mergeButton {
+  background-image: url(./assets/merge-button.svg);
+}
+
+#undoButton {
+  background-image: url(./assets/undo-button.svg);
+}
+
+#redoButton {
+  background-image: url(./assets/redo-button.svg);
+}
+
+#branchButton {
+  background-image: url(./assets/branch-button.svg);
+}
+
+#stashButton {
+  background-image: url(./assets/stash-button.svg);
+}
+
+#popButton {
+  background-image: url(./assets/pop-button.svg);
 }

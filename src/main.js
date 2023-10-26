@@ -13,8 +13,13 @@ const createWindow = () => {
       preload: path.join(__dirname, "preload.js"),
       nodeIntegration: true,
       contextIsolation: false,
+      // DEV:
+      devTools: true,
     },
   });
+
+  // DEV:
+  win.webContents.openDevTools();
 
   win.loadFile("src/index.html");
 };

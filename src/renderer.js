@@ -4,6 +4,7 @@ const canvasController = require("./canvasController.js");
 const messagesController = require("./messagesController.js");
 const localBranchesController = require("./localBranchesController.js");
 const animationsController = require("./animationsController.js");
+const actionButtonHandlers = require("./actionsController.js");
 
 function setCanvasSize(canvas, num_branches, num_commits) {
   canvas.width = constants.COLUMN_WIDTH * (num_branches + 1);
@@ -67,6 +68,21 @@ function fillMessages(messagesList, commits, branches) {
       parentBranch.color,
     );
     messagesList.appendChild(messageElement);
+  });
+}
+
+function addEventListenerToActionsBar(buttons, actionButtonHandlers) {
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      console.log("Clicked");
+      const buttonText = button.innerText;
+
+      if (buttonText in actionButtonHandlers) {
+        actionButtonHandlers[buttonText]();
+      } else {
+        console.log("Button not found");
+      }
+    });
   });
 }
 
@@ -136,6 +152,9 @@ function main() {
   if (!ctx) throw Error("No 2d context found");
 
   const messages = document.getElementById("messages");
+  const buttonActions = document.querySelectorAll(".button");
+
+  addEventListenerToActionsBar(buttonActions, actionButtonHandlers);
   const sidebar = document.getElementById("sidebar");
   const localBranches = document.getElementById("localList");
   const localBranchesCount = document.getElementById("localCount");
