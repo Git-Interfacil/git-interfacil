@@ -1,5 +1,6 @@
 const execSync = require("child_process").execSync;
-const formatStr = '{"id":"%h","author":"%an","message":"%s","createdAt":"%aI"}';
+const formatStr =
+  '{"id":"%h","author":"%an","message":"%s","createdAt":"%aI"},';
 
 class Repository {
   update_repo_path(path) {
@@ -17,7 +18,12 @@ class Repository {
   // TODO
   // - add branch field
   get_commit_info() {
-    return this.shell_exec(`git log --branches --format='format:${formatStr}'`);
+    let commits = this.shell_exec(
+      `git log --branches --format='format:${formatStr}'`,
+    );
+    // note that we must remove trailing comma before the closing bracket
+    commits = "[" + commits.slice(0, -1) + "]";
+    return JSON.parse(commits);
   }
 
   // receive array with file names
