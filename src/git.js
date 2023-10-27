@@ -15,15 +15,20 @@ class Repository {
     return this.shell_exec("git rev-parse HEAD");
   }
 
-  // TODO
-  // - add branch field
   get_commit_info() {
     let commits = this.shell_exec(
       `git log --branches --format='format:${formatStr}'`,
     );
     // note that we must remove trailing comma before the closing bracket
-    commits = "[" + commits.slice(0, -1) + "]";
-    return JSON.parse(commits);
+    commits = JSON.parse("[" + commits.slice(0, -1) + "]");
+    for (let i = 0; i < commits.length; i++) {
+      let commitHash = commits[i]["id"];
+      let branchName = this.shell_exec(
+        `git branch --format="%(refname:short)" --contains ${commitHash}`,
+      ).split("\n")[0];
+      commits[i]["branchId"] = branchName;
+    }
+    return commits;
   }
 
   // receive array with file names
