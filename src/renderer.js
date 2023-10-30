@@ -1,5 +1,5 @@
 const constants = require("./constants.js");
-const mocks = require("./mocks.js");
+const git_module = require("./git.js");
 const canvasController = require("./canvasController.js");
 const messagesController = require("./messagesController.js");
 const localBranchesController = require("./localBranchesController.js");
@@ -137,14 +137,15 @@ function addListenersToLocalBranchesCheckboxes(list, counter) {
 }
 
 function main() {
-  const commits = mocks.COMMITS_MOCK.commits;
+  const repo = new git_module.Repository("."); // TODO let user choose path
+  const commits = repo.get_commit_info();
 
   commits.sort(
     (a, b) => new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf(),
   );
 
   const branches = generateBranches(commits);
-  const head = mocks.COMMITS_MOCK.head;
+  const head = repo.get_repo_head();
 
   const canvas = document.querySelector("canvas");
   if (!canvas) throw Error("No canvas found");
