@@ -1,5 +1,6 @@
 const execSync = require("child_process").execSync;
-const formatStr = '{"hash":"%h","author":"%an","message":"%s"}';
+const formatStr =
+  '{"id":"%h","author":"%an","message":"%s","createdAt":"%aI"},';
 
 class Repository {
   update_repo_path(path) {
@@ -14,11 +15,20 @@ class Repository {
     return this.shell_exec("git rev-parse HEAD");
   }
 
-  // TODO
-  // - change shell's current directory to where the user's project is
-  // - get branch from commit hash
   get_commit_info() {
-    return this.shell_exec(`git log --format='format:${formatStr}'`);
+    let commits = this.shell_exec(
+      `git log --branches --format='format:${formatStr}'`,
+    );
+    // note that we must remove trailing comma before the closing bracket
+    commits = JSON.parse("[" + commits.slice(0, -1) + "]");
+    for (let i = 0; i < commits.length; i++) {
+      let commitHash = commits[i]["id"];
+      let branchName = this.shell_exec(
+        `git branch --format="%(refname:short)" --contains ${commitHash}`,
+      ).split("\n")[0];
+      commits[i]["branchId"] = branchName;
+    }
+    return commits;
   }
 
   // receive array with file names

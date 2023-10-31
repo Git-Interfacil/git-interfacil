@@ -1,9 +1,10 @@
 const constants = require("./constants.js");
-const mocks = require("./mocks.js");
+const git_module = require("./git.js");
 const canvasController = require("./canvasController.js");
 const messagesController = require("./messagesController.js");
 const localBranchesController = require("./localBranchesController.js");
 const animationsController = require("./animationsController.js");
+const actionButtonHandlers = require("./actionsController.js");
 
 class RepositoryRenderer {
   constructor(commits, head, canvas, ctx, messagesElement) {
@@ -158,6 +159,21 @@ class RepositoryRenderer {
   }
 }
 
+function addEventListenerToActionsBar(buttons, actionButtonHandlers) {
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      console.log("Clicked");
+      const buttonText = button.innerText;
+
+      if (buttonText in actionButtonHandlers) {
+        actionButtonHandlers[buttonText]();
+      } else {
+        console.log("Button not found");
+      }
+    });
+  });
+}
+
 function fillLocalBranches(list, count, branches) {
   localBranchesController.setCount(count, branches.length, branches.length);
 
@@ -218,8 +234,9 @@ function addListenersToLocalBranchesCheckboxes(
 }
 
 function main() {
-  const head = mocks.COMMITS_MOCK.head;
-  const commits = mocks.COMMITS_MOCK.commits;
+  const repo = new git_module.Repository("."); // TODO let user choose path
+  const commits = repo.get_commit_info();
+  const head = repo.get_repo_head();
 
   const canvas = document.querySelector("canvas");
   if (!canvas) throw Error("No canvas found");
@@ -237,6 +254,10 @@ function main() {
   );
 
   const branches = repositoryRenderer.branches;
+
+  
+  const buttonActions = document.querySelectorAll(".button");
+  addEventListenerToActionsBar(buttonActions, actionButtonHandlers);
 
   const sidebar = document.getElementById("sidebar");
   const localBranches = document.getElementById("localList");
