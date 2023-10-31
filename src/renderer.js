@@ -255,7 +255,6 @@ function main() {
 
   const branches = repositoryRenderer.branches;
 
-  
   const buttonActions = document.querySelectorAll(".button");
   addEventListenerToActionsBar(buttonActions, actionButtonHandlers);
 
