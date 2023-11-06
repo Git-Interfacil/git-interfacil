@@ -31,6 +31,18 @@ class Repository {
     return commits;
   }
 
+  get_changed_files() {
+    let outputLines = this.shell_exec(`git status --porcelain`).split("\n");
+    let changedFiles = [];
+    for (let i = 0; i < outputLines.length; i++) {
+      let fields = outputLines[i].trim().split(" ");
+      if (fields[0] == "M") {
+        changedFiles.push(fields[1]);
+      }
+    }
+    return changedFiles;
+  }
+
   // receive array with file names
   add_files(files) {
     return this.shell_exec(`git add "${files.join(" ")}"`);
