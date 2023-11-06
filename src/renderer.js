@@ -183,11 +183,33 @@ function fillLocalBranches(list, count, branches) {
   });
 }
 
+function fillChangedFiles(changedFiles, changedFilesList) {
+  for (let i = 0; i < changedFiles.length; i++) {
+    const changedFileElement = document.createElement("li");
+    changedFileElement.dataset.changedId = changedFiles[i];
+    const id = "changed-" + changedFiles[i];
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = false;
+    checkbox.id = id;
+
+    const label = document.createElement("label");
+    label.htmlFor = id;
+    label.appendChild(document.createTextNode(changedFiles[i]));
+    label.classList.add("active");
+
+    changedFileElement.appendChild(checkbox);
+    changedFileElement.appendChild(label);
+
+    changedFilesList.appendChild(changedFileElement);
+  }
+}
+
 function addListenersToSidebar(dropdowns) {
   dropdowns.forEach((dropdown) => {
     const header = dropdown.querySelector(".header");
     const submenu = dropdown.querySelector(".items");
-    animationsController.slideDown(submenu);
     header.addEventListener("click", () => {
       animationsController.slideToggle(submenu);
 
@@ -236,6 +258,7 @@ function addListenersToLocalBranchesCheckboxes(
 function main() {
   const repo = new git_module.Repository("."); // TODO let user choose path
   const commits = repo.get_commit_info();
+  const changedFiles = repo.get_changed_files();
   const head = repo.get_repo_head();
 
   const canvas = document.querySelector("canvas");
@@ -275,6 +298,11 @@ function main() {
     localBranchesCount,
     repositoryRenderer,
   );
+
+  const changedFilesList = document.getElementById("changedList");
+  const changedFilesCount = document.getElementById("changedCount");
+  changedFilesCount.innerHTML = "0" + "/" + changedFiles.length;
+  fillChangedFiles(changedFiles, changedFilesList);
 }
 
 main();
