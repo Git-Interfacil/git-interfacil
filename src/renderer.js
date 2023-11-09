@@ -210,6 +210,7 @@ function addListenersToSidebar(dropdowns) {
   dropdowns.forEach((dropdown) => {
     const header = dropdown.querySelector(".header");
     const submenu = dropdown.querySelector(".items");
+    animationsController.slideDown(submenu);
     header.addEventListener("click", () => {
       animationsController.slideToggle(submenu);
 
@@ -292,17 +293,17 @@ function main() {
   const sidebarDropdowns = sidebar.querySelectorAll(".dropdown");
   const localBranchesList = localBranches.querySelectorAll("li");
 
+  const changedFilesList = document.getElementById("changedList");
+  const changedFilesCount = document.getElementById("changedCount");
+  changedFilesCount.innerHTML = "0" + "/" + changedFiles.length;
+  fillChangedFiles(changedFiles, changedFilesList);
+
   addListenersToSidebar(sidebarDropdowns);
   addListenersToLocalBranchesCheckboxes(
     localBranchesList,
     localBranchesCount,
     repositoryRenderer,
   );
-
-  const changedFilesList = document.getElementById("changedList");
-  const changedFilesCount = document.getElementById("changedCount");
-  changedFilesCount.innerHTML = "0" + "/" + changedFiles.length;
-  fillChangedFiles(changedFiles, changedFilesList);
 }
 
 main();
