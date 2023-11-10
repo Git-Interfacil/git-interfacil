@@ -5,6 +5,7 @@ const messagesController = require("./messagesController.js");
 const localBranchesController = require("./localBranchesController.js");
 const animationsController = require("./animationsController.js");
 const actionButtonHandlers = require("./actionsController.js");
+const mocks = require("./mocks.js");
 
 class RepositoryRenderer {
   constructor(commits, head, canvas, ctx, messagesElement) {
@@ -32,7 +33,7 @@ class RepositoryRenderer {
 
   setCanvasSize() {
     const filteredCommits = this.commits.filter(({ branchId }) =>
-      this.activeBranches.includes(branchId),
+      this.activeBranches.includes(branchId[0]),
     );
 
     this.canvas.width =
@@ -43,10 +44,10 @@ class RepositoryRenderer {
   generateAllBranches() {
     const branches = [];
     this.commits.forEach(({ branchId }, ind) => {
-      let branch = branches.find(({ id }) => id === branchId);
+      let branch = branches.find(({ id }) => id === branchId[0]);
       if (!branch) {
         branch = {
-          id: branchId,
+          id: branchId[0],
           pos: {
             x: (branches.length + 1) * constants.COLUMN_WIDTH,
             y: (ind + 1) * constants.LINE_HEIGHT,
@@ -61,11 +62,11 @@ class RepositoryRenderer {
 
   repositionBranches() {
     const filteredCommits = this.commits.filter(({ branchId }) =>
-      this.activeBranches.includes(branchId),
+      this.activeBranches.includes(branchId[0]),
     );
 
     filteredCommits.forEach(({ branchId }, ind) => {
-      const branch = this.branches.find(({ id }) => id === branchId);
+      const branch = this.branches.find(({ id }) => id === branchId[0]);
       branch.pos.y = (ind + 1) * constants.LINE_HEIGHT;
     });
 
@@ -88,12 +89,12 @@ class RepositoryRenderer {
     this.clearCanvas();
     this.repositionBranches();
     const filteredCommits = this.commits.filter(({ branchId }) =>
-      this.activeBranches.includes(branchId),
+      this.activeBranches.includes(branchId[0]),
     );
 
     const commitsWithPos = filteredCommits.map((commit, ind) => {
       const parentBranch = this.branches.find(
-        ({ id }) => id === commit.branchId,
+        ({ id }) => id === commit.branchId[0],
       );
 
       const pos = {
@@ -136,11 +137,11 @@ class RepositoryRenderer {
   fillMessages() {
     this.clearMessages();
     const filteredCommits = this.commits.filter(({ branchId }) =>
-      this.activeBranches.includes(branchId),
+      this.activeBranches.includes(branchId[0]),
     );
 
     filteredCommits.forEach(({ message, branchId, author }) => {
-      const parentBranch = this.branches.find(({ id }) => id === branchId);
+      const parentBranch = this.branches.find(({ id }) => id === branchId[0]);
       const messageElement = messagesController.createMessage(
         message,
         author,
@@ -258,9 +259,12 @@ function addListenersToLocalBranchesCheckboxes(
 
 function main() {
   const repo = new git_module.Repository("."); // TODO let user choose path
-  const commits = repo.get_commit_info();
+  //const commits = repo.get_commit_info();
   const changedFiles = repo.get_changed_files();
-  const head = repo.get_repo_head();
+  //const head = repo.get_repo_head();
+
+  const commits = mocks.COMMITS_MOCK.commits;
+  const head = mocks.COMMITS_MOCK.head;
 
   const canvas = document.querySelector("canvas");
   if (!canvas) throw Error("No canvas found");
