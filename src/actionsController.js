@@ -17,8 +17,7 @@ const actionButtonsHandlers = {
   },
   add: (repo, files) => {
     try {
-      const result = repo.add_files(files);
-      console.log(result);
+      repo.add_files(files);
     } catch (error) {
       console.error("Error during add: ", error);
     }
@@ -30,23 +29,16 @@ const actionButtonsHandlers = {
       console.error("Error during commit: ", error);
     }
   },
-  push: async (repo, remoteBranch) => {
+  push: (repo, branch, remote = "origin") => {
     console.log("Push button clicked");
-    if (remoteBranch) {
-      const remote = "origin";
+    if (branch) {
       try {
-        const changedFiles = await repo.get_changed_files();
+        const changedFiles = repo.get_changed_files();
         actionButtonsHandlers.add(repo, changedFiles);
-        const message = "teste commit";
+        const message = "testing push without await";
         actionButtonsHandlers.commit(repo, message);
 
-        const result = await repo.push(remote, remoteBranch);
-
-        if (!result) {
-          console.log("No changes to push");
-        } else {
-          console.log("result", result);
-        }
+        repo.push(remote, branch);
       } catch (error) {
         console.error("Error during push:", error);
       }
