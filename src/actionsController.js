@@ -34,6 +34,9 @@ const actionButtonsHandlers = {
     if (branch) {
       try {
         const changedFiles = repo.get_changed_files();
+        if (changedFiles === "") {
+          alert("No changes detected.");
+        }
         actionButtonsHandlers.add(repo, changedFiles);
         const message = "testing push without await";
         actionButtonsHandlers.commit(repo, message);
