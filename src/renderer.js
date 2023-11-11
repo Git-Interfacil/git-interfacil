@@ -12,7 +12,6 @@ class RepositoryRenderer {
     this.commits = commits;
     this.sortCommits();
     this.branches = this.generateAllBranches();
-
     this.canvas = canvas;
     this.ctx = ctx;
 
@@ -159,14 +158,19 @@ class RepositoryRenderer {
   }
 }
 
-function addEventListenerToActionsBar(buttons, actionButtonHandlers) {
+function addEventListenerToActionsBar(
+  buttons,
+  actionButtonHandlers,
+  repo,
+  currentBranchId,
+) {
   buttons.forEach((button) => {
     button.addEventListener("click", () => {
       console.log("Clicked");
       const buttonText = button.innerText;
 
       if (buttonText in actionButtonHandlers) {
-        actionButtonHandlers[buttonText]();
+        actionButtonHandlers[buttonText](repo, currentBranchId);
       } else {
         console.log("Button not found");
       }
@@ -262,6 +266,9 @@ function main() {
   const changedFiles = repo.get_changed_files();
   const head = repo.get_repo_head();
 
+  const headCommit = commits.find((commit) => head.startsWith(commit.id));
+  const currentBranchId = headCommit ? headCommit.branchId : null;
+
   const canvas = document.querySelector("canvas");
   if (!canvas) throw Error("No canvas found");
   const ctx = canvas.getContext("2d");
@@ -280,7 +287,12 @@ function main() {
   const branches = repositoryRenderer.branches;
 
   const buttonActions = document.querySelectorAll(".button");
-  addEventListenerToActionsBar(buttonActions, actionButtonHandlers);
+  addEventListenerToActionsBar(
+    buttonActions,
+    actionButtonHandlers,
+    repo,
+    currentBranchId,
+  );
 
   const sidebar = document.getElementById("sidebar");
   const localBranches = document.getElementById("localList");
