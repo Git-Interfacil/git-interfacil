@@ -17,7 +17,7 @@ const actionButtonsHandlers = {
   },
   add: (repo, files) => {
     try {
-      const result = repo.add(files);
+      const result = repo.add_files(files);
       console.log(result);
     } catch (error) {
       console.error("Error during add: ", error);
