@@ -33,7 +33,6 @@ const actionButtonsHandlers = {
     // #TO-DO: Add your code here for the Pull button action
   },
   add: async (repo) => {
-    console.log("Add button clicked");
     try {
       const changedFiles = await repo.get_changed_files();
       if (changedFiles[0] === "") {
@@ -49,7 +48,6 @@ const actionButtonsHandlers = {
     }
   },
   commit: async (repo) => {
-    console.log("Commit button clicked");
     try {
       const message = await openTextInputWindow();
       if (!message) {
@@ -65,7 +63,6 @@ const actionButtonsHandlers = {
     }
   },
   push: async (repo, branch, remote = "origin") => {
-    console.log("Push button clicked");
     try {
       repo.push(remote, branch);
       await Toast.showToast("Done: push", "./assets/sucess-icon.svg");
