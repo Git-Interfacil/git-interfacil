@@ -326,7 +326,7 @@ function loadRepoClient(repo) {
 }
 
 function main() {
-  const repoSelector = new RepoSelector(document);
+  const repoSelector = new RepoSelector();
   document.getElementById("repoSelector").addEventListener("change", () => {
     const repo = new git_module.Repository(repoSelector.getDirPath());
     loadRepoClient(repo);
