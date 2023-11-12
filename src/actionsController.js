@@ -68,9 +68,9 @@ const actionButtonsHandlers = {
     console.log("Push button clicked");
     try {
       repo.push(remote, branch);
-      // await Toast.showToast("Done: push", "./assets/sucess-icon.svg");
+      await Toast.showToast("Done: push", "./assets/sucess-icon.svg");
     } catch (error) {
-      // await Toast.showToast("Error: push", "./assets/error-icon.svg");
+      await Toast.showToast("Error: push", "./assets/error-icon.svg");
       throw new Error("Push operation failed.", error);
     }
   },
