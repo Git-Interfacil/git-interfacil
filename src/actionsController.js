@@ -1,3 +1,14 @@
+const { ipcRenderer } = require("electron");
+
+function openTextInputWindow() {
+  ipcRenderer.send("open-text-input-window");
+}
+
+// ipcRenderer.on('text-input-value', (event, data) => {
+//   const { inputValue } = data;
+//   alert(`User entered: ${inputValue}`);
+// });
+
 const actionButtonsHandlers = {
   undo: () => {
     console.log("Undo button clicked");
@@ -33,11 +44,25 @@ const actionButtonsHandlers = {
     console.log("Push button clicked");
     if (branch) {
       try {
+        openTextInputWindow();
         const changedFiles = repo.get_changed_files();
-        if (changedFiles === "") {
-          alert("No changes detected.");
+        if (changedFiles[0] === "") {
+          //   const options = {
+          //     type: "question",
+          //     buttons: ["Cancel", "Yes, please", "No, thanks"],
+          //     defaultId: 2,
+          //     title: "Question",
+          //     message: "Do you want to do this?",
+          //     detail: "It does not really matter",
+          //     checkboxLabel: "Remember my answer",
+          //     checkboxChecked: true,
+          //   };
+
+          ipcRenderer.invoke("showErrorBox", "No changes detected");
+          return;
         }
         actionButtonsHandlers.add(repo, changedFiles);
+        // return;
         const message = "testing push without await";
         actionButtonsHandlers.commit(repo, message);
 

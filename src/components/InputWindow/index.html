@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Commit message</title>
+    <style>
+      body {
+        padding: 10px;
+        background-color: #fff;
+        border-radius: 1000px;
+        border-color: aqua;
+        border-width: 10px;
+        overflow: hidden;
+      }
+
+      input {
+        width: 250px;
+      }
+
+      button {
+        margin-top: 10px;
+      }
+      #buttons {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <label for="textInput">Enter your commit message:</label>
+    <input type="text" id="textInput" />
+    <div id="buttons">
+      <button onclick="submitInput()">Submit</button>
+      <button onclick="window.close()">Cancel</button>
+    </div>
+
+    <script>
+      function submitInput() {
+        const inputValue = document.getElementById("textInput").value;
+        window.opener.postMessage({ inputValue }, "*");
+        window.close();
+      }
+    </script>
+  </body>
+</html>
