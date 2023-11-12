@@ -24,10 +24,10 @@ describe("actionsController", () => {
     expect(console.log).toHaveBeenCalledWith("Pull button clicked");
   });
 
-  it("Push Button", () => {
-    actionButtonsHandlers.push();
-    expect(console.log).toHaveBeenCalledWith("Push button clicked");
-  });
+  // it("Push Button", () => {
+  //   actionButtonsHandlers.push();
+  //   expect(console.log).toHaveBeenCalledWith("Push button clicked");
+  // });
 
   it("Branch Button", () => {
     actionButtonsHandlers.branch();

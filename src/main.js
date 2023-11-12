@@ -1,14 +1,15 @@
 /* eslint-disable no-undef */
 const electron = require("electron");
 const path = require("node:path");
-const { ipcMain, dialog } = require("electron");
+const { ipcMain, dialog, screen } = require("electron");
 
 const { app, BrowserWindow } = electron;
 
 const createWindow = () => {
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: width,
+    height: height,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       nodeIntegration: true,
@@ -43,12 +44,17 @@ const createWindow = () => {
   });
 
   win.loadFile("src/index.html");
+
+  ipcMain.on("submit-input", (event, inputValue) => {
+    win.webContents.send("inputValue-updated", inputValue);
+  });
 };
 
 function createTextInputWindow() {
   textInputWindow = new BrowserWindow({
     width: 300,
     height: 120,
+    devTools: true,
     autoHideMenuBar: true,
     frame: false,
     webPreferences: {
@@ -67,11 +73,6 @@ function createTextInputWindow() {
 ipcMain.on("open-text-input-window", () => {
   createTextInputWindow();
 });
-
-// ipcMain.on("text-input-value", (event, data) => {
-//   // Handle the received input value as needed
-//   console.log("Received input value:", data.inputValue);
-// });
 
 app.on("ready", () => {
   createWindow();

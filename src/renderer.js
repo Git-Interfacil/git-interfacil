@@ -164,13 +164,20 @@ function addEventListenerToActionsBar(
   repo,
   currentBranchId,
 ) {
+  const buttonParams = {
+    add: { repo },
+    commit: { repo },
+    push: { repo, currentBranchId },
+  };
   buttons.forEach((button) => {
     button.addEventListener("click", () => {
       console.log("Clicked");
       const buttonText = button.innerText;
 
       if (buttonText in actionButtonHandlers) {
-        actionButtonHandlers[buttonText](repo, currentBranchId);
+        actionButtonHandlers[buttonText](
+          ...Object.values(buttonParams[buttonText]),
+        );
       } else {
         console.log("Button not found");
       }

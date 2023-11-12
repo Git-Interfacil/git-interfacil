@@ -9,6 +9,7 @@
     />
     <title>Git Interfácil</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="components/Toast/toast.css" />
   </head>
   <body>
     <div id="app-container">
@@ -39,6 +40,12 @@
             </button>
             <button id="popButton" class="button">
               <span>pop</span>
+            </button>
+            <button id="addButton" class="button">
+              <span>add</span>
+            </button>
+            <button id="commitButton" class="button">
+              <span>commit</span>
             </button>
           </div>
         </div>
@@ -75,10 +82,12 @@
             <canvas></canvas>
           </div>
           <ul id="messages"></ul>
+          <div id="toast-container"></div>
         </div>
       </div>
     </div>
     <script src="actionsController.js"></script>
     <script src="renderer.js"></script>
+    <script src="components/Toast/toast.js"></script>
   </body>
 </html>
