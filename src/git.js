@@ -43,6 +43,13 @@ class Repository {
     return changedFiles;
   }
 
+  get_commit_parents(commitHash) {
+    let output = this.shell_exec(`git rev-list --parents -n 1 "${commitHash}"`)
+      .split(" ")
+      .slice(1); // first element is commitHash itself
+    return output;
+  }
+
   // receive array with file names
   add_files(files) {
     return this.shell_exec(`git add "${files.join(" ")}"`);
