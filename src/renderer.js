@@ -259,7 +259,7 @@ function addListenersToLocalBranchesCheckboxes(
 function main() {
   const repo = new git_module.Repository("."); // TODO let user choose path
   const commits = repo.get_commit_info();
-  const changedFiles = repo.get_changed_files();
+  const changedFiles = repo.get_changed_and_untracked_files();
   const head = repo.get_repo_head();
 
   const canvas = document.querySelector("canvas");
