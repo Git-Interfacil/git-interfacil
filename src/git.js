@@ -23,10 +23,12 @@ class Repository {
     commits = JSON.parse("[" + commits.slice(0, -1) + "]");
     for (let i = 0; i < commits.length; i++) {
       let commitHash = commits[i]["id"];
-      let branchName = this.shell_exec(
+      let branchNames = this.shell_exec(
         `git branch --format="%(refname:short)" --contains ${commitHash}`,
-      ).split("\n")[0];
-      commits[i]["branchId"] = branchName;
+      )
+        .split("\n")
+        .filter((s) => s.length != 0);
+      commits[i]["branchesId"] = branchNames;
     }
     return commits;
   }

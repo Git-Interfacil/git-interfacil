@@ -5,7 +5,6 @@ const messagesController = require("./messagesController.js");
 const localBranchesController = require("./localBranchesController.js");
 const animationsController = require("./animationsController.js");
 const actionButtonHandlers = require("./actionsController.js");
-const mocks = require("./mocks.js");
 
 class RepositoryRenderer {
   constructor(commits, head, canvas, ctx, messagesElement) {
@@ -259,12 +258,9 @@ function addListenersToLocalBranchesCheckboxes(
 
 function main() {
   const repo = new git_module.Repository("."); // TODO let user choose path
-  //const commits = repo.get_commit_info();
+  const commits = repo.get_commit_info();
   const changedFiles = repo.get_changed_files();
-  //const head = repo.get_repo_head();
-
-  const commits = mocks.COMMITS_MOCK.commits;
-  const head = mocks.COMMITS_MOCK.head;
+  const head = repo.get_repo_head();
 
   const canvas = document.querySelector("canvas");
   if (!canvas) throw Error("No canvas found");
