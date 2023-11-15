@@ -4,6 +4,15 @@ jest.mock("../src/canvasController.js");
 jest.mock("../src/messagesController.js");
 jest.mock("../src/localBranchesController.js");
 
+jest.mock("electron", () => ({
+  ipcRenderer: {
+    // send: jest.fn(),
+    // once: jest.fn(),
+    // invoke: jest.fn(),
+    on: jest.fn(),
+  },
+}));
+
 describe("renderer", () => {
   beforeEach(() => jest.clearAllMocks());
   it("should not render if no canvas", () => {

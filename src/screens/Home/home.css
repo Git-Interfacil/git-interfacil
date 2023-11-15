@@ -1,0 +1,157 @@
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+}
+
+#app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+#header {
+  display: flex;
+  flex-direction: column;
+
+  & #navigation {
+    height: 72px;
+    background-color: #aaa;
+  }
+
+  & #actions {
+    height: 71px;
+    background-color: #bbb;
+  }
+}
+
+#content {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+
+  & #sidebar {
+    width: 301px;
+    background-color: #d9d9d9;
+
+    & button {
+      padding: 18px;
+      display: flex;
+      flex-direction: row;
+      color: #575757;
+      margin: 8px;
+      align-items: center;
+      width: 95%;
+      background: transparent;
+      border: none;
+    }
+    & .selected {
+      border-radius: 10px;
+      padding: 10px;
+      background-color: #e0e0e0;
+      box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.2);
+    }
+  }
+}
+
+button .icon {
+  padding-right: 12px;
+  align-items: center;
+  justify-content: center;
+}
+
+#workspace {
+  width: 30px;
+  height: 30px;
+}
+
+#shortcuts {
+  width: 35px;
+  height: 35px;
+}
+#help {
+  margin-left: 5px;
+  width: 25px;
+  height: 25px;
+}
+
+button span {
+  font-size: 16px;
+}
+
+.title {
+  font-weight: 550;
+  align-items: center;
+  justify-content: center;
+}
+
+#content #main {
+  flex: 1;
+  display: flex;
+  background-color: #3e3e3e;
+  flex-direction: column;
+}
+
+#main .title {
+  padding: 100px;
+  font-size: 36px;
+  color: #fff;
+}
+
+#actionsBar {
+  display: flex;
+  justify-content: flex-end;
+  margin: 30px;
+
+  & #newWorkspaceButton {
+    background-color: rgba(217, 217, 217, 0.6);
+    border-radius: 20px;
+    padding: 20px 40px;
+    border: none;
+
+    & span {
+      color: #fff;
+    }
+  }
+}
+
+.descriptionBar {
+  display: flex;
+  flex-direction: row;
+  height: 100px;
+  background-color: rgba(87, 87, 87, 0.57);
+  padding: 0 250px;
+  align-items: center;
+  box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.2);
+
+  & img {
+    width: 30px;
+    height: 30px;
+  }
+
+  & .icon {
+    display: flex;
+    justify-content: center;
+    min-width: 100px;
+  }
+
+  & span {
+    display: flex;
+    font-size: 20px;
+    color: #fff;
+    justify-content: center;
+    min-width: 50%;
+  }
+}
+
+.vertical-line {
+  border-left: 2px solid rgba(255, 255, 255, 0.25);
+  height: 100px; /* 
+  }
+
+
+  #actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* padding-right: 230px; */
+}

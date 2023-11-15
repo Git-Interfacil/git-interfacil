@@ -1,3 +1,4 @@
+// const { ipcRenderer } = require("electron");
 const constants = require("./constants.js");
 const git_module = require("./git.js");
 const canvasController = require("./canvasController.js");
@@ -268,7 +269,11 @@ function addListenersToLocalBranchesCheckboxes(
 }
 
 function main() {
-  const repo = new git_module.Repository("."); // TODO let user choose path
+  // ipcRenderer.on("update-folder", (event, folderPath) => {
+
+  // const repo = new git_module.Repository(folderPath);
+  const repo = new git_module.Repository(".");
+
   const commits = repo.get_commit_info();
   const changedFiles = repo.get_changed_files();
   const head = repo.get_repo_head();
@@ -323,6 +328,7 @@ function main() {
     localBranchesCount,
     repositoryRenderer,
   );
+  // });
 }
 
 main();

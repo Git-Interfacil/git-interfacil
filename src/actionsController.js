@@ -1,5 +1,5 @@
-const { ipcRenderer } = require("electron");
 const Toast = require("./components/Toast/toast.js");
+const { ipcRenderer } = require("electron");
 
 function openTextInputWindow() {
   return new Promise((resolve) => {

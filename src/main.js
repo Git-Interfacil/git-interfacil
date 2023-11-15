@@ -21,6 +21,21 @@ const createWindow = () => {
 
   // DEV:
   win.webContents.openDevTools();
+  // open file manager
+  ipcMain.on("open-folder-dialog", (event) => {
+    dialog
+      .showOpenDialog(win, {
+        properties: ["openDirectory"],
+      })
+      .then((result) => {
+        if (!result.canceled && result.filePaths.length > 0) {
+          event.reply("selected-folder", result.filePaths[0]);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  });
 
   // options format:
   //
@@ -35,16 +50,25 @@ const createWindow = () => {
   //     checkboxChecked: true,
   //   };
 
+  // change screen
+  ipcMain.on("show-screen", (event, screenName) => {
+    console.log((__dirname, `${screenName}.html`));
+    win.loadFile(path.join(__dirname, `${screenName}.html`));
+  });
+
+  // common message box
   ipcMain.handle("showMessageBox", (e, options) => {
     dialog.showMessageBox(null, options);
   });
 
+  // error box
   ipcMain.handle("showErrorBox", (e, message) => {
     dialog.showErrorBox("Oops! Something went wrong!", message);
   });
 
-  win.loadFile("src/index.html");
+  win.loadFile("src/screens/Home/home.html");
 
+  // submit text input in popup window
   ipcMain.on("submit-input", (event, inputValue) => {
     win.webContents.send("inputValue-updated", inputValue);
   });

@@ -15,9 +15,9 @@ class Repository {
     return this.shell_exec("git rev-parse HEAD");
   }
 
-  get_commit_info() {
+  get_commit_info(limit = 80) {
     let commits = this.shell_exec(
-      `git log --branches --format='format:${formatStr}'`,
+      `git log --branches --format='format:${formatStr}' --max-count=${limit} `,
     );
     // note that we must remove trailing comma before the closing bracket
     commits = JSON.parse("[" + commits.slice(0, -1) + "]");
