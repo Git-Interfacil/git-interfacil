@@ -1,0 +1,23 @@
+body {
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 1000px;
+  border-color: aqua;
+  border-width: 10px;
+  overflow: hidden;
+}
+
+input {
+  width: 250px;
+}
+
+button {
+  margin-top: 10px;
+}
+#buttons {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}

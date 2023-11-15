@@ -52,7 +52,7 @@ class Repository {
 
   // receive array with file names
   add_files(files) {
-    return this.shell_exec(`git add "${files.join(" ")}"`);
+    return this.shell_exec(`git add ${files.join(" ")}`);
   }
 
   commit(message) {
