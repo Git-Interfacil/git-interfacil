@@ -5,6 +5,7 @@ const messagesController = require("./messagesController.js");
 const localBranchesController = require("./localBranchesController.js");
 const animationsController = require("./animationsController.js");
 const actionButtonHandlers = require("./actionsController.js");
+const RepoSelector = require("./RepoSelector.js");
 
 class RepositoryRenderer {
   constructor(commits, head, canvas, ctx, messagesElement) {
@@ -267,8 +268,7 @@ function addListenersToLocalBranchesCheckboxes(
   });
 }
 
-function main() {
-  const repo = new git_module.Repository("."); // TODO let user choose path
+function loadRepoClient(repo) {
   const commits = repo.get_commit_info();
   const changedFiles = repo.get_changed_and_untracked_files();
   const head = repo.get_repo_head();
@@ -323,6 +323,14 @@ function main() {
     localBranchesCount,
     repositoryRenderer,
   );
+}
+
+function main() {
+  const repoSelector = new RepoSelector();
+  document.getElementById("repoSelector").addEventListener("change", () => {
+    const repo = new git_module.Repository(repoSelector.getDirPath());
+    loadRepoClient(repo);
+  });
 }
 
 main();
