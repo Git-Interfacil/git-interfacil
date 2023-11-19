@@ -1,6 +1,6 @@
 const constants = require("./constants.js");
 const git_module = require("./git.js");
-const canvasController = require("./canvasController.js");
+const CanvasController = require("./canvasController.js");
 const messagesController = require("./messagesController.js");
 const localBranchesController = require("./localBranchesController.js");
 const animationsController = require("./animationsController.js");
@@ -8,17 +8,16 @@ const actionButtonHandlers = require("./actionsController.js");
 const RepoSelector = require("./RepoSelector.js");
 
 class RepositoryRenderer {
-  constructor(commits, head, canvas, ctx, messagesElement) {
+  constructor(commits, head, canvasController, messagesElement) {
     this.head = head;
     this.commits = commits;
     this.sortCommits();
     this.branches = this.generateAllBranches();
-    this.canvas = canvas;
-    this.ctx = ctx;
 
     this.messagesElement = messagesElement;
 
     this.activeBranches = this.branches.map(({ id }) => id);
+    this.canvasController = canvasController;
 
     this.setCanvasSize();
   }
@@ -35,9 +34,9 @@ class RepositoryRenderer {
       this.activeBranches.includes(branchesId[0]),
     );
 
-    this.canvas.width =
-      constants.COLUMN_WIDTH * (this.activeBranches.length + 1);
-    this.canvas.height = constants.LINE_HEIGHT * (filteredCommits.length + 1);
+    const width = constants.COLUMN_WIDTH * (this.activeBranches.length + 1);
+    const height = constants.LINE_HEIGHT * (filteredCommits.length + 1);
+    this.canvasController.setDimensions(width, height);
   }
 
   generateAllBranches() {
@@ -80,18 +79,14 @@ class RepositoryRenderer {
     this.setCanvasSize();
   }
 
-  clearCanvas() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-  }
-
   drawBranches() {
-    this.clearCanvas();
+    this.canvasController.clearCanvas();
     this.repositionBranches();
     const filteredCommits = this.commits.filter(({ branchesId }) =>
       this.activeBranches.includes(branchesId[0]),
     );
 
-    const commitsWithPos = filteredCommits.map((commit, ind) => {
+    filteredCommits.forEach((commit, ind) => {
       const parentBranch = this.branches.find(
         ({ id }) => id === commit.branchesId[0],
       );
@@ -101,31 +96,27 @@ class RepositoryRenderer {
         y: (ind + 1) * constants.LINE_HEIGHT,
       };
 
-      if (this.head == commit.id)
-        canvasController.drawCommit(this.ctx, pos, parentBranch.color, 8, true);
-      else canvasController.drawCommit(this.ctx, pos, parentBranch.color);
+      this.canvasController.drawLine(pos, parentBranch.pos, parentBranch.color);
 
-      canvasController.drawLine(
-        this.ctx,
+      // Merged commits
+      // if (commit.branchesId.length > 1) {
+      //   console.log(commit.branchesId);
+      //   const originBranch = this.branches.find(
+      //     ({ id }) => id === commit.branchesId[1],
+      //   );
+      //   if (originBranch)
+      //     this.canvasController.drawLine(
+      //       pos,
+      //       originBranch.pos,
+      //       parentBranch.color,
+      //     );
+      // }
+
+      this.canvasController.drawCommit(
         pos,
-        parentBranch.pos,
         parentBranch.color,
+        this.head == commit.id,
       );
-      return { ...commit, pos };
-    });
-
-    this.canvas.addEventListener("click", (event) => {
-      const rect = this.canvas.getBoundingClientRect();
-      const x = event.x - rect.left;
-      const y = event.y - rect.top;
-      const commitClicked = commitsWithPos.find(
-        ({ pos: commitPosition }) =>
-          x >= commitPosition.x - 10 &&
-          x <= commitPosition.x + 10 &&
-          y >= commitPosition.y - 10 &&
-          y <= commitPosition.y + 10,
-      );
-      console.log({ commitClicked, commitsWithPos, x, y });
     });
   }
 
@@ -277,17 +268,14 @@ function loadRepoClient(repo) {
   const currentBranchId = headCommit ? headCommit.branchId : null;
 
   const canvas = document.querySelector("canvas");
-  if (!canvas) throw Error("No canvas found");
-  const ctx = canvas.getContext("2d");
-  if (!ctx) throw Error("No 2d context found");
+  const canvasController = new CanvasController(canvas);
 
   const messages = document.getElementById("messages");
 
   const repositoryRenderer = new RepositoryRenderer(
     commits,
     head,
-    canvas,
-    ctx,
+    canvasController,
     messages,
   );
 
