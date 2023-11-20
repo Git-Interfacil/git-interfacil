@@ -100,9 +100,9 @@ button span {
 #actionsBar {
   display: flex;
   justify-content: flex-end;
-  margin: 30px;
+  margin: 0 30px 30px;
 
-  & #newWorkspaceButton {
+  & #newButton {
     background-color: rgba(217, 217, 217, 0.6);
     border-radius: 20px;
     padding: 20px 40px;
@@ -118,20 +118,15 @@ button span {
   display: flex;
   flex-direction: row;
   height: 100px;
+  padding: 0 150px;
   background-color: rgba(87, 87, 87, 0.57);
-  padding: 0 250px;
   align-items: center;
   box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.2);
+  justify-content: space-between;
 
   & img {
     width: 30px;
     height: 30px;
-  }
-
-  & .icon {
-    display: flex;
-    justify-content: center;
-    min-width: 100px;
   }
 
   & span {
@@ -139,19 +134,35 @@ button span {
     font-size: 20px;
     color: #fff;
     justify-content: center;
-    min-width: 50%;
+    flex-grow: 1;
+  }
+  & .icon {
+    display: flex;
+    justify-content: center;
+    max-width: 100px;
   }
 }
 
 .vertical-line {
   border-left: 2px solid rgba(255, 255, 255, 0.25);
-  height: 100px; /* 
+  height: 100px;
+}
+
+.faq-section {
+  display: flex;
+  flex-direction: column;
+  margin-left: 100px;
+  margin-bottom: 20px;
+  & span {
+    color: #fff;
   }
+}
 
-
-  #actions {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    /* padding-right: 230px; */
+.question {
+  font-weight: bold;
+  cursor: pointer;
+}
+.answer {
+  display: none;
+  margin: 10px 0;
 }
