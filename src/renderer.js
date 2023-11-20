@@ -1,4 +1,4 @@
-// const { ipcRenderer } = require("electron");
+const { ipcRenderer } = require("electron");
 const constants = require("./constants.js");
 const git_module = require("./git.js");
 const canvasController = require("./canvasController.js");
@@ -6,6 +6,7 @@ const messagesController = require("./messagesController.js");
 const localBranchesController = require("./localBranchesController.js");
 const animationsController = require("./animationsController.js");
 const actionButtonHandlers = require("./actionsController.js");
+const RepoSelector = require("./RepoSelector.js");
 
 class RepositoryRenderer {
   constructor(commits, head, canvas, ctx, messagesElement) {
@@ -31,8 +32,8 @@ class RepositoryRenderer {
   }
 
   setCanvasSize() {
-    const filteredCommits = this.commits.filter(({ branchId }) =>
-      this.activeBranches.includes(branchId),
+    const filteredCommits = this.commits.filter(({ branchesId }) =>
+      this.activeBranches.includes(branchesId[0]),
     );
 
     this.canvas.width =
@@ -42,11 +43,11 @@ class RepositoryRenderer {
 
   generateAllBranches() {
     const branches = [];
-    this.commits.forEach(({ branchId }, ind) => {
-      let branch = branches.find(({ id }) => id === branchId);
+    this.commits.forEach(({ branchesId }, ind) => {
+      let branch = branches.find(({ id }) => id === branchesId[0]);
       if (!branch) {
         branch = {
-          id: branchId,
+          id: branchesId[0],
           pos: {
             x: (branches.length + 1) * constants.COLUMN_WIDTH,
             y: (ind + 1) * constants.LINE_HEIGHT,
@@ -60,12 +61,12 @@ class RepositoryRenderer {
   }
 
   repositionBranches() {
-    const filteredCommits = this.commits.filter(({ branchId }) =>
-      this.activeBranches.includes(branchId),
+    const filteredCommits = this.commits.filter(({ branchesId }) =>
+      this.activeBranches.includes(branchesId[0]),
     );
 
-    filteredCommits.forEach(({ branchId }, ind) => {
-      const branch = this.branches.find(({ id }) => id === branchId);
+    filteredCommits.forEach(({ branchesId }, ind) => {
+      const branch = this.branches.find(({ id }) => id === branchesId[0]);
       branch.pos.y = (ind + 1) * constants.LINE_HEIGHT;
     });
 
@@ -87,13 +88,13 @@ class RepositoryRenderer {
   drawBranches() {
     this.clearCanvas();
     this.repositionBranches();
-    const filteredCommits = this.commits.filter(({ branchId }) =>
-      this.activeBranches.includes(branchId),
+    const filteredCommits = this.commits.filter(({ branchesId }) =>
+      this.activeBranches.includes(branchesId[0]),
     );
 
     const commitsWithPos = filteredCommits.map((commit, ind) => {
       const parentBranch = this.branches.find(
-        ({ id }) => id === commit.branchId,
+        ({ id }) => id === commit.branchesId[0],
       );
 
       const pos = {
@@ -135,12 +136,12 @@ class RepositoryRenderer {
 
   fillMessages() {
     this.clearMessages();
-    const filteredCommits = this.commits.filter(({ branchId }) =>
-      this.activeBranches.includes(branchId),
+    const filteredCommits = this.commits.filter(({ branchesId }) =>
+      this.activeBranches.includes(branchesId[0]),
     );
 
-    filteredCommits.forEach(({ message, branchId, author }) => {
-      const parentBranch = this.branches.find(({ id }) => id === branchId);
+    filteredCommits.forEach(({ message, branchesId, author }) => {
+      const parentBranch = this.branches.find(({ id }) => id === branchesId[0]);
       const messageElement = messagesController.createMessage(
         message,
         author,
@@ -268,14 +269,9 @@ function addListenersToLocalBranchesCheckboxes(
   });
 }
 
-function main() {
-  // ipcRenderer.on("update-folder", (event, folderPath) => {
-
-  // const repo = new git_module.Repository(folderPath);
-  const repo = new git_module.Repository(".");
-
+function loadRepoClient(repo) {
   const commits = repo.get_commit_info();
-  const changedFiles = repo.get_changed_files();
+  const changedFiles = repo.get_changed_and_untracked_files();
   const head = repo.get_repo_head();
 
   const headCommit = commits.find((commit) => head.startsWith(commit.id));
@@ -329,6 +325,16 @@ function main() {
     repositoryRenderer,
   );
   // });
+}
+
+function main() {
+  ipcRenderer.on("update-folder", (event, folderPath) => {
+    const repoSelector = new RepoSelector(folderPath);
+    document.getElementById("repoSelector").addEventListener("change", () => {
+      const repo = new git_module.Repository(repoSelector.getDirPath());
+      loadRepoClient(repo);
+    });
+  });
 }
 
 main();

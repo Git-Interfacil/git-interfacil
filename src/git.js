@@ -23,24 +23,38 @@ class Repository {
     commits = JSON.parse("[" + commits.slice(0, -1) + "]");
     for (let i = 0; i < commits.length; i++) {
       let commitHash = commits[i]["id"];
-      let branchName = this.shell_exec(
+      let branchNames = this.shell_exec(
         `git branch --format="%(refname:short)" --contains ${commitHash}`,
-      ).split("\n")[0];
-      commits[i]["branchId"] = branchName;
+      )
+        .split("\n")
+        .filter((s) => s.length != 0);
+      commits[i]["branchesId"] = branchNames;
     }
     return commits;
   }
 
-  get_changed_files() {
-    let outputLines = this.shell_exec(`git status --porcelain`).split("\n");
-    let changedFiles = [];
+  get_changed_and_untracked_files() {
+    const outputLines = this.shell_exec(`git status --porcelain -z`).split(
+      "\0",
+    );
+    let files = [];
     for (let i = 0; i < outputLines.length; i++) {
-      let fields = outputLines[i].trim().split(" ");
-      if (fields[0] == "M") {
-        changedFiles.push(fields[1]);
+      // Each line has two single-character fields, a space, and filename.
+      // See <https://git-scm.com/docs/git-status#_porcelain_format_version_1>
+      // for a better explanation of the output format.
+      const status_field1 = outputLines[i][0];
+      const status_field2 = outputLines[i][1];
+      const filename = outputLines[i].substring(3);
+
+      if (
+        status_field1 == "M" ||
+        status_field1 == "?" ||
+        status_field2 == "M"
+      ) {
+        files.push(filename);
       }
     }
-    return changedFiles;
+    return files;
   }
 
   get_commit_parents(commitHash) {
