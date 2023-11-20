@@ -21,7 +21,7 @@ function fetchNewContent(pageName) {
 }
 
 function workspaces() {
-  const button = document.getElementById("newWorkspaceButton");
+  const button = document.getElementById("newButton");
 
   button.addEventListener("click", function () {
     ipcRendererManager.sendToMain("open-folder-dialog");
