@@ -2,7 +2,7 @@ const ipcRendererManager = require("../../utils/ipcRendererManager");
 
 // Function to fetch content from newContent.html
 function fetchNewContent(pageName) {
-  fetch(`${pageName}.html`) // Fetch the content from the HTML file
+  fetch(`./Tabs/${pageName}.html`) // Fetch the content from the HTML file
     .then((response) => response.text()) // Convert response to text
     .then((html) => {
       // Replace content inside the main container with the fetched HTML
@@ -13,6 +13,8 @@ function fetchNewContent(pageName) {
         workspaces();
       } else if (pageName === "help") {
         help();
+      } else if (pageName === "shortcuts") {
+        shortcuts();
       }
     })
     .catch((error) => {
@@ -32,6 +34,22 @@ function workspaces() {
   });
 }
 
+function separateStringIntoSpans(text) {
+  const words = text.split(" ");
+  const spans = words.map((word) => `<span>${word}</span> +`);
+  return spans.join(" ").slice(0, -1);
+}
+
+function shortcuts() {
+  const keybindElements = document.querySelectorAll(".keybind");
+
+  keybindElements.forEach((element) => {
+    const text = element.textContent.trim();
+    const formattedText = separateStringIntoSpans(text);
+    element.innerHTML = formattedText;
+  });
+}
+
 // TO-DO: write the questions ans answers in html
 function help() {
   const questions = document.querySelectorAll(".question");
@@ -46,7 +64,7 @@ function help() {
 }
 
 function main() {
-  fetchNewContent("workspaces");
+  fetchNewContent("shortcuts");
   document.addEventListener("DOMContentLoaded", function () {
     const buttons = document.querySelectorAll("#sidebar button");
 

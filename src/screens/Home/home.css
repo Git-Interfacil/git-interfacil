@@ -130,6 +130,8 @@ button span {
   }
 
   & span {
+    max-width: 600px;
+    min-width: 300px;
     display: flex;
     font-size: 20px;
     color: #fff;
@@ -140,6 +142,7 @@ button span {
     display: flex;
     justify-content: center;
     max-width: 100px;
+    min-width: 50px;
   }
 }
 
@@ -148,12 +151,46 @@ button span {
   height: 100px;
 }
 
+.contentTable {
+  margin: 0 150px;
+  margin-top: 30px;
+  & tr {
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    & td {
+      max-width: 600px;
+      min-width: 300px;
+      color: rgba(255, 255, 255, 0.6);
+      display: flex;
+      flex-grow: 1;
+      justify-content: center;
+    }
+    & td:first-child {
+      max-width: 100px;
+      min-width: 50px;
+      display: flex;
+      margin-left: 0;
+      justify-content: center;
+    }
+  }
+
+  & .keybind span {
+    border: 1px solid #fff;
+    padding: 5px;
+    border-radius: 12px;
+  }
+}
+
 .faq-section {
   display: flex;
   flex-direction: column;
   margin-left: 100px;
   margin-bottom: 20px;
-  & span {
+  & dt,
+  dd {
+    margin-top: 10px;
     color: #fff;
   }
 }
