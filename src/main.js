@@ -5,9 +5,11 @@ const { ipcMain, dialog, screen } = require("electron");
 
 const { app, BrowserWindow } = electron;
 
+let win;
+
 const createWindow = () => {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     width: width,
     height: height,
     webPreferences: {
@@ -17,60 +19,6 @@ const createWindow = () => {
       // DEV:
       devTools: true,
     },
-  });
-
-  // DEV:
-  win.webContents.openDevTools();
-  // open file manager
-  ipcMain.on("open-folder-dialog", (event) => {
-    dialog
-      .showOpenDialog(win, {
-        properties: ["openDirectory"],
-      })
-      .then((result) => {
-        if (!result.canceled && result.filePaths.length > 0) {
-          event.reply("selected-folder", result.filePaths[0]);
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  });
-
-  // options format:
-  //
-  //   const options = {
-  //     type: "question",
-  //     buttons: ["Cancel", "Yes, please", "No, thanks"],
-  //     defaultId: 2,
-  //     title: "Question",
-  //     message: "Do you want to do this?",
-  //     detail: "It does not really matter",
-  //     checkboxLabel: "Remember my answer",
-  //     checkboxChecked: true,
-  //   };
-
-  // change screen
-  ipcMain.on("show-screen", (event, screenName) => {
-    console.log((__dirname, `${screenName}.html`));
-    win.loadFile(path.join(__dirname, `${screenName}.html`));
-  });
-
-  // common message box
-  ipcMain.handle("showMessageBox", (e, options) => {
-    dialog.showMessageBox(null, options);
-  });
-
-  // error box
-  ipcMain.handle("showErrorBox", (e, message) => {
-    dialog.showErrorBox("Oops! Something went wrong!", message);
-  });
-
-  win.loadFile("src/screens/Home/home.html");
-
-  // submit text input in popup window
-  ipcMain.on("submit-input", (event, inputValue) => {
-    win.webContents.send("inputValue-updated", inputValue);
   });
 };
 
@@ -94,14 +42,57 @@ function createTextInputWindow() {
   });
 }
 
-ipcMain.on("open-text-input-window", () => {
-  createTextInputWindow();
-});
-
 app.on("ready", () => {
   createWindow();
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
+  });
+
+  ipcMain.on("open-text-input-window", () => {
+    createTextInputWindow();
+  });
+
+  ipcMain.on("show-screen", (event, screenName) => {
+    console.log((__dirname, `${screenName}.html`));
+    win.loadFile(path.join(__dirname, `${screenName}.html`));
+  });
+
+  ipcMain.on("show-screen-with-data", (event, { screenName, data }) => {
+    win.loadFile(path.join(__dirname, `${screenName}.html`));
+
+    win.webContents.once("dom-ready", () => {
+      win.webContents.send("args-to-store-window", data);
+    });
+  });
+
+  ipcMain.handle("showMessageBox", (e, options) => {
+    dialog.showMessageBox(null, options);
+  });
+
+  ipcMain.handle("showErrorBox", (e, message) => {
+    dialog.showErrorBox("Oops! Something went wrong!", message);
+  });
+
+  win.loadFile("src/screens/Home/home.html");
+
+  ipcMain.on("submit-input", (event, inputValue) => {
+    win.webContents.send("inputValue-updated", inputValue);
+  });
+  // TO-DO: check if git repo
+  ipcMain.on("open-folder-dialog", (event) => {
+    dialog
+      .showOpenDialog(win, {
+        properties: ["openDirectory"],
+      })
+      .then((result) => {
+        if (!result.canceled && result.filePaths.length > 0) {
+          console.log(result.filePaths);
+          event.reply("selected-folder", result.filePaths[0]);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   });
 });
 

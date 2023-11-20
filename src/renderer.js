@@ -1,4 +1,4 @@
-const { ipcRenderer } = require("electron");
+/* eslint-disable no-undef */
 const constants = require("./constants.js");
 const git_module = require("./git.js");
 const canvasController = require("./canvasController.js");
@@ -326,15 +326,19 @@ function loadRepoClient(repo) {
   );
 }
 
-function main() {
-  ipcRenderer.on("update-folder", (event, folderPath) => {
-    const initialRepo = new git_module.Repository(folderPath);
+function handleStoreWindowArgs(args) {
+  const initialRepo = new git_module.Repository(args.path);
+  loadRepoClient(initialRepo);
+}
 
-    const repoSelector = new RepoSelector(initialRepo);
-    document.getElementById("repoSelector").addEventListener("change", () => {
-      const repo = new git_module.Repository(repoSelector.getDirPath());
-      loadRepoClient(repo);
-    });
+function main() {
+  const repoSelector = new RepoSelector();
+
+  ipcRendererManager.listenToArgsForStoreWindow(handleStoreWindowArgs);
+
+  document.getElementById("repoSelector").addEventListener("change", () => {
+    const repo = new git_module.Repository(repoSelector.getDirPath());
+    loadRepoClient(repo);
   });
 }
 

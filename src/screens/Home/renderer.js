@@ -1,5 +1,4 @@
-const { ipcRenderer } = require("electron");
-// const git_module = require("./git.js");
+const ipcRendererManager = require("../../utils/ipcRendererManager");
 
 function main() {
   document.addEventListener("DOMContentLoaded", function () {
@@ -23,12 +22,11 @@ function main() {
   const button = document.getElementById("newWorkspaceButton");
 
   button.addEventListener("click", function () {
-    ipcRenderer.send("open-folder-dialog");
+    ipcRendererManager.sendToMain("open-folder-dialog");
   });
 
-  ipcRenderer.on("selected-folder", (event, path) => {
-    ipcRenderer.send("show-screen", "index");
-    ipcRenderer.send("update-folder", path);
+  ipcRendererManager.listenToMain("selected-folder", (event, path) => {
+    ipcRendererManager.showScreenWithData("index", { path: path });
   });
 }
 
