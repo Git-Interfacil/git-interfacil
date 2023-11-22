@@ -2,12 +2,12 @@
 
 // Define event handler functions
 function editShortcutHandler() {
-  this.class = "edit";
+  this.className = "edit";
   editShortcut(this.parentElement);
 }
 
 function saveNewShortcutHandler() {
-  this.class = "save";
+  this.className = "save";
   saveNewShortcut(this.parentElement);
 }
 
@@ -23,11 +23,11 @@ function editShortcut(row) {
 
 function changeButton(button) {
   const icon = button.querySelector("img");
-  if (button.class === "edit") {
+  if (button.className === "edit") {
     icon.src = "../../assets/save-icon.svg";
     button.removeEventListener("click", editShortcutHandler);
     button.addEventListener("click", saveNewShortcutHandler);
-  } else if (button.class == "save") {
+  } else if (button.className == "save") {
     icon.src = "../../assets/edit-icon.svg";
     button.removeEventListener("click", saveNewShortcutHandler);
     button.addEventListener("click", editShortcutHandler);
@@ -40,49 +40,37 @@ function saveNewShortcut(newRow) {
   const inputsInNewRow = newRow.querySelectorAll("td input");
   inputsInNewRow.forEach((inputField) => {
     inputField.disabled = true;
-    saveField(inputField);
   });
 
   const buttonIcon = newRow.cells[0];
   changeButton(buttonIcon);
 }
 
-function saveField(inputElement) {
-  const value = inputElement.value;
-  console.log(value);
-}
-
-function getInputValue(input) {
-  console.log("Input: ", input);
-  const table = document.getElementById("shortcutsTable");
-  table.addEventListener("input", function (event) {
-    const target = event.target;
-    console.log("target: ", target);
-  });
-
-  table.addEventListener("keypress", function (event) {
-    const target = event.target;
-    if (event.key === "Enter") {
-      saveField(target);
-    }
-  });
-
-  table.addEventListener("blur", function (event) {
-    const target = event.target;
-
-    if (target.tagName === "INPUT") {
-      saveField(target);
-    }
-  });
+function openNewShortcutWindow(keybindCell) {
+  ipcRendererManager.openNewShortcutWindow();
+  ipcRendererManager
+    .waitForUpdatedInputValue()
+    .then((inputValue) => {
+      let span = keybindCell.querySelector("span");
+      if (!span) {
+        span = document.createElement("span");
+        span.className = "keybind";
+        keybindCell.appendChild(span);
+      }
+      const formattedText = separateStringIntoSpans(inputValue);
+      span.innerHTML = formattedText;
+    })
+    .catch((err) => {
+      console.error("Error while waiting for updated input value:", err);
+    });
 }
 
 function addNewShortcut() {
   const table = document.getElementById("shortcutsTable");
-  console.log("create new shortcut", table);
   const newRow = document.createElement("tr");
 
   const iconCell = document.createElement("td");
-  iconCell.class = "save";
+  iconCell.className = "save";
   const icon = document.createElement("img");
   icon.src = "../../assets/save-icon.svg";
   iconCell.appendChild(icon);
@@ -99,31 +87,30 @@ function addNewShortcut() {
   newRow.appendChild(commandCell);
 
   const keybindCell = document.createElement("td");
+  keybindCell.className = "keybind-container";
   const inputKeybind = document.createElement("input");
-  inputKeybind.onclick = ipcRendererManager.openNewShortcutWindow;
+  inputKeybind.addEventListener("click", function () {
+    openNewShortcutWindow(keybindCell);
+  });
   keybindCell.appendChild(inputKeybind);
   newRow.appendChild(keybindCell);
 
   table.appendChild(newRow);
-  getInputValue(input);
+}
+
+function separateStringIntoSpans(inputValue) {
+  const words = inputValue.split(" ");
+  const spans = words.map((word) => `<span>${word}</span> +`);
+  return spans.join(" ").slice(0, -1);
 }
 
 function shortcuts() {
-  const keybindElements = document.querySelectorAll(".keybind");
-
-  keybindElements.forEach((element) => {
-    const text = element.textContent.trim();
-    const formattedText = separateStringIntoSpans(text);
-    element.innerHTML = formattedText;
-  });
-
   const editButtons = document.querySelectorAll("td img");
   editButtons.forEach((button) => {
     button.addEventListener("click", editShortcutHandler);
   });
 
   const createNew = document.getElementById("newButton");
-
   createNew.addEventListener("click", function () {
     addNewShortcut();
   });

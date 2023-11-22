@@ -1,42 +1,35 @@
-// const ipcRendererManager = require("../../utils/ipcRendererManager");
+const ipcRendererManager = require("../../utils/ipcRendererManager");
+
+let keysPressed = [];
+let lastKeyPressTime = null;
 
 function getKeypress(event) {
-  let key = event.key;
-  document.getElementById("demo").innerHTML = "The key was: " + key;
+  const key = event.key;
+  const currentTime = new Date().getTime();
 
-  if (key === "Enter") {
-    return null;
-  }
-
-  return key;
-}
-
-function getKeybind(event) {
-  let keys = "";
-  let key;
-  while ((key = getKeypress(event))) {
-    keys = keys.concat(key);
-  }
-  console.log(keys);
-}
-
-function addEventListener(button) {
-  button.addEventListener("click", () => {
-    console.log("submit");
-  });
-}
-
-function main() {
-  const submitButton = document.getElementById("submitButton");
-  addEventListener(submitButton);
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key !== "Enter") {
-      getKeybind(event);
-    } else {
-      document.removeEventListener("keydown");
+  if (key === "Enter" && keysPressed.length > 0) {
+    const combination = keysPressed.join(" ");
+    saveKeybind(combination);
+    keysPressed = [];
+  } else if (key !== "Enter") {
+    if (lastKeyPressTime && currentTime - lastKeyPressTime > 100) {
+      keysPressed = [];
     }
-  });
+    keysPressed.push(key);
+    lastKeyPressTime = currentTime;
+  }
+  document.getElementById("demo").innerHTML = "The key was: " + keysPressed;
 }
 
-main();
+function saveKeybind(keybind) {
+  console.log("Saved combination:", keybind);
+  ipcRendererManager.submitInput(keybind);
+  window.close();
+}
+
+function newShortcut() {
+  document.addEventListener("keydown", getKeypress);
+  document.addEventListener("keyup", getKeypress);
+}
+
+newShortcut();

@@ -163,6 +163,13 @@ button span {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 30px;
+
+    & .keybind-container {
+      & input {
+        height: 50px;
+        z-index: 1;
+      }
+    }
     & td {
       max-width: 600px;
       min-width: 300px;
@@ -210,6 +217,10 @@ button span {
     }
   }
 
+  & .keybind {
+    margin-top: 20px;
+    position: fixed;
+  }
   & .keybind span {
     border: 1px solid #fff;
     padding: 5px;

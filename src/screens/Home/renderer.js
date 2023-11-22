@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 const ipcRendererManager = require("../../utils/ipcRendererManager");
 const shortcuts = require("./Tabs/shortcutsController");
 
@@ -36,12 +38,6 @@ function workspaces() {
   });
 }
 
-/* function separateStringIntoSpans(text) {
-  const words = text.split(" ");
-  const spans = words.map((word) => `<span>${word}</span> +`);
-  return spans.join(" ").slice(0, -1);
-}
- */
 // TO-DO: write the questions ans answers in html
 function help() {
   const questions = document.querySelectorAll(".question");
