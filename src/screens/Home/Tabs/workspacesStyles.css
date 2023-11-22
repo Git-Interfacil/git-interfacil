@@ -1,0 +1,42 @@
+.favorite,
+.not-favorite {
+  padding: 10px;
+}
+
+.favorite img {
+  z-index: 1;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.not-favorite img {
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.tooltip {
+  position: absolute;
+  background-color: #000;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+& .directory {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  direction: rtl;
+  margin-top: 5px;
+  max-width: 300px;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+tr:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  z-index: 2;
+  cursor: pointer;
+}

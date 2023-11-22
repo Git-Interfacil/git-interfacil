@@ -155,14 +155,13 @@ button span {
 }
 
 .contentTable {
-  margin: 0 150px;
-  margin-top: 30px;
+  padding: 0 150px;
   & tr {
     font-size: 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
+    padding: 30px 0;
 
     & .keybind-container {
       & input {
@@ -226,29 +225,4 @@ button span {
     padding: 5px;
     border-radius: 12px;
   }
-
-  & .diretory {
-    color: rgba(255, 255, 255, 0.3);
-  }
-}
-
-.faq-section {
-  display: flex;
-  flex-direction: column;
-  margin-left: 100px;
-  margin-bottom: 20px;
-  & dt,
-  dd {
-    margin-top: 10px;
-    color: #fff;
-  }
-}
-
-.question {
-  font-weight: bold;
-  cursor: pointer;
-}
-.answer {
-  display: none;
-  margin: 10px 0;
 }

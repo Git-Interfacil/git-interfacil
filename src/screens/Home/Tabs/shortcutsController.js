@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+const ipcRendererManager = require("../../../utils/ipcRendererManager");
 
 // Define event handler functions
 function editShortcutHandler() {

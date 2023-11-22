@@ -10,18 +10,46 @@
     <img src="../../assets/favorite-icon.svg" />
   </span>
   <div class="vertical-line"></div>
-  <span>NAME</span>
+  <span>Name</span>
   <div class="vertical-line"></div>
-  <span>MODIFIED</span>
+  <span>Last Modified</span>
   <div class="vertical-line"></div>
 </div>
-<table class="contentTable">
+<table class="contentTable" id="workspacesTable">
   <tr>
-    <td><img src="../../assets/favorite-icon.svg" /></td>
-    <td>
-      <span class="bold">eng-software</span
-      ><span class="diretory">diretorio</span>
+    <td
+      class="has-tooltip"
+      class="favorite"
+      data-tooltip="Remove from favorites"
+    >
+      <img class="animated" src="../../assets/favorite-icon.svg" />
     </td>
-    <td class="bold">2 hours ago</td>
+    <td>
+      <span class="bold">eng-software</span>
+      <span class="directory"
+        >diretori/dasda/fsadsada/sadsada/dsadsad/eng-software</span
+      >
+    </td>
+    <td class="timestamp" data-last-clicked="November 20, 2023 12:00:00">
+      <span class="lastUpdatedTime"></span>
+    </td>
+  </tr>
+  <tr>
+    <td
+      class="has-tooltip"
+      class="not-favorite"
+      data-tooltip="Add to favorites"
+    >
+      <img class="animated" src="../../assets/favorite-icon.svg" />
+    </td>
+    <td>
+      <span class="bold">eng-software</span>
+      <span class="directory"
+        >diretori/dasda/fsadsada/sadsada/dsadsad/eng-software</span
+      >
+    </td>
+    <td class="timestamp" data-last-clicked="November 20, 2023 12:00:00">
+      <span class="lastUpdatedTime"></span>
+    </td>
   </tr>
 </table>

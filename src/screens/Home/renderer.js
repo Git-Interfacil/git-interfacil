@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 
-const ipcRendererManager = require("../../utils/ipcRendererManager");
+const workspaces = require("./Tabs/workspacesController");
 const shortcuts = require("./Tabs/shortcutsController");
+const help = require("./Tabs/helpController");
 
-// Function to fetch content from newContent.html
 function fetchNewContent(pageName) {
   fetch(`./Tabs/${pageName}.html`)
     .then((response) => response.text())
@@ -24,31 +24,6 @@ function fetchNewContent(pageName) {
     .catch((error) => {
       console.error("Error fetching content:", error);
     });
-}
-
-function workspaces() {
-  const button = document.getElementById("newButton");
-
-  button.addEventListener("click", function () {
-    ipcRendererManager.sendToMain("open-folder-dialog");
-  });
-
-  ipcRendererManager.listenToMain("selected-folder", (event, path) => {
-    ipcRendererManager.showScreenWithData("index", { path: path });
-  });
-}
-
-// TO-DO: write the questions ans answers in html
-function help() {
-  const questions = document.querySelectorAll(".question");
-
-  questions.forEach((question) => {
-    question.addEventListener("click", () => {
-      const answer = question.nextElementSibling;
-      answer.style.display =
-        answer.style.display === "block" ? "none" : "block";
-    });
-  });
 }
 
 function main() {
