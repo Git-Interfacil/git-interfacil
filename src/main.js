@@ -22,7 +22,7 @@ const createWindow = () => {
   });
 };
 
-function createTextInputWindow() {
+function createPopupWindow(path) {
   textInputWindow = new BrowserWindow({
     width: 300,
     height: 120,
@@ -35,7 +35,7 @@ function createTextInputWindow() {
     },
   });
 
-  textInputWindow.loadFile("src/components/InputWindow/index.html");
+  textInputWindow.loadFile(`src/components${path}`);
 
   textInputWindow.on("closed", () => {
     textInputWindow = null;
@@ -48,8 +48,14 @@ app.on("ready", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
 
+  ipcMain.on("open-new-shortcut-window", () => {
+    const path = "/NewShortcut/index.html";
+    createPopupWindow(path);
+  });
+
   ipcMain.on("open-text-input-window", () => {
-    createTextInputWindow();
+    const path = "/InputWindow/index.html";
+    createPopupWindow(path);
   });
 
   ipcMain.on("show-screen", (event, screenName) => {

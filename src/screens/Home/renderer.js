@@ -1,11 +1,11 @@
 const ipcRendererManager = require("../../utils/ipcRendererManager");
+const shortcuts = require("./Tabs/shortcutsController");
 
 // Function to fetch content from newContent.html
 function fetchNewContent(pageName) {
-  fetch(`./Tabs/${pageName}.html`) // Fetch the content from the HTML file
-    .then((response) => response.text()) // Convert response to text
+  fetch(`./Tabs/${pageName}.html`)
+    .then((response) => response.text())
     .then((html) => {
-      // Replace content inside the main container with the fetched HTML
       const mainContainer = document.getElementById("main");
       mainContainer.innerHTML = html;
 
@@ -15,6 +15,8 @@ function fetchNewContent(pageName) {
         help();
       } else if (pageName === "shortcuts") {
         shortcuts();
+      } else {
+        console.error("Page doesn't exist");
       }
     })
     .catch((error) => {
@@ -34,22 +36,12 @@ function workspaces() {
   });
 }
 
-function separateStringIntoSpans(text) {
+/* function separateStringIntoSpans(text) {
   const words = text.split(" ");
   const spans = words.map((word) => `<span>${word}</span> +`);
   return spans.join(" ").slice(0, -1);
 }
-
-function shortcuts() {
-  const keybindElements = document.querySelectorAll(".keybind");
-
-  keybindElements.forEach((element) => {
-    const text = element.textContent.trim();
-    const formattedText = separateStringIntoSpans(text);
-    element.innerHTML = formattedText;
-  });
-}
-
+ */
 // TO-DO: write the questions ans answers in html
 function help() {
   const questions = document.querySelectorAll(".question");
@@ -64,11 +56,10 @@ function help() {
 }
 
 function main() {
-  fetchNewContent("shortcuts");
+  fetchNewContent("workspaces");
   document.addEventListener("DOMContentLoaded", function () {
     const buttons = document.querySelectorAll("#sidebar button");
 
-    // TO-DO: add changing screen function
     buttons.forEach(function (button) {
       button.addEventListener("click", function () {
         buttons.forEach(function (btn) {

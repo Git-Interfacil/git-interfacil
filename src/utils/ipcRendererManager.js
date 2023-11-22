@@ -41,6 +41,10 @@ const ipcRendererManager = {
   openTextInputWindow: () => {
     ipcRenderer.send("open-text-input-window");
   },
+  openNewShortcutWindow: () => {
+    ipcRenderer.send("open-new-shortcut-window");
+  },
+
   waitForUpdatedInputValue: () => {
     return new Promise((resolve) => {
       ipcRenderer.once("inputValue-updated", (event, inputValue) => {
