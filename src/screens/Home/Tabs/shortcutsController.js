@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+
 const ipcRendererManager = require("../../../utils/ipcRendererManager");
 
 // Define event handler functions
@@ -100,9 +101,15 @@ function addNewShortcut() {
 }
 
 function separateStringIntoSpans(inputValue) {
-  const words = inputValue.split(" ");
-  const spans = words.map((word) => `<span>${word}</span> +`);
-  return spans.join(" ").slice(0, -1);
+  const words = inputValue.split(/\s+/).filter((word) => word !== ""); // Split by any whitespace character and filter out empty words
+
+  if (inputValue === "" || words.length === 0) {
+    ipcRendererManager.showErrorBox("Keybing required");
+    return "";
+  }
+
+  const spans = words.map((word) => `<span>${word}</span>`);
+  return spans.join(" + ");
 }
 
 function shortcuts() {
@@ -117,4 +124,11 @@ function shortcuts() {
   });
 }
 
-module.exports = shortcuts;
+module.exports = {
+  shortcuts,
+  separateStringIntoSpans,
+  openNewShortcutWindow,
+  saveNewShortcut,
+  changeButton,
+  editShortcut,
+};

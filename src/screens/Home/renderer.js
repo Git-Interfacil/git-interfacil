@@ -26,25 +26,30 @@ function fetchNewContent(pageName) {
     });
 }
 
-function main() {
-  fetchNewContent("workspaces");
-  document.addEventListener("DOMContentLoaded", function () {
-    const buttons = document.querySelectorAll("#sidebar button");
+const addEventListenerButtons = (buttons) => {
+  buttons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      buttons.forEach(function (btn) {
+        btn.classList.remove("selected");
+        button.classList.add("selected");
 
-    buttons.forEach(function (button) {
-      button.addEventListener("click", function () {
-        buttons.forEach(function (btn) {
-          btn.classList.remove("selected");
-          button.classList.add("selected");
-
-          const titleButton = button
-            .querySelector(".title")
-            .textContent.toLowerCase();
-          fetchNewContent(titleButton);
-        });
+        const titleButton = button
+          .querySelector(".title")
+          .textContent.toLowerCase();
+        fetchNewContent(titleButton);
       });
     });
   });
+};
+
+function homeController() {
+  fetchNewContent("workspaces");
+  document.addEventListener("DOMContentLoaded", function () {
+    const buttons = document.querySelectorAll("#sidebar button");
+    addEventListenerButtons(buttons);
+  });
 }
 
-main();
+homeController();
+
+module.exports = { fetchNewContent, addEventListenerButtons };
