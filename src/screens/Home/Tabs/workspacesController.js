@@ -10,7 +10,7 @@ function setFavorite(favoriteCell) {
   }
 }
 
-function updateTimestamps() {
+function updateTimestamps(document) {
   const timestampCells = document.querySelectorAll(".timestamp");
   timestampCells.forEach((timestampCell) => {
     const timestampElement = timestampCell.querySelector(".lastUpdatedTime");
@@ -107,12 +107,12 @@ function createNew(path) {
 
   newRow.addEventListener("click", function () {
     timestampCell.dataset.lastClicked = new Date();
-    updateTimestamps();
+    updateTimestamps(document);
     ipcRendererManager.showScreenWithData("index", { path: path });
   });
 
   table.appendChild(newRow);
-  updateTimestamps();
+  updateTimestamps(document);
 }
 
 function workspaces() {
@@ -126,7 +126,7 @@ function workspaces() {
     createNew(path);
     // ipcRendererManager.showScreenWithData("index", { path: path });
   });
-  updateTimestamps();
+  updateTimestamps(document);
   setInterval(updateTimestamps, 60 * 1000);
 
   document.querySelectorAll(".has-tooltip").forEach((button) => {
@@ -134,4 +134,10 @@ function workspaces() {
   });
 }
 
-module.exports = workspaces;
+module.exports = {
+  workspaces,
+  addEventListenerFavorite,
+  updateTimestamps,
+  getTimeAgoString,
+  setFavorite,
+};

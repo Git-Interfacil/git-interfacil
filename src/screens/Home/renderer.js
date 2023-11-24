@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 
-const workspaces = require("./Tabs/workspacesController");
-const shortcuts = require("./Tabs/shortcutsController");
+const { workspaces } = require("./Tabs/workspacesController");
+const { shortcuts } = require("./Tabs/shortcutsController");
 const help = require("./Tabs/helpController");
 
 function fetchNewContent(pageName) {
