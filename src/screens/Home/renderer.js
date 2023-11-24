@@ -14,7 +14,7 @@ function fetchNewContent(pageName) {
       if (pageName === "workspaces") {
         workspaces();
       } else if (pageName === "help") {
-        help();
+        help(document);
       } else if (pageName === "shortcuts") {
         shortcuts();
       } else {

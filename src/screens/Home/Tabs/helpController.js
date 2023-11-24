@@ -1,5 +1,5 @@
 // TO-DO: write the questions ans answers in html
-function help() {
+function help(document) {
   const questions = document.querySelectorAll(".question");
 
   questions.forEach((question) => {
