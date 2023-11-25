@@ -1,6 +1,6 @@
 const execSync = require("child_process").execSync;
-const formatStr =
-  '{"id":"%h","author":"%an","message":"%s","createdAt":"%aI"},';
+// id, author, message, createdAt
+const formatStr = "%h%x00%an%x00%s%x00%aI%x00%x00";
 
 class Repository {
   update_repo_path(path) {
@@ -16,19 +16,30 @@ class Repository {
   }
 
   get_commit_info() {
-    let commits = this.shell_exec(
+    let output = this.shell_exec(
       `git log --branches --format='format:${formatStr}'`,
-    );
-    // note that we must remove trailing comma before the closing bracket
-    commits = JSON.parse("[" + commits.slice(0, -1) + "]");
-    for (let i = 0; i < commits.length; i++) {
-      let commitHash = commits[i]["id"];
-      let branchNames = this.shell_exec(
-        `git branch --format="%(refname:short)" --contains ${commitHash}`,
+    )
+      .split("\x00\x00\n")
+      .filter((s) => s.length != 0);
+    let commits = [];
+    for (let i = 0; i < output.length; i++) {
+      const fields = output[i].split("\x00");
+
+      let cur_commit = {};
+      cur_commit["id"] = fields[0];
+      cur_commit["author"] = fields[1];
+      cur_commit["message"] = fields[2];
+      cur_commit["createdAt"] = fields[3];
+
+      const commitHash = fields[0];
+      const branchNames = this.shell_exec(
+        `git branch --format="%(refname:short)" --contains "${commitHash}"`,
       )
         .split("\n")
         .filter((s) => s.length != 0);
-      commits[i]["branchesId"] = branchNames;
+      cur_commit["branchesId"] = branchNames;
+
+      commits.push(cur_commit);
     }
     return commits;
   }
