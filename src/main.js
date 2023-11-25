@@ -57,7 +57,14 @@ app.on("ready", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
 
-  registerShortcutsFromJSON();
+  win.on("focus", () => {
+    registerShortcutsFromJSON();
+  });
+
+  win.on("blur", () => {
+    console.log("blur");
+    unregisterShortcuts();
+  });
 
   ipcMain.on("open-new-shortcut-window", () => {
     const path = "/NewShortcut/index.html";

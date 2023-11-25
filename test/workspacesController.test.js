@@ -5,7 +5,7 @@ const {
   getTimeAgoString,
   updateTimestamps,
   setFavorite,
-} = require("../src/screens/Home/Tabs/workspacesController.js");
+} = require("../src/screens/Home/Tabs/Workspaces/workspacesController.js");
 
 class TextEncoderMock {
   encode(str) {

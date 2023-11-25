@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 
-const ipcRendererManager = require("../../../utils/ipcRendererManager");
+const ipcRendererManager = require("../../../../utils/ipcRendererManager");
 
 function editShortcutHandler() {
   this.className = "edit";
@@ -66,12 +66,17 @@ function openNewShortcutWindow(keybindCell) {
     });
 }
 
-async function generateShortcutsFromJSON(fileName) {
+async function generateShortcuts(fileName, type) {
   try {
+    let shortcutsData;
     const table = document.getElementById("shortcutsTable");
     if (table.rows.length === 0) {
-      const response = await fetch(`${fileName}.json`);
-      const shortcutsData = await response.json();
+      if (type === "json") {
+        const response = await fetch(fileName);
+        shortcutsData = await response.json();
+      } else {
+        shortcutsData = fileName;
+      }
 
       shortcutsData.forEach((item) => {
         const row = table.insertRow();
@@ -97,6 +102,7 @@ async function generateShortcutsFromJSON(fileName) {
         keybindCell.appendChild(input);
         keybindCell.appendChild(keybindSpan);
       });
+      return shortcutsData;
     }
   } catch (error) {
     console.error("Error fetching or parsing JSON: ", error);
@@ -115,15 +121,41 @@ function separateStringIntoSpans(inputValue) {
   return spans.join(" + ");
 }
 
+async function displayShortcuts(filteredShortcuts) {
+  const container = document.getElementById("shortcutsTable");
+  container.innerHTML = "";
+
+  await generateShortcuts(filteredShortcuts, "");
+}
+
+function handleSearch(shortcutsData) {
+  const searchInput = document.getElementById("searchInput");
+  const searchText = searchInput.value.toLowerCase();
+
+  const filteredShortcuts = shortcutsData.filter((shortcut) => {
+    const action = shortcut.action.toLowerCase();
+    const keyCombination = shortcut.keyCombination.toLowerCase();
+    return action.includes(searchText) || keyCombination.includes(searchText);
+  });
+
+  displayShortcuts(filteredShortcuts);
+}
+
 async function shortcuts(document) {
-  await generateShortcutsFromJSON("./Tabs/shortcutsData");
+  const shortcutsData = await generateShortcuts(
+    "./Tabs/Shortcuts/shortcutsData.json",
+    "json",
+  );
+  document.getElementById("searchInput").addEventListener("input", function () {
+    handleSearch(shortcutsData);
+  });
 
   const editButtons = document.querySelectorAll(".edit");
   editButtons.forEach((button) => {
     button.addEventListener("click", editShortcutHandler);
   });
 
-  const inputKeybinds = document.querySelectorAll("input");
+  const inputKeybinds = document.querySelectorAll(".keybind-container input");
   inputKeybinds.forEach((input) => {
     input.addEventListener("click", function () {
       openNewShortcutWindow(input.parentElement);

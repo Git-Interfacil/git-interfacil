@@ -1,5 +1,5 @@
-const ipcRendererManager = require("../../../utils/ipcRendererManager");
-const Toast = require("../../../components/Toast/toast.js");
+const ipcRendererManager = require("../../../../utils/ipcRendererManager.js");
+const Toast = require("../../../../components/Toast/toast.js");
 
 function setFavorite(favoriteCell) {
   if (favoriteCell.classList.contains("favorite")) {
@@ -145,16 +145,27 @@ function createNew(path) {
   nameCell.appendChild(directory);
 
   const lastUpdatedSpan = document.createElement("span");
-  lastUpdatedSpan.className = "lastUpdatedTime";
+  lastUpdatedSpan.classList.add("lastUpdatedTime");
 
   const timestampCell = document.createElement("td");
   timestampCell.classList.add("timestamp");
   timestampCell.dataset.lastClicked = Date.now();
   timestampCell.appendChild(lastUpdatedSpan);
 
+  const deleteIcon = document.createElement("img");
+  deleteIcon.src = "../../assets/delete-icon.svg";
+
+  const deleteCell = document.createElement("td");
+  deleteCell.classList.add("delete");
+  deleteCell.setAttribute("data-tooltip", "Remove workspace");
+
+  addEventListenerDelete(deleteCell);
+  deleteCell.appendChild(deleteIcon);
+
   newRow.appendChild(favoriteCell);
   newRow.appendChild(nameCell);
   newRow.appendChild(timestampCell);
+  newRow.appendChild(deleteCell);
 
   newRow.addEventListener("click", function () {
     timestampCell.dataset.lastClicked = Date.now();
@@ -163,13 +174,14 @@ function createNew(path) {
   });
 
   table.appendChild(newRow);
+  updateTimestamps();
 }
 
 function workspaces() {
   const button = document.getElementById("newButton");
 
   button.addEventListener("click", function () {
-    //ipcRendererManager.sendToMain("open-folder-dialog");
+    ipcRendererManager.sendToMain("open-folder-dialog");
   });
 
   ipcRendererManager.listenToMain("selected-folder", (event, path) => {
