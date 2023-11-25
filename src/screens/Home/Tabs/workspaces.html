@@ -1,3 +1,4 @@
+<div id="toast-container"></div>
 <span class="title"> Workspaces </span>
 <div id="actionsBar">
   <button id="newButton">
@@ -10,46 +11,40 @@
     <img src="../../assets/favorite-icon.svg" />
   </span>
   <div class="vertical-line"></div>
-  <span>Name</span>
+  <span class="name">Name</span>
   <div class="vertical-line"></div>
-  <span>Last Modified</span>
+  <span class="last-modified">Last Modified</span>
   <div class="vertical-line"></div>
 </div>
 <table class="contentTable" id="workspacesTable">
   <tr>
-    <td
-      class="has-tooltip"
-      class="favorite"
-      data-tooltip="Remove from favorites"
-    >
-      <img class="animated" src="../../assets/favorite-icon.svg" />
+    <td class="favorite" data-tooltip="Remove from favorites">
+      <img src="../../assets/favorite-icon.svg" />
     </td>
-    <td>
+    <td class="directory">
       <span class="bold">eng-software</span>
-      <span class="directory"
-        >diretori/dasda/fsadsada/sadsada/dsadsad/eng-software</span
-      >
+      <span>diretori/dasda/fsadsada/sadsada/dsadsad/eng-software</span>
     </td>
     <td class="timestamp" data-last-clicked="November 20, 2023 12:00:00">
       <span class="lastUpdatedTime"></span>
+    </td>
+    <td class="delete" data-tooltip="Delete workspace">
+      <img src="../../assets/delete-icon.svg" />
     </td>
   </tr>
   <tr>
-    <td
-      class="has-tooltip"
-      class="not-favorite"
-      data-tooltip="Add to favorites"
-    >
-      <img class="animated" src="../../assets/favorite-icon.svg" />
+    <td class="not-favorite" data-tooltip="Add to favorites">
+      <img src="../../assets/favorite-icon.svg" />
     </td>
-    <td>
+    <td class="directory">
       <span class="bold">eng-software</span>
-      <span class="directory"
-        >diretori/dasda/fsadsada/sadsada/dsadsad/eng-software</span
-      >
+      <span>diretori/dasda/fsadsada/sadsada/dsadsad/eng-software</span>
     </td>
     <td class="timestamp" data-last-clicked="November 20, 2023 12:00:00">
       <span class="lastUpdatedTime"></span>
+    </td>
+    <td class="delete" data-tooltip="Delete workspace">
+      <img src="../../assets/delete-icon.svg" />
     </td>
   </tr>
 </table>

@@ -26,9 +26,17 @@ const ipcRendererManager = {
       handler(args);
     });
   },
-  showMessageBox: (options) => {
-    ipcRenderer.invoke("showMessageBox", options);
+  showMessageBox: async (options) => {
+    ipcRenderer.send("showMessageBox", options);
+
+    const response = await new Promise((resolve) => {
+      ipcRenderer.once("message-response", (_, response) => {
+        resolve(response);
+      });
+    });
+    return response;
   },
+
   showErrorBox: (message) => {
     ipcRenderer.invoke("showErrorBox", message);
   },

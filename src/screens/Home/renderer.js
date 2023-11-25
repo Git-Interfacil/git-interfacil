@@ -16,7 +16,7 @@ function fetchNewContent(pageName) {
       } else if (pageName === "help") {
         help(document);
       } else if (pageName === "shortcuts") {
-        shortcuts();
+        shortcuts(document);
       } else {
         console.error("Page doesn't exist");
       }

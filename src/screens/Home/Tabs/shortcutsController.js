@@ -2,7 +2,6 @@
 
 const ipcRendererManager = require("../../../utils/ipcRendererManager");
 
-// Define event handler functions
 function editShortcutHandler() {
   this.className = "edit";
   editShortcut(this.parentElement);
@@ -101,7 +100,7 @@ function addNewShortcut() {
 }
 
 function separateStringIntoSpans(inputValue) {
-  const words = inputValue.split(/\s+/).filter((word) => word !== ""); // Split by any whitespace character and filter out empty words
+  const words = inputValue.split(/\s+/).filter((word) => word !== "");
 
   if (inputValue === "" || words.length === 0) {
     ipcRendererManager.showErrorBox("Keybing required");
@@ -112,7 +111,7 @@ function separateStringIntoSpans(inputValue) {
   return spans.join(" + ");
 }
 
-function shortcuts() {
+function shortcuts(document) {
   const editButtons = document.querySelectorAll("td img");
   editButtons.forEach((button) => {
     button.addEventListener("click", editShortcutHandler);

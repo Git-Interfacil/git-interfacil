@@ -71,10 +71,11 @@ app.on("ready", () => {
     });
   });
 
-  ipcMain.handle("showMessageBox", (e, options) => {
-    dialog.showMessageBox(null, options);
-  });
+  ipcMain.on("showMessageBox", async (event, options) => {
+    const choice = await dialog.showMessageBox(win, options);
 
+    event.sender.send("message-response", choice.response);
+  });
   ipcMain.handle("showErrorBox", (e, message) => {
     dialog.showErrorBox("Oops! Something went wrong!", message);
   });

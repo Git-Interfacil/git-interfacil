@@ -1,12 +1,28 @@
 const ipcRendererManager = require("../../../utils/ipcRendererManager");
+const Toast = require("../../../components/Toast/toast.js");
 
 function setFavorite(favoriteCell) {
-  if (favoriteCell.className === "favorite") {
-    favoriteCell.className = "not-favorite";
+  if (favoriteCell.classList.contains("favorite")) {
+    favoriteCell.classList.remove("favorite");
+    favoriteCell.classList.add("not-favorite");
     favoriteCell.setAttribute("data-tooltip", "Add to favorites");
   } else {
-    favoriteCell.className = "favorite";
+    favoriteCell.classList.remove("not-favorite");
+    favoriteCell.classList.add("favorite");
     favoriteCell.setAttribute("data-tooltip", "Remove from favorites");
+  }
+}
+
+async function deleteWorkspace(row) {
+  try {
+    row.parentElement.removeChild(row);
+    await Toast.showToast("Workspace deleted", "../../assets/sucess-icon.svg");
+  } catch (error) {
+    await Toast.showToast(
+      "Error: delete workspace",
+      "../../assets/error-icon.svg",
+    );
+    console.error("Error deleting workspace: ", error);
   }
 }
 
@@ -39,7 +55,7 @@ function getTimeAgoString(timeDifference) {
   }
 }
 
-function addEventListenerFavorite(button) {
+function addTooltip(button) {
   button.addEventListener("mousemove", (event) => {
     const tooltipText = button.getAttribute("data-tooltip");
     let tooltip = document.querySelector(".tooltip");
@@ -61,9 +77,42 @@ function addEventListenerFavorite(button) {
       tooltip.remove();
     }
   });
+}
+
+function addEventListenerFavorite(button) {
+  addTooltip(button);
 
   button.addEventListener("click", function (event) {
     setFavorite(button);
+    event.stopPropagation();
+  });
+}
+
+async function openDialog() {
+  try {
+    const options = {
+      type: "question",
+      buttons: ["Cancel", "Delete"],
+      title: "Delete Workspace",
+      message: "Do you really want to delete this workspace?",
+      detail: "This process cannot be undone.",
+    };
+
+    const response = await ipcRendererManager.showMessageBox(options);
+    return response;
+  } catch (error) {
+    console.error("Error in message box:", error);
+  }
+}
+function addEventListenerDelete(button) {
+  addTooltip(button);
+
+  button.addEventListener("click", function (event) {
+    openDialog().then((response) => {
+      if (response === 1) {
+        deleteWorkspace(button.parentElement);
+      }
+    });
     event.stopPropagation();
   });
 }
@@ -72,47 +121,48 @@ function createNew(path) {
   const table = document.getElementById("workspacesTable");
   const newRow = document.createElement("tr");
 
-  const favoriteCell = document.createElement("td");
   const favoriteIcon = document.createElement("img");
   favoriteIcon.src = "../../assets/favorite-icon.svg";
-  favoriteCell.className = ".has-tooltip";
+
+  const favoriteCell = document.createElement("td");
   favoriteCell.classList.add("not-favorite");
   favoriteCell.setAttribute("data-tooltip", "Add to favorites");
 
   addEventListenerFavorite(favoriteCell);
   favoriteCell.appendChild(favoriteIcon);
-  newRow.appendChild(favoriteCell);
 
-  const nameCell = document.createElement("td");
   const spanName = document.createElement("span");
-  spanName.className = "bold";
+  spanName.classList.add("bold");
   const pathArray = path.split("/");
   spanName.innerHTML = pathArray.pop();
+
   const directory = document.createElement("span");
-  directory.className = "directory";
   directory.innerHTML = path;
 
+  const nameCell = document.createElement("td");
+  nameCell.classList.add("directory");
   nameCell.appendChild(spanName);
   nameCell.appendChild(directory);
 
-  newRow.appendChild(nameCell);
-
-  const timestampCell = document.createElement("td");
-  timestampCell.className = "timestamp";
   const lastUpdatedSpan = document.createElement("span");
   lastUpdatedSpan.className = "lastUpdatedTime";
-  timestampCell.dataset.lastClicked = "November 20, 2023 12:00:00";
+
+  const timestampCell = document.createElement("td");
+  timestampCell.classList.add("timestamp");
+  timestampCell.dataset.lastClicked = Date.now();
   timestampCell.appendChild(lastUpdatedSpan);
+
+  newRow.appendChild(favoriteCell);
+  newRow.appendChild(nameCell);
   newRow.appendChild(timestampCell);
 
   newRow.addEventListener("click", function () {
-    timestampCell.dataset.lastClicked = new Date();
+    timestampCell.dataset.lastClicked = Date.now();
     updateTimestamps(document);
     ipcRendererManager.showScreenWithData("index", { path: path });
   });
 
   table.appendChild(newRow);
-  updateTimestamps(document);
 }
 
 function workspaces() {
@@ -129,8 +179,14 @@ function workspaces() {
   updateTimestamps(document);
   setInterval(updateTimestamps, 60 * 1000);
 
-  document.querySelectorAll(".has-tooltip").forEach((button) => {
+  document.querySelectorAll(".favorite").forEach((button) => {
     addEventListenerFavorite(button);
+  });
+  document.querySelectorAll(".not-favorite").forEach((button) => {
+    addEventListenerFavorite(button);
+  });
+  document.querySelectorAll(".delete").forEach((button) => {
+    addEventListenerDelete(button);
   });
 }
 
