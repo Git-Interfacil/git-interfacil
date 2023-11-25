@@ -13,7 +13,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   direction: rtl;
-  margin-top: 5px;
+  gap: 5px;
   max-width: 300px;
   color: rgba(255, 255, 255, 0.3);
 }

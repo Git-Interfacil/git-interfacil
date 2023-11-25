@@ -2,6 +2,10 @@
 const electron = require("electron");
 const path = require("node:path");
 const { ipcMain, dialog, screen } = require("electron");
+const {
+  registerShortcutsFromJSON,
+  unregisterShortcuts,
+} = require("./utils/registerShortcutsController");
 
 const { app, BrowserWindow } = electron;
 
@@ -52,6 +56,8 @@ app.on("ready", () => {
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
+
+  registerShortcutsFromJSON();
 
   ipcMain.on("open-new-shortcut-window", () => {
     const path = "/NewShortcut/index.html";
@@ -108,6 +114,7 @@ app.on("ready", () => {
 });
 
 app.on("window-all-closed", () => {
+  unregisterShortcuts();
   if (process.platform !== "darwin") app.quit();
 });
 
