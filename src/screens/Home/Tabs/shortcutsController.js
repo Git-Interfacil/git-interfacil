@@ -68,35 +68,36 @@ function openNewShortcutWindow(keybindCell) {
 
 async function generateShortcutsFromJSON(fileName) {
   try {
-    const response = await fetch(`${fileName}.json`);
-    const shortcutsData = await response.json();
-
     const table = document.getElementById("shortcutsTable");
+    if (table.rows.length === 0) {
+      const response = await fetch(`${fileName}.json`);
+      const shortcutsData = await response.json();
 
-    shortcutsData.forEach((item) => {
-      const row = table.insertRow();
-      const editCell = row.insertCell();
-      editCell.classList.add("edit");
-      editCell.innerHTML = '<img src="../../assets/edit-icon.svg" />';
+      shortcutsData.forEach((item) => {
+        const row = table.insertRow();
+        const editCell = row.insertCell();
+        editCell.classList.add("edit");
+        editCell.innerHTML = '<img src="../../assets/edit-icon.svg" />';
 
-      const actionCell = row.insertCell();
-      actionCell.classList.add("command");
-      actionCell.textContent = item.action;
+        const actionCell = row.insertCell();
+        actionCell.classList.add("command");
+        actionCell.textContent = item.action;
 
-      const keybindCell = row.insertCell();
-      keybindCell.classList.add("keybind-container");
-      const input = document.createElement("input");
-      input.setAttribute("type", "text");
-      input.setAttribute("disabled", "true");
+        const keybindCell = row.insertCell();
+        keybindCell.classList.add("keybind-container");
+        const input = document.createElement("input");
+        input.setAttribute("type", "text");
+        input.setAttribute("disabled", "true");
 
-      const keybindSpan = document.createElement("span");
-      keybindSpan.classList.add("keybind");
-      const keyCombination = item.keyCombination;
-      keybindSpan.innerHTML = separateStringIntoSpans(keyCombination);
+        const keybindSpan = document.createElement("span");
+        keybindSpan.classList.add("keybind");
+        const keyCombination = item.keyCombination;
+        keybindSpan.innerHTML = separateStringIntoSpans(keyCombination);
 
-      keybindCell.appendChild(input);
-      keybindCell.appendChild(keybindSpan);
-    });
+        keybindCell.appendChild(input);
+        keybindCell.appendChild(keybindSpan);
+      });
+    }
   } catch (error) {
     console.error("Error fetching or parsing JSON: ", error);
   }
