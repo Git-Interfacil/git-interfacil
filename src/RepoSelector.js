@@ -24,7 +24,6 @@ class RepoSelector {
       this.#isGitRepository(file.webkitRelativePath),
     );
     if (!headFile) return this.#handleError();
-    console.log(headFile);
     this.#dirPath = headFile.path.replace("/.git/HEAD", "");
   }
 

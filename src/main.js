@@ -62,7 +62,6 @@ app.on("ready", () => {
   });
 
   win.on("blur", () => {
-    console.log("blur");
     unregisterShortcuts();
   });
 
