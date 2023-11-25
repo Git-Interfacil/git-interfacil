@@ -1,7 +1,5 @@
 // TO-DO: write the questions ans answers in html
-function help(document) {
-  const questions = document.querySelectorAll(".question");
-
+function help(questions) {
   questions.forEach((question) => {
     question.addEventListener("click", () => {
       const answer = question.nextElementSibling;

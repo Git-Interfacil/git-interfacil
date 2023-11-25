@@ -14,7 +14,8 @@ function fetchNewContent(pageName) {
       if (pageName === "workspaces") {
         workspaces();
       } else if (pageName === "help") {
-        help(document);
+        const questions = document.querySelectorAll(".question");
+        help(questions);
       } else if (pageName === "shortcuts") {
         shortcuts(document);
       } else {

@@ -8,7 +8,6 @@ class TextEncoderMock {
 }
 global.TextEncoder = TextEncoderMock;
 
-// Mock TextDecoder
 class TextDecoderMock {
   decode(buffer) {
     return buffer.toString("utf-8");
@@ -35,8 +34,8 @@ describe("help function", () => {
       `);
 
     document = dom.window.document;
-
-    help(document);
+    const questions = document.querySelectorAll(".question");
+    help(questions);
   });
 
   afterEach(() => {

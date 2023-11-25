@@ -3,14 +3,12 @@ const Toast = require("../../../../components/Toast/toast.js");
 
 function setFavorite(favoriteCell) {
   if (favoriteCell.classList.contains("favorite")) {
-    favoriteCell.classList.remove("favorite");
-    favoriteCell.classList.add("not-favorite");
     favoriteCell.setAttribute("data-tooltip", "Add to favorites");
   } else {
-    favoriteCell.classList.remove("not-favorite");
-    favoriteCell.classList.add("favorite");
     favoriteCell.setAttribute("data-tooltip", "Remove from favorites");
   }
+  favoriteCell.classList.toggle("favorite");
+  favoriteCell.classList.toggle("not-favorite");
 }
 
 async function deleteWorkspace(row) {
