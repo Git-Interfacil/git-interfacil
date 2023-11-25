@@ -6,6 +6,7 @@ const { ipcMain, dialog, screen } = require("electron");
 const { app, BrowserWindow } = electron;
 
 let win;
+let textInputWindow = null;
 
 const createWindow = () => {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
@@ -23,23 +24,27 @@ const createWindow = () => {
 };
 
 function createPopupWindow(path) {
-  textInputWindow = new BrowserWindow({
-    width: 300,
-    height: 120,
-    devTools: true,
-    autoHideMenuBar: true,
-    frame: false,
-    webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
-    },
-  });
+  if (!textInputWindow) {
+    textInputWindow = new BrowserWindow({
+      width: 300,
+      height: 120,
+      devTools: true,
+      autoHideMenuBar: true,
+      frame: false,
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+      },
+    });
 
-  textInputWindow.loadFile(`src/components${path}`);
+    textInputWindow.loadFile(`src/components${path}`);
 
-  textInputWindow.on("closed", () => {
-    textInputWindow = null;
-  });
+    textInputWindow.on("closed", () => {
+      textInputWindow = null;
+    });
+  } else {
+    textInputWindow.focus();
+  }
 }
 
 app.on("ready", () => {
@@ -54,7 +59,6 @@ app.on("ready", () => {
   });
 
   ipcMain.on("open-text-input-window", () => {
-    const path = "/InputWindow/index.html";
     createPopupWindow(path);
   });
 

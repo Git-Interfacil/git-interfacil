@@ -66,37 +66,40 @@ function openNewShortcutWindow(keybindCell) {
     });
 }
 
-function addNewShortcut() {
-  const table = document.getElementById("shortcutsTable");
-  const newRow = document.createElement("tr");
+async function generateShortcutsFromJSON(fileName) {
+  try {
+    const response = await fetch(`${fileName}.json`);
+    const shortcutsData = await response.json();
 
-  const iconCell = document.createElement("td");
-  iconCell.className = "save";
-  const icon = document.createElement("img");
-  icon.src = "../../assets/save-icon.svg";
-  iconCell.appendChild(icon);
-  iconCell.addEventListener("click", function () {
-    saveNewShortcut(newRow);
-  });
-  newRow.appendChild(iconCell);
+    const table = document.getElementById("shortcutsTable");
 
-  const commandCell = document.createElement("td");
-  const input = document.createElement("input");
-  input.type = "text";
-  input.placeholder = `  Command name...`;
-  commandCell.appendChild(input);
-  newRow.appendChild(commandCell);
+    shortcutsData.forEach((item) => {
+      const row = table.insertRow();
+      const editCell = row.insertCell();
+      editCell.classList.add("edit");
+      editCell.innerHTML = '<img src="../../assets/edit-icon.svg" />';
 
-  const keybindCell = document.createElement("td");
-  keybindCell.className = "keybind-container";
-  const inputKeybind = document.createElement("input");
-  inputKeybind.addEventListener("click", function () {
-    openNewShortcutWindow(keybindCell);
-  });
-  keybindCell.appendChild(inputKeybind);
-  newRow.appendChild(keybindCell);
+      const actionCell = row.insertCell();
+      actionCell.classList.add("command");
+      actionCell.textContent = item.action;
 
-  table.appendChild(newRow);
+      const keybindCell = row.insertCell();
+      keybindCell.classList.add("keybind-container");
+      const input = document.createElement("input");
+      input.setAttribute("type", "text");
+      input.setAttribute("disabled", "true");
+
+      const keybindSpan = document.createElement("span");
+      keybindSpan.classList.add("keybind");
+      const keyCombination = item.keyCombination;
+      keybindSpan.innerHTML = separateStringIntoSpans(keyCombination);
+
+      keybindCell.appendChild(input);
+      keybindCell.appendChild(keybindSpan);
+    });
+  } catch (error) {
+    console.error("Error fetching or parsing JSON: ", error);
+  }
 }
 
 function separateStringIntoSpans(inputValue) {
@@ -111,15 +114,19 @@ function separateStringIntoSpans(inputValue) {
   return spans.join(" + ");
 }
 
-function shortcuts(document) {
-  const editButtons = document.querySelectorAll("td img");
+async function shortcuts(document) {
+  await generateShortcutsFromJSON("./Tabs/shortcutsData");
+
+  const editButtons = document.querySelectorAll(".edit");
   editButtons.forEach((button) => {
     button.addEventListener("click", editShortcutHandler);
   });
 
-  const createNew = document.getElementById("newButton");
-  createNew.addEventListener("click", function () {
-    addNewShortcut();
+  const inputKeybinds = document.querySelectorAll("input");
+  inputKeybinds.forEach((input) => {
+    input.addEventListener("click", function () {
+      openNewShortcutWindow(input.parentElement);
+    });
   });
 }
 

@@ -26,8 +26,8 @@ async function deleteWorkspace(row) {
   }
 }
 
-function updateTimestamps(document) {
-  const timestampCells = document.querySelectorAll(".timestamp");
+function updateTimestamps(doc = document) {
+  const timestampCells = doc.querySelectorAll(".timestamp");
   timestampCells.forEach((timestampCell) => {
     const timestampElement = timestampCell.querySelector(".lastUpdatedTime");
     const lastClickedTime = new Date(timestampCell.dataset.lastClicked);
@@ -158,7 +158,7 @@ function createNew(path) {
 
   newRow.addEventListener("click", function () {
     timestampCell.dataset.lastClicked = Date.now();
-    updateTimestamps(document);
+    updateTimestamps();
     ipcRendererManager.showScreenWithData("index", { path: path });
   });
 
@@ -169,14 +169,14 @@ function workspaces() {
   const button = document.getElementById("newButton");
 
   button.addEventListener("click", function () {
-    ipcRendererManager.sendToMain("open-folder-dialog");
+    //ipcRendererManager.sendToMain("open-folder-dialog");
   });
 
   ipcRendererManager.listenToMain("selected-folder", (event, path) => {
     createNew(path);
     // ipcRendererManager.showScreenWithData("index", { path: path });
   });
-  updateTimestamps(document);
+  updateTimestamps();
   setInterval(updateTimestamps, 60 * 1000);
 
   document.querySelectorAll(".favorite").forEach((button) => {
