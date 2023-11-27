@@ -71,7 +71,8 @@ class Repository {
   get_commit_parents(commitHash) {
     let output = this.shell_exec(`git rev-list --parents -n 1 "${commitHash}"`)
       .split(" ")
-      .slice(1); // first element is commitHash itself
+      .slice(1) // first element is commitHash itself
+      .map((s) => s.trim());
     return output;
   }
 
