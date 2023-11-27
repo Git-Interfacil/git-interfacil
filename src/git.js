@@ -33,12 +33,12 @@ class Repository {
       cur_commit["createdAt"] = fields[3];
       cur_commit["parents"] = this.get_commit_parents(commitHash);
 
-      const branchNames = this.shell_exec(
+      const branchName = this.shell_exec(
         `git branch --format="%(refname:short)" --contains "${commitHash}"`,
       )
         .split("\n")
-        .filter((s) => s.length != 0);
-      cur_commit["branchesId"] = branchNames;
+        .filter((s) => s.length != 0)[0];
+      cur_commit["branchId"] = branchName;
 
       commits.push(cur_commit);
     }
