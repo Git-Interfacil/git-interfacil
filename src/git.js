@@ -25,13 +25,14 @@ class Repository {
     for (let i = 0; i < output.length; i++) {
       const fields = output[i].split("\x00");
 
+      const commitHash = fields[0];
       let cur_commit = {};
       cur_commit["id"] = fields[0];
       cur_commit["author"] = fields[1];
       cur_commit["message"] = fields[2];
       cur_commit["createdAt"] = fields[3];
+      cur_commit["parents"] = this.get_commit_parents(commitHash);
 
-      const commitHash = fields[0];
       const branchNames = this.shell_exec(
         `git branch --format="%(refname:short)" --contains "${commitHash}"`,
       )
