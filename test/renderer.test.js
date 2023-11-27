@@ -5,6 +5,15 @@ jest.mock("../src/RepoSelector.js");
 jest.mock("../src/messagesController.js");
 jest.mock("../src/localBranchesController.js");
 
+jest.mock("electron", () => ({
+  ipcRenderer: {
+    // send: jest.fn(),
+    // once: jest.fn(),
+    // invoke: jest.fn(),
+    on: jest.fn(),
+  },
+}));
+
 describe.skip("renderer", () => {
   let repoSelector;
   beforeEach(() => {

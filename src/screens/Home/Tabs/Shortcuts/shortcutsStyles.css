@@ -1,0 +1,104 @@
+#searchInput {
+  border-radius: 10px;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  height: 40px;
+}
+
+#search-icon {
+  background-color: pink;
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  transform: translateY(-50%);
+}
+
+.search-container {
+  position: relative;
+  display: inline-block;
+}
+input {
+  font-size: 16px;
+  background-color: transparent;
+  color: white;
+  height: 20px;
+  text-align: center;
+}
+
+input:not([disabled]):hover {
+  cursor: pointer;
+  border: inset black;
+}
+
+input[disabled] {
+  cursor: not-allowed;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+}
+#descriptionShortcuts {
+  padding-left: 200px;
+  padding-right: 225px;
+}
+#shortcutsTable {
+  padding: 0 200px;
+  & tr {
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 0;
+
+    & .command,
+    .keybind-container {
+      color: rgba(255, 255, 255, 0.6);
+      display: flex;
+      flex-grow: 1;
+      flex-direction: column;
+      align-items: center;
+    }
+    .command {
+      max-width: 700px;
+      min-width: 300px;
+    }
+    .keybind-container {
+      align-items: center;
+      max-width: 550px;
+      min-width: 300px;
+      justify-content: center;
+      position: relative;
+      & input {
+        height: 50px;
+        z-index: 1;
+      }
+    }
+
+    .keybind {
+      margin-top: 20px;
+      position: absolute;
+      align-items: center;
+      justify-content: center;
+      top: 20%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+
+      & span {
+        border: 1px solid #fff;
+        padding: 5px;
+        border-radius: 12px;
+      }
+    }
+    & td:first-child {
+      max-width: 100px;
+      min-width: 100px;
+      display: flex;
+      margin-left: 0;
+      justify-content: center;
+
+      & img {
+        height: 25px;
+        width: 25px;
+        cursor: pointer;
+      }
+    }
+  }
+}

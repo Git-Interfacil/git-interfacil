@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const constants = require("./constants.js");
 const git_module = require("./git.js");
 const CanvasController = require("./canvasController.js");
@@ -313,8 +314,16 @@ function loadRepoClient(repo) {
   );
 }
 
+function handleStoreWindowArgs(args) {
+  const initialRepo = new git_module.Repository(args.path);
+  loadRepoClient(initialRepo);
+}
+
 function main() {
   const repoSelector = new RepoSelector();
+
+  ipcRendererManager.listenToArgsForStoreWindow(handleStoreWindowArgs);
+
   document.getElementById("repoSelector").addEventListener("change", () => {
     const repo = new git_module.Repository(repoSelector.getDirPath());
     loadRepoClient(repo);

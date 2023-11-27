@@ -1,0 +1,50 @@
+[
+  {
+    "action": "Increase Text Size",
+    "keyCombination": "Ctrl +"
+  },
+  {
+    "action": "Decrease Text Size",
+    "keyCombination": "Ctrl -"
+  },
+  {
+    "action": "Undo",
+    "keyCombination": "Ctrl z"
+  },
+  {
+    "action": "Redo",
+    "keyCombination": "Ctrl Shift z"
+  },
+  {
+    "action": "Merge",
+    "keyCombination": "Ctrl m"
+  },
+  {
+    "action": "Pull",
+    "keyCombination": "Ctrl p l"
+  },
+  {
+    "action": "Push",
+    "keyCombination": "Ctrl p s"
+  },
+  {
+    "action": "Branch",
+    "keyCombination": "Ctrl b"
+  },
+  {
+    "action": "Stash",
+    "keyCombination": "Ctrl s t"
+  },
+  {
+    "action": "Pop",
+    "keyCombination": "Ctrl p p"
+  },
+  {
+    "action": "Add",
+    "keyCombination": "Ctrl a"
+  },
+  {
+    "action": "Commit",
+    "keyCombination": "Ctrl c m"
+  }
+]

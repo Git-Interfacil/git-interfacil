@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  font-family: "Inter", sans-serif;
 }
 
 #app-container {
@@ -293,4 +294,12 @@ canvas {
 
 #popButton {
   background-image: url(./assets/pop-button.svg);
+}
+
+#addButton {
+  background-image: url(./assets/add-button.svg);
+}
+
+#commitButton {
+  background-image: url(./assets/commit-button.svg);
 }

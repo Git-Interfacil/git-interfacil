@@ -10,6 +10,7 @@ jest.mock("electron", () => ({
     send: jest.fn(),
     once: jest.fn(),
     invoke: jest.fn(),
+    // on: jest.fn(),
   },
 }));
 

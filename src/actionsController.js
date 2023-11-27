@@ -1,17 +1,20 @@
-const { ipcRenderer } = require("electron");
 const Toast = require("./components/Toast/toast.js");
+const ipcRendererManager = require("./utils/ipcRendererManager.js");
 
 function openTextInputWindow() {
-  return new Promise((resolve) => {
-    ipcRenderer.send("open-text-input-window");
+  return new Promise((resolve, reject) => {
+    ipcRendererManager.openTextInputWindow();
 
-    ipcRenderer.once("inputValue-updated", (event, inputValue) => {
-      console.log(
-        "Received updated inputValue in renderer process:",
-        inputValue,
-      );
-      resolve(inputValue);
-    });
+    ipcRendererManager
+      .waitForUpdatedInputValue()
+      .then((inputValue) => {
+        console.log("Received updated input value:", inputValue);
+        resolve(inputValue);
+      })
+      .catch((err) => {
+        console.error("Error while waiting for updated input value:", err);
+        reject(err);
+      });
   });
 }
 
@@ -37,7 +40,7 @@ const actionButtonsHandlers = {
       const changedFiles = await repo.get_changed_files();
       if (changedFiles[0] === "") {
         await Toast.showToast("Error: add", "./assets/error-icon.svg");
-        ipcRenderer.invoke("showErrorBox", "No changes detected");
+        ipcRendererManager.showErrorBox("No changes detected");
         return;
       }
       repo.add_files(changedFiles);
@@ -51,7 +54,7 @@ const actionButtonsHandlers = {
     try {
       const message = await openTextInputWindow();
       if (!message) {
-        ipcRenderer.invoke("showErrorBox", "Message required");
+        ipcRendererManager.showErrorBox("Message required");
         return;
       }
       repo.commit(message);

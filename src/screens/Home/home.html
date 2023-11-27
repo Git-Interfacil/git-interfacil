@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline'"
+    />
+    <title>Git Interfácil</title>
+    <link rel="stylesheet" href="home.css" />
+    <link rel="stylesheet" href="./Tabs/Workspaces/workspacesStyles.css" />
+    <link rel="stylesheet" href="./Tabs/Help/helpStyles.css" />
+    <link rel="stylesheet" href="./Tabs/Shortcuts/shortcutsStyles.css" />
+    <link rel="stylesheet" href="../../components/Toast/toast.css" />
+  </head>
+  <body>
+    <div id="app-container">
+      <header id="header">
+        <div id="navigation"></div>
+        <div id="actions"></div>
+      </header>
+      <div id="content">
+        <div id="sidebar">
+          <button class="selected">
+            <span class="icon"
+              ><img id="workspace" src="../../assets/workspace-icon.svg"
+            /></span>
+            <span class="title">WORKSPACES</span>
+          </button>
+          <button>
+            <span class="icon"
+              ><img id="shortcuts" src="../../assets/shortcuts-icon.svg"
+            /></span>
+            <span class="title">SHORTCUTS</span>
+          </button>
+          <button>
+            <span class="icon"
+              ><img id="help" src="../../assets/help-icon.svg"
+            /></span>
+            <span class="title">HELP</span>
+          </button>
+        </div>
+
+        <div id="main"></div>
+      </div>
+    </div>
+    <script src="renderer.js"></script>
+  </body>
+</html>
