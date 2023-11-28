@@ -96,7 +96,7 @@ app.on("ready", () => {
     dialog.showErrorBox("Oops! Something went wrong!", message);
   });
 
-  win.loadFile("src/screens/Home/home.html");
+  win.loadFile("src/screens/index.html");
 
   ipcMain.on("submit-input", (event, inputValue) => {
     win.webContents.send("inputValue-updated", inputValue);

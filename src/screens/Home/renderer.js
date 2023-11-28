@@ -5,7 +5,7 @@ const { shortcuts } = require("./Tabs/Shortcuts/shortcutsController");
 const help = require("./Tabs/Help/helpController");
 
 function fetchNewContent(pageName) {
-  fetch(`./Tabs/${pageName}.html`)
+  fetch(`./Home/Tabs/${pageName}.html`)
     .then((response) => response.text())
     .then((html) => {
       const mainContainer = document.getElementById("main");
@@ -44,13 +44,12 @@ const addEventListenerButtons = (buttons) => {
 };
 
 function homeController() {
+  console.log("HomeController");
   fetchNewContent("workspaces");
-  document.addEventListener("DOMContentLoaded", function () {
-    const buttons = document.querySelectorAll("#sidebar button");
-    addEventListenerButtons(buttons);
-  });
+  const buttons = document.querySelectorAll("#sidebar button");
+  addEventListenerButtons(buttons);
 }
 
 homeController();
 
-module.exports = { fetchNewContent, addEventListenerButtons };
+module.exports = { homeController, fetchNewContent, addEventListenerButtons };

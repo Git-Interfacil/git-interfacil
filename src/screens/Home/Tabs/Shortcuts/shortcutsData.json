@@ -37,7 +37,7 @@
   },
   {
     "action": "Pop",
-    "keyCombination": "Ctrl p p"
+    "keyCombination": "Ctrl p o"
   },
   {
     "action": "Add",
@@ -45,6 +45,6 @@
   },
   {
     "action": "Commit",
-    "keyCombination": "Ctrl c m"
+    "keyCombination": "Ctrl q"
   }
 ]

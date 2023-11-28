@@ -3,24 +3,22 @@ body {
   font-family: "Inter", sans-serif;
 }
 
-#app-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
 #header {
   display: flex;
   flex-direction: column;
 
   & #navigation {
     height: 72px;
-    background-color: #aaa;
+    background-color: #d9d9d9;
+    flex-direction: row;
+    display: flex;
   }
 
   & #actions {
+    border-top: 1px solid #575757;
+    border-bottom: 1px solid #575757;
     height: 71px;
-    background-color: #bbb;
+    background-color: #d9d9d9;
   }
 }
 
@@ -28,6 +26,7 @@ body {
   display: flex;
   flex-direction: row;
   flex-grow: 1;
+  font-family: "Inter", sans-serif;
 
   & #sidebar {
     min-width: 300px;

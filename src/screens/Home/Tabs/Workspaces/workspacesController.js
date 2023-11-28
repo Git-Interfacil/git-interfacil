@@ -14,11 +14,11 @@ function setFavorite(favoriteCell) {
 async function deleteWorkspace(row) {
   try {
     row.parentElement.removeChild(row);
-    await Toast.showToast("Workspace deleted", "../../assets/sucess-icon.svg");
+    await Toast.showToast("Workspace deleted", "../assets/sucess-icon.svg");
   } catch (error) {
     await Toast.showToast(
       "Error: delete workspace",
-      "../../assets/error-icon.svg",
+      "../assets/error-icon.svg",
     );
     console.error("Error deleting workspace: ", error);
   }
@@ -120,7 +120,7 @@ function createNew(path) {
   const newRow = document.createElement("tr");
 
   const favoriteIcon = document.createElement("img");
-  favoriteIcon.src = "../../assets/favorite-icon.svg";
+  favoriteIcon.src = "../assets/favorite-icon.svg";
 
   const favoriteCell = document.createElement("td");
   favoriteCell.classList.add("not-favorite");
@@ -151,7 +151,7 @@ function createNew(path) {
   timestampCell.appendChild(lastUpdatedSpan);
 
   const deleteIcon = document.createElement("img");
-  deleteIcon.src = "../../assets/delete-icon.svg";
+  deleteIcon.src = "../assets/delete-icon.svg";
 
   const deleteCell = document.createElement("td");
   deleteCell.classList.add("delete");

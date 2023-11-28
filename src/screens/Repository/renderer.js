@@ -7,6 +7,7 @@ const localBranchesController = require("./localBranchesController.js");
 const animationsController = require("./animationsController.js");
 const actionButtonHandlers = require("./actionsController.js");
 const RepoSelector = require("./RepoSelector.js");
+const ipcRendererManager = require("../../utils/ipcRendererManager.js");
 
 class RepositoryRenderer {
   constructor(commits, head, canvasController, messagesElement) {
@@ -320,6 +321,7 @@ function handleStoreWindowArgs(args) {
 }
 
 function main() {
+  console.log("entering");
   const repoSelector = new RepoSelector();
 
   ipcRendererManager.listenToArgsForStoreWindow(handleStoreWindowArgs);
@@ -332,4 +334,4 @@ function main() {
 
 main();
 
-module.exports = main();
+module.exports = { main };
