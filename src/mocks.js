@@ -7,6 +7,7 @@ const COMMITS_MOCK = {
       createdAt: "2023-09-19T10:00:00",
       branchId: "branch1",
       author: "Rafael Tsuha",
+      parents: [],
     },
     {
       id: 2,
@@ -14,6 +15,7 @@ const COMMITS_MOCK = {
       createdAt: "2023-09-20T14:30:00",
       branchId: "branch1",
       author: "Rafael Tsuha",
+      parents: [1],
     },
     {
       id: 3,
@@ -21,6 +23,7 @@ const COMMITS_MOCK = {
       createdAt: "2023-09-21T09:15:00",
       branchId: "branch1",
       author: "Rafael Tsuha",
+      parents: [2],
     },
     {
       id: 4,
@@ -28,6 +31,7 @@ const COMMITS_MOCK = {
       createdAt: "2023-09-22T16:45:00",
       branchId: "branch1",
       author: "Rafael Tsuha",
+      parents: [3, 9],
     },
     {
       id: 5,
@@ -35,6 +39,7 @@ const COMMITS_MOCK = {
       createdAt: "2023-09-22T17:30:00",
       branchId: "branch1",
       author: "Rafael Tsuha",
+      parents: [4],
     },
     {
       id: 6,
@@ -42,6 +47,7 @@ const COMMITS_MOCK = {
       createdAt: "2023-09-23T11:20:00",
       branchId: "branch1",
       author: "Rafael Tsuha",
+      parents: [5],
     },
     {
       id: 7,
@@ -49,6 +55,7 @@ const COMMITS_MOCK = {
       createdAt: "2023-09-20T11:00:00",
       branchId: "branch2",
       author: "Rafael Tsuha",
+      parents: [1],
     },
     {
       id: 8,
@@ -56,6 +63,7 @@ const COMMITS_MOCK = {
       createdAt: "2023-09-21T14:45:00",
       branchId: "branch2",
       author: "Rafael Tsuha",
+      parents: [7],
     },
     {
       id: 9,
@@ -63,6 +71,7 @@ const COMMITS_MOCK = {
       createdAt: "2023-09-22T10:30:00",
       branchId: "branch2",
       author: "Rafael Tsuha",
+      parents: [8],
     },
     {
       id: 10,
@@ -70,6 +79,7 @@ const COMMITS_MOCK = {
       createdAt: "2023-09-23T09:30:00",
       branchId: "branch3",
       author: "Rafael Tsuha",
+      parents: [5],
     },
     {
       id: 11,
@@ -77,6 +87,7 @@ const COMMITS_MOCK = {
       createdAt: "2023-09-23T14:00:00",
       branchId: "branch3",
       author: "Zé",
+      parents: [6, 10],
     },
     {
       id: 12,
@@ -84,6 +95,7 @@ const COMMITS_MOCK = {
       createdAt: "2023-09-24T11:15:00",
       branchId: "branch3",
       author: "Rafael Tsuha",
+      parents: [11],
     },
     {
       id: 13,
@@ -91,6 +103,7 @@ const COMMITS_MOCK = {
       createdAt: "2023-09-25T15:30:00",
       branchId: "branch3",
       author: "Rafael Tsuha",
+      parents: [12],
     },
     {
       id: 14,
@@ -98,6 +111,7 @@ const COMMITS_MOCK = {
       createdAt: "2023-09-26T16:45:00",
       branchId: "branch3",
       author: "Rafael Tsuha",
+      parents: [13],
     },
   ],
 };
