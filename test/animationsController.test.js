@@ -1,5 +1,8 @@
 /* eslint-disable no-undef */
-const { slideUp, slideToggle } = require("../src/animationsController.js");
+const {
+  slideUp,
+  slideToggle,
+} = require("../src/screens/Repository/animationsController.js");
 
 describe("slideUp", () => {
   it("should set the height to 0", () => {

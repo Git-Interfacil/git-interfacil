@@ -1,5 +1,8 @@
 const ipcRendererManager = require("../../../../utils/ipcRendererManager.js");
 const Toast = require("../../../../components/Toast/toast.js");
+const {
+  handleStoreWindowArgs,
+} = require("../../../../screens/Repository/renderer.js");
 
 function setFavorite(favoriteCell) {
   if (favoriteCell.classList.contains("favorite")) {
@@ -165,10 +168,19 @@ function createNew(path) {
   newRow.appendChild(timestampCell);
   newRow.appendChild(deleteCell);
 
-  newRow.addEventListener("click", function () {
+  newRow.addEventListener("click", async function () {
+    const {
+      selectTab,
+      createNewTab,
+    } = require("../../../../TabsSystem/tabsSystemController.js");
     timestampCell.dataset.lastClicked = Date.now();
     updateTimestamps();
-    ipcRendererManager.showScreenWithData("index", { path: path });
+    const pathArray = path.split("/");
+    const tabName = pathArray.pop();
+    await createNewTab(tabName);
+    await selectTab("../screens/Repository", tabName);
+    handleStoreWindowArgs(path);
+    //ipcRendererManager.showScreenWithData("index", { path: path });
   });
 
   table.appendChild(newRow);

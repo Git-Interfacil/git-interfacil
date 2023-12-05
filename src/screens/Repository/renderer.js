@@ -7,7 +7,6 @@ const localBranchesController = require("./localBranchesController.js");
 const animationsController = require("./animationsController.js");
 const actionButtonHandlers = require("./actionsController.js");
 const RepoSelector = require("./RepoSelector.js");
-const ipcRendererManager = require("../../utils/ipcRendererManager.js");
 
 class RepositoryRenderer {
   constructor(commits, head, canvasController, messagesElement) {
@@ -315,16 +314,14 @@ function loadRepoClient(repo) {
   );
 }
 
-function handleStoreWindowArgs(args) {
-  const initialRepo = new git_module.Repository(args.path);
+function handleStoreWindowArgs(path) {
+  const initialRepo = new git_module.Repository(path);
   loadRepoClient(initialRepo);
+  main();
 }
 
 function main() {
-  console.log("entering");
   const repoSelector = new RepoSelector();
-
-  ipcRendererManager.listenToArgsForStoreWindow(handleStoreWindowArgs);
 
   document.getElementById("repoSelector").addEventListener("change", () => {
     const repo = new git_module.Repository(repoSelector.getDirPath());
@@ -332,6 +329,4 @@ function main() {
   });
 }
 
-main();
-
-module.exports = { main };
+module.exports = { main, handleStoreWindowArgs };

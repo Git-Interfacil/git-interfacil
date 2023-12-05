@@ -1,9 +1,9 @@
 /* eslint-disable no-undef */
 
-jest.mock("../src/canvasController.js");
-jest.mock("../src/RepoSelector.js");
-jest.mock("../src/messagesController.js");
-jest.mock("../src/localBranchesController.js");
+jest.mock("../src/screens/Repository/canvasController.js");
+jest.mock("../src/screens/Repository/RepoSelector.js");
+jest.mock("../src/screens/Repository/messagesController.js");
+jest.mock("../src/screens/Repository/localBranchesController.js");
 
 jest.mock("electron", () => ({
   ipcRenderer: {

@@ -6,7 +6,7 @@ const {
   deactivateBranch,
   increaseCount,
   decreaseCount,
-} = require("../src/localBranchesController.js");
+} = require("../src/screens/Repository/localBranchesController.js");
 
 describe("createBranch", () => {
   it("should create a branch element with a checkbox and label", () => {

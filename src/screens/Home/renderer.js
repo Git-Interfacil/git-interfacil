@@ -5,7 +5,7 @@ const { shortcuts } = require("./Tabs/Shortcuts/shortcutsController");
 const help = require("./Tabs/Help/helpController");
 
 function fetchNewContent(pageName) {
-  fetch(`./Home/Tabs/${pageName}.html`)
+  fetch(`../screens/Home/Tabs/${pageName}.html`)
     .then((response) => response.text())
     .then((html) => {
       const mainContainer = document.getElementById("main");
@@ -44,12 +44,9 @@ const addEventListenerButtons = (buttons) => {
 };
 
 function homeController() {
-  console.log("HomeController");
   fetchNewContent("workspaces");
   const buttons = document.querySelectorAll("#sidebar button");
   addEventListenerButtons(buttons);
 }
-
-homeController();
 
 module.exports = { homeController, fetchNewContent, addEventListenerButtons };

@@ -143,7 +143,7 @@ function handleSearch(shortcutsData) {
 
 async function shortcuts(document) {
   const shortcutsData = await generateShortcuts(
-    "./Home/Tabs/Shortcuts/shortcutsData.json",
+    "../screens/Home/Tabs/Shortcuts/shortcutsData.json",
     "json",
   );
   document.getElementById("searchInput").addEventListener("input", function () {
