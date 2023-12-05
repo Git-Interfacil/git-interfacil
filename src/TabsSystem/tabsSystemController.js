@@ -1,4 +1,3 @@
-//let tabCache = {};
 let currentTabName = "";
 
 function createNewTab(tabName, iconSrc = "../assets/repository-icon.svg") {
@@ -28,12 +27,13 @@ function createNewTab(tabName, iconSrc = "../assets/repository-icon.svg") {
   button.appendChild(closeDiv);
   navigation.appendChild(button);
 
-  closeDiv.addEventListener("click", () => {
+  closeDiv.addEventListener("click", (event) => {
     navigation.removeChild(button);
+    closeTab(closeDiv.parentElement);
+    event.stopPropagation();
   });
 
   button.addEventListener("click", () => {
-    console.log("the new tab is: ", tabName);
     selectTab(`../screens/Repository/index.html`, tabName);
   });
 }
@@ -41,7 +41,6 @@ function createNewTab(tabName, iconSrc = "../assets/repository-icon.svg") {
 async function selectTab(path, tabName) {
   const tabs = document.querySelectorAll(".tablinks");
   if (currentTabName !== "") {
-    console.log("hiding: ", currentTabName);
     document.getElementById(`tab${currentTabName}`).style.display = "none";
   }
   currentTabName = tabName;
@@ -49,7 +48,6 @@ async function selectTab(path, tabName) {
   tabs.forEach((tab) => {
     if (tab.id === tabName) {
       tab.classList.add("selected");
-      console.log("selecting", tabName);
     } else {
       tab.classList.remove("selected");
     }
@@ -57,15 +55,12 @@ async function selectTab(path, tabName) {
 
   const selectedTab = document.getElementById(`tab${tabName}`);
   if (selectedTab) {
-    console.log("Its in chache");
     selectedTab.style.display = "flex";
   } else {
-    console.log("creating new, not in cache");
     let tabContent = await generateTabContent(path, tabName);
     tabContent.style.display = "flex";
     tabContent.style.flexGrow = "1";
     tabContent.style.flexDirection = "column";
-    console.log("tabContent: ", tabContent);
     document.getElementById("tabcontent").appendChild(tabContent);
     if (tabName === "Home") {
       const { homeController } = require(`../screens/Home/renderer`);
@@ -104,7 +99,11 @@ async function generateTabContent(path, tabName) {
 }
 
 function closeTab(tabCell) {
-  console.log("closing: ", tabCell.id);
+  if (currentTabName === tabCell.id) {
+    selectTab(`../screens/Home`, "Home");
+  }
+  const tabToClose = document.getElementById(`tab${tabCell.id}`);
+  tabToClose.remove();
 }
 
 function tabsSystemController() {
