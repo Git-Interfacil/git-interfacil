@@ -31,8 +31,8 @@ class RepositoryRenderer {
   }
 
   setCanvasSize() {
-    const filteredCommits = this.commits.filter(({ branchesId }) =>
-      this.activeBranches.includes(branchesId[0]),
+    const filteredCommits = this.commits.filter(({ branchId }) =>
+      this.activeBranches.includes(branchId),
     );
 
     const width = constants.COLUMN_WIDTH * (this.activeBranches.length + 1);
@@ -42,11 +42,11 @@ class RepositoryRenderer {
 
   generateAllBranches() {
     const branches = [];
-    this.commits.forEach(({ branchesId }, ind) => {
-      let branch = branches.find(({ id }) => id === branchesId[0]);
+    this.commits.forEach(({ branchId }, ind) => {
+      let branch = branches.find(({ id }) => id === branchId);
       if (!branch) {
         branch = {
-          id: branchesId[0],
+          id: branchId,
           pos: {
             x: (branches.length + 1) * constants.COLUMN_WIDTH,
             y: (ind + 1) * constants.LINE_HEIGHT,
@@ -60,12 +60,12 @@ class RepositoryRenderer {
   }
 
   repositionBranches() {
-    const filteredCommits = this.commits.filter(({ branchesId }) =>
-      this.activeBranches.includes(branchesId[0]),
+    const filteredCommits = this.commits.filter(({ branchId }) =>
+      this.activeBranches.includes(branchId),
     );
 
-    filteredCommits.forEach(({ branchesId }, ind) => {
-      const branch = this.branches.find(({ id }) => id === branchesId[0]);
+    filteredCommits.forEach(({ branchId }, ind) => {
+      const branch = this.branches.find(({ id }) => id === branchId);
       branch.pos.y = (ind + 1) * constants.LINE_HEIGHT;
     });
 
@@ -83,13 +83,13 @@ class RepositoryRenderer {
   drawBranches() {
     this.canvasController.clearCanvas();
     this.repositionBranches();
-    const filteredCommits = this.commits.filter(({ branchesId }) =>
-      this.activeBranches.includes(branchesId[0]),
+    const filteredCommits = this.commits.filter(({ branchId }) =>
+      this.activeBranches.includes(branchId),
     );
 
     filteredCommits.forEach((commit, ind) => {
       const parentBranch = this.branches.find(
-        ({ id }) => id === commit.branchesId[0],
+        ({ id }) => id === commit.branchId,
       );
 
       const pos = {
@@ -127,12 +127,12 @@ class RepositoryRenderer {
 
   fillMessages() {
     this.clearMessages();
-    const filteredCommits = this.commits.filter(({ branchesId }) =>
-      this.activeBranches.includes(branchesId[0]),
+    const filteredCommits = this.commits.filter(({ branchId }) =>
+      this.activeBranches.includes(branchId),
     );
 
-    filteredCommits.forEach(({ message, branchesId, author }) => {
-      const parentBranch = this.branches.find(({ id }) => id === branchesId[0]);
+    filteredCommits.forEach(({ message, branchId, author }) => {
+      const parentBranch = this.branches.find(({ id }) => id === branchId);
       const messageElement = messagesController.createMessage(
         message,
         author,

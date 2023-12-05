@@ -25,19 +25,20 @@ class Repository {
     for (let i = 0; i < output.length; i++) {
       const fields = output[i].split("\x00");
 
+      const commitHash = fields[0];
       let cur_commit = {};
       cur_commit["id"] = fields[0];
       cur_commit["author"] = fields[1];
       cur_commit["message"] = fields[2];
       cur_commit["createdAt"] = fields[3];
+      cur_commit["parents"] = this.get_commit_parents(commitHash);
 
-      const commitHash = fields[0];
-      const branchNames = this.shell_exec(
+      const branchName = this.shell_exec(
         `git branch --format="%(refname:short)" --contains "${commitHash}"`,
       )
         .split("\n")
-        .filter((s) => s.length != 0);
-      cur_commit["branchesId"] = branchNames;
+        .filter((s) => s.length != 0)[0];
+      cur_commit["branchId"] = branchName;
 
       commits.push(cur_commit);
     }
@@ -71,7 +72,8 @@ class Repository {
   get_commit_parents(commitHash) {
     let output = this.shell_exec(`git rev-list --parents -n 1 "${commitHash}"`)
       .split(" ")
-      .slice(1); // first element is commitHash itself
+      .slice(1) // first element is commitHash itself
+      .map((s) => s.trim());
     return output;
   }
 
