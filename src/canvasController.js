@@ -23,9 +23,9 @@ class CanvasController {
     this.#ctx.moveTo(start.x, start.y);
     this.#ctx.bezierCurveTo(
       end.x,
-      (start.y + end.y) / 2 - intensity,
+      start.y + intensity,
       start.x,
-      (start.y + end.y) / 2 + intensity,
+      end.y - intensity,
       end.x,
       end.y,
     );
