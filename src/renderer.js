@@ -122,16 +122,17 @@ class RepositoryRenderer {
   drawConnections(commits) {
     commits.forEach((commit) => {
       commit.parents.forEach((parent) => {
-        const parentCommit = commits.find(({ id }) => parent.startsWith(id));
+        const parentCommit = commits.find(({ id }) => parent === id);
 
         if (parentCommit) {
           const parentBranch = this.branches.find(
             ({ id }) => id === parentCommit.branchId,
           );
 
-          this.canvasController.drawLine(
+          this.canvasController.drawBezierCurve(
             commit.pos,
             parentCommit.pos,
+            10,
             parentBranch.color,
           );
         }
