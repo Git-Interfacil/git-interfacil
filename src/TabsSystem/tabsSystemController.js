@@ -6,7 +6,6 @@ let reposOpen = [];
 
 function createNewTab(tabName, iconSrc = "../assets/repository-icon.svg") {
   const navigation = document.getElementById("navigation");
-
   const button = document.createElement("button");
   button.setAttribute("id", tabName);
   button.classList.add("tablinks");
@@ -66,7 +65,8 @@ async function selectTab(path, tabName) {
     tabContent.style.display = "flex";
     tabContent.style.flexGrow = "1";
     tabContent.style.flexDirection = "column";
-    document.getElementById("tabcontent").appendChild(tabContent);
+    const tabsContainer = document.getElementById("tabcontent");
+    tabsContainer.insertBefore(tabContent, tabsContainer.firstChild);
     if (tabName === "Home") {
       const { homeController } = require(`../screens/Home/renderer`);
       homeController();

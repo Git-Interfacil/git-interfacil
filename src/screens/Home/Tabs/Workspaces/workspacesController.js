@@ -178,8 +178,6 @@ function createNew(path) {
     await createNewTab(tabName);
     await selectTab("../screens/Repository", tabName);
     loadCanvasInTab(path, tabName);
-
-    //ipcRendererManager.showScreenWithData("index", { path: path });
   });
 
   table.appendChild(newRow);
@@ -195,7 +193,6 @@ function workspaces() {
 
   ipcRendererManager.listenToMain("selected-folder", (event, path) => {
     createNew(path);
-    // ipcRendererManager.showScreenWithData("index", { path: path });
   });
   updateTimestamps();
   setInterval(updateTimestamps, 60 * 1000);
