@@ -122,7 +122,7 @@ class RepositoryRenderer {
   drawConnections(commits) {
     commits.forEach((commit) => {
       commit.parents.forEach((parent) => {
-        const parentCommit = commits.find(({ id }) => parent === id);
+        const parentCommit = commits.find(({ id }) => parent.startsWith(id));
 
         if (parentCommit) {
           const parentBranch = this.branches.find(
