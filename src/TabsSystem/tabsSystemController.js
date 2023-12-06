@@ -1,4 +1,8 @@
+const ipcRendererManager = require("../utils/ipcRendererManager");
+const { handleStoreWindowArgs } = require("../screens/Repository/renderer.js");
+
 let currentTabName = "";
+let reposOpen = [];
 
 function createNewTab(tabName, iconSrc = "../assets/repository-icon.svg") {
   const navigation = document.getElementById("navigation");
@@ -40,6 +44,7 @@ function createNewTab(tabName, iconSrc = "../assets/repository-icon.svg") {
 
 async function selectTab(path, tabName) {
   const tabs = document.querySelectorAll(".tablinks");
+
   if (currentTabName !== "") {
     document.getElementById(`tab${currentTabName}`).style.display = "none";
   }
@@ -70,6 +75,12 @@ async function selectTab(path, tabName) {
       main();
     }
   }
+  ipcRendererManager.sendCurrentTab(tabName, reposOpen[tabName]);
+}
+
+function loadCanvasInTab(path, tabName) {
+  const args = handleStoreWindowArgs(path);
+  reposOpen[tabName] = args;
 }
 
 async function loadHTMLFile(path, tabName) {
@@ -129,4 +140,4 @@ function tabsSystemController() {
 
 tabsSystemController();
 
-module.exports = { createNewTab, selectTab };
+module.exports = { createNewTab, selectTab, loadCanvasInTab };

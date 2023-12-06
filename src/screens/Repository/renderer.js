@@ -161,6 +161,8 @@ function addEventListenerToActionsBar(
     add: { repo },
     commit: { repo },
     push: { repo, currentBranchId },
+    undo: {},
+    redo: {},
   };
   buttons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -317,7 +319,12 @@ function loadRepoClient(repo) {
 function handleStoreWindowArgs(path) {
   const initialRepo = new git_module.Repository(path);
   loadRepoClient(initialRepo);
+  const commits = initialRepo.get_commit_info();
+  const head = initialRepo.get_repo_head();
+  const headCommit = commits.find((commit) => head.startsWith(commit.id));
+  const currentBranchId = headCommit ? headCommit.branchId : null;
   main();
+  return { repo: initialRepo, currentBranchId: currentBranchId };
 }
 
 function main() {
