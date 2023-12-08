@@ -79,6 +79,8 @@ function closeTab(tabCell) {
   }
   const tabToClose = document.getElementById(`tab${tabCell.id}`);
   tabToClose.remove();
+
+  reposOpen.splice(tabCell.id, 1);
 }
 
 module.exports = {
