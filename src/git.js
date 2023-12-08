@@ -32,13 +32,10 @@ class Repository {
       cur_commit["message"] = fields[2];
       cur_commit["createdAt"] = fields[3];
       cur_commit["parents"] = this.get_commit_parents(commitHash);
-
-      const branchName = this.shell_exec(
-        `git branch --format="%(refname:short)" --contains "${commitHash}"`,
-      )
-        .split("\n")
-        .filter((s) => s.length != 0)[0];
-      cur_commit["branchId"] = branchName;
+      cur_commit["branchId"] = this.select_commit_branch(
+        commitHash,
+        cur_commit["parents"].length,
+      );
 
       commits.push(cur_commit);
     }
@@ -75,6 +72,21 @@ class Repository {
       .slice(1) // first element is commitHash itself
       .map((s) => s.trim());
     return output;
+  }
+
+  select_commit_branch(commitHash, numberOfParents) {
+    const commitBranches = this.shell_exec(
+      `git branch --format="%(refname:short)" --sort=committerdate --contains "${commitHash}"`,
+    )
+      .split("\n")
+      .filter((s) => s.length != 0);
+    if (numberOfParents > 1 && commitBranches.includes("master")) {
+      return "master";
+    } else if (numberOfParents > 1 && commitBranches.includes("main")) {
+      return "main";
+    } else {
+      return commitBranches[0];
+    }
   }
 
   // receive array with file names
