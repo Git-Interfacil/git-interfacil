@@ -190,7 +190,7 @@ function workspaces() {
   button.addEventListener("click", function () {
     ipcRendererManager.sendToMain("open-folder-dialog");
   });
-
+  ipcRendererManager.removeAllListeners("selected-folder");
   ipcRendererManager.listenToMain("selected-folder", (event, path) => {
     createNew(path);
   });
