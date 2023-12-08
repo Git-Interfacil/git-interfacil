@@ -87,6 +87,22 @@ class RepositoryRenderer {
       this.activeBranches.includes(branchId),
     );
 
+    const commitsPos = this.calculateCommitsPositions(filteredCommits);
+    this.drawConnections(commitsPos);
+    commitsPos.forEach((commit) => {
+      const parentBranch = this.branches.find(
+        ({ id }) => id === commit.branchId,
+      );
+      this.canvasController.drawCommit(
+        commit.pos,
+        parentBranch.color,
+        this.head == commit.id,
+      );
+    });
+  }
+
+  calculateCommitsPositions(filteredCommits) {
+    const commitsWithPositions = [];
     filteredCommits.forEach((commit, ind) => {
       const parentBranch = this.branches.find(
         ({ id }) => id === commit.branchId,
@@ -97,27 +113,30 @@ class RepositoryRenderer {
         y: (ind + 1) * constants.LINE_HEIGHT,
       };
 
-      this.canvasController.drawLine(pos, parentBranch.pos, parentBranch.color);
+      const newCommit = { ...commit, pos };
+      commitsWithPositions.push(newCommit);
+    });
+    return commitsWithPositions;
+  }
 
-      // Merged commits
-      // if (commit.branchesId.length > 1) {
-      //   console.log(commit.branchesId);
-      //   const originBranch = this.branches.find(
-      //     ({ id }) => id === commit.branchesId[1],
-      //   );
-      //   if (originBranch)
-      //     this.canvasController.drawLine(
-      //       pos,
-      //       originBranch.pos,
-      //       parentBranch.color,
-      //     );
-      // }
+  drawConnections(commits) {
+    commits.forEach((commit) => {
+      commit.parents.forEach((parent) => {
+        const parentCommit = commits.find(({ id }) => parent.startsWith(id));
 
-      this.canvasController.drawCommit(
-        pos,
-        parentBranch.color,
-        this.head == commit.id,
-      );
+        if (parentCommit) {
+          const parentBranch = this.branches.find(
+            ({ id }) => id === parentCommit.branchId,
+          );
+
+          this.canvasController.drawBezierCurve(
+            commit.pos,
+            parentCommit.pos,
+            10,
+            parentBranch.color,
+          );
+        }
+      });
     });
   }
 

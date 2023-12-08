@@ -132,12 +132,6 @@ app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
 });
 
-app.on("activate", () => {
-  if (textInputWindow === null) {
-    createTextInputWindow();
-  }
-});
-
 const env = process.env.NODE_ENV || "development";
 if (env === "development") {
   try {
