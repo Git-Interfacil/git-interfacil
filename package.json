@@ -42,6 +42,10 @@
     "electron-squirrel-startup": "^1.0.0"
   },
   "jest": {
-    "testEnvironment": "jsdom"
+    "testEnvironment": "jsdom",
+    "automock": false,
+    "setupFiles": [
+      "./setupJest.js"
+    ]
   }
 }

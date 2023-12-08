@@ -168,9 +168,9 @@ function createNew(path) {
   newRow.addEventListener("click", async function () {
     const {
       selectTab,
-      createNewTab,
       loadCanvasInTab,
     } = require("../../../../TabsSystem/tabsSystemController.js");
+    const { createNewTab } = require("../../../../TabsSystem/tabsSystem.js");
     timestampCell.dataset.lastClicked = Date.now();
     updateTimestamps();
     const pathArray = path.split("/");

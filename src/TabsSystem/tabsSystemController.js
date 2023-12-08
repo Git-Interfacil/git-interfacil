@@ -4,43 +4,6 @@ const { handleStoreWindowArgs } = require("../screens/Repository/renderer.js");
 let currentTabName = "";
 let reposOpen = [];
 
-function createNewTab(tabName, iconSrc = "../assets/repository-icon.svg") {
-  const navigation = document.getElementById("navigation");
-  const button = document.createElement("button");
-  button.setAttribute("id", tabName);
-  button.classList.add("tablinks");
-
-  const icon = document.createElement("img");
-  icon.classList.add("iconTab");
-  icon.src = iconSrc;
-
-  const span = document.createElement("span");
-  span.classList.add("tabName");
-  span.textContent = tabName;
-
-  const closeDiv = document.createElement("div");
-  closeDiv.classList.add("close");
-
-  const closeIcon = document.createElement("img");
-  closeIcon.src = "../assets/X.svg";
-
-  closeDiv.appendChild(closeIcon);
-  button.appendChild(icon);
-  button.appendChild(span);
-  button.appendChild(closeDiv);
-  navigation.appendChild(button);
-
-  closeDiv.addEventListener("click", (event) => {
-    navigation.removeChild(button);
-    closeTab(closeDiv.parentElement);
-    event.stopPropagation();
-  });
-
-  button.addEventListener("click", () => {
-    selectTab(`../screens/Repository/index.html`, tabName);
-  });
-}
-
 async function selectTab(path, tabName) {
   const tabs = document.querySelectorAll(".tablinks");
 
@@ -81,6 +44,7 @@ async function selectTab(path, tabName) {
 function loadCanvasInTab(path, tabName) {
   const args = handleStoreWindowArgs(path);
   reposOpen[tabName] = args;
+  return reposOpen[tabName];
 }
 
 async function loadHTMLFile(path, tabName) {
@@ -99,13 +63,13 @@ async function loadHTMLFile(path, tabName) {
 
 async function generateTabContent(path, tabName) {
   const htmlContent = await loadHTMLFile(path, tabName);
-  const containerTab = document.createElement("div");
-  containerTab.setAttribute("id", `tab${tabName}`);
-  containerTab.innerHTML = htmlContent;
-  if (containerTab) {
+  try {
+    const containerTab = document.createElement("div");
+    containerTab.setAttribute("id", `tab${tabName}`);
+    containerTab.innerHTML = htmlContent;
     return containerTab;
-  } else {
-    return `Failed to load content for ${tabName}`;
+  } catch (error) {
+    return new Error(`Failed to load content for ${tabName}`);
   }
 }
 
@@ -117,27 +81,10 @@ function closeTab(tabCell) {
   tabToClose.remove();
 }
 
-function tabsSystemController() {
-  selectTab(`../screens/Home`, "Home");
-  const tab = document.getElementById("Home");
-  tab.classList.add("selected");
-
-  const closeButtons = document.querySelectorAll(".close");
-  closeButtons.forEach((button) => {
-    button.addEventListener("click", function (event) {
-      closeTab(button.parentElement);
-      event.stopPropagation();
-    });
-  });
-
-  const tabLinks = document.querySelectorAll(".tablinks");
-  tabLinks.forEach((tab) => {
-    tab.addEventListener("click", function () {
-      selectTab(`../screens/${tab.id}`, tab.id);
-    });
-  });
-}
-
-tabsSystemController();
-
-module.exports = { createNewTab, selectTab, loadCanvasInTab };
+module.exports = {
+  selectTab,
+  loadCanvasInTab,
+  closeTab,
+  loadHTMLFile,
+  generateTabContent,
+};
