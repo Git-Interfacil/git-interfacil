@@ -39,7 +39,8 @@
     "prettier": "3.0.3"
   },
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-squirrel-startup": "^1.0.0",
+    "jest-fetch-mock": "^3.0.3"
   },
   "jest": {
     "testEnvironment": "jsdom",
