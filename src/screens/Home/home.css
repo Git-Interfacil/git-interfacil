@@ -98,6 +98,31 @@ button span {
   color: #fff;
 }
 
+.pageContent {
+  overflow-y: scroll;
+  height: 100px;
+}
+
+/* Customize scrollbar */
+.pageContent::-webkit-scrollbar {
+  width: 20px;
+}
+
+.pageContent::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0);
+}
+.pageContent::-webkit-scrollbar-corner {
+  background: rgba(0, 0, 0, 0);
+}
+.pageContent::-webkit-scrollbar-thumb {
+  background: rgba(217, 217, 217, 0.6);
+  border-radius: 6px;
+  border: 4px solid rgba(0, 0, 0, 0);
+  background-clip: content-box;
+  min-width: 32px;
+  min-height: 32px;
+}
+
 #actionsBar {
   display: flex;
   justify-content: flex-end;
