@@ -80,12 +80,26 @@ class Repository {
     )
       .split("\n")
       .filter((s) => s.length != 0);
+
     if (numberOfParents > 1 && commitBranches.includes("master")) {
       return "master";
     } else if (numberOfParents > 1 && commitBranches.includes("main")) {
       return "main";
     } else {
-      return commitBranches[0];
+      const graphBranches = this.shell_exec(
+        `git log --graph --format='format:%h' --branches | grep "${commitHash}"`,
+      )
+        .trim()
+        .split(" ")
+        .filter((s) => s.length != 0);
+
+      const firstStarIndex = graphBranches.indexOf("*");
+
+      if (firstStarIndex == 0) {
+        return commitBranches.pop();
+      } else {
+        return commitBranches[0];
+      }
     }
   }
 
