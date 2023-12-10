@@ -38,10 +38,6 @@ class Branch {
   changeColor(color) {
     this.#color = color;
   }
-
-  setPosition(position) {
-    this.#position = position;
-  }
 }
 
 module.exports = Branch;
