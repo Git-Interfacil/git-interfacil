@@ -47,7 +47,7 @@ class RendererElements {
   fillChangedFiles(changedFiles) {
     changedFilesController.setCount(
       this.#countChangedFilesElement,
-      changedFiles.length,
+      0,
       changedFiles.length,
     );
 
