@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-const actionButtonsHandlers = require("../src/actionsController.js");
+const actionButtonsHandlers = require("../src/screens/Repository/actionsController.js");
 const Toast = require("../src/components/Toast/toast.js");
 const { ipcRenderer } = require("electron");
 

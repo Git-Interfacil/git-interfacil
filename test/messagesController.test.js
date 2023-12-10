@@ -1,5 +1,7 @@
 /* eslint-disable no-undef */
-const { createMessage } = require("../src/messagesController.js");
+const {
+  createMessage,
+} = require("../src/screens/Repository/messagesController.js");
 
 describe("createMessage", () => {
   it("should create a message element with the given message and author", () => {

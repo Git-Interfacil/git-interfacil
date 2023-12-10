@@ -57,9 +57,9 @@ app.on("ready", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
 
-  win.on("focus", () => {
+  /*   win.on("focus", () => {
     registerShortcutsFromJSON();
-  });
+  }); */
 
   win.on("blur", () => {
     unregisterShortcuts();
@@ -96,11 +96,19 @@ app.on("ready", () => {
     dialog.showErrorBox("Oops! Something went wrong!", message);
   });
 
-  win.loadFile("src/screens/Home/home.html");
+  win.loadFile("src/TabsSystem/index.html");
 
   ipcMain.on("submit-input", (event, inputValue) => {
     win.webContents.send("inputValue-updated", inputValue);
   });
+
+  ipcMain.on("current-tab", (event, currentTab, args) => {
+    unregisterShortcuts();
+    if (currentTab !== "Home") {
+      registerShortcutsFromJSON(args);
+    }
+  });
+
   // TO-DO: check if git repo
   ipcMain.on("open-folder-dialog", (event) => {
     dialog

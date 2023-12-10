@@ -3,8 +3,9 @@
 const { globalShortcut } = require("electron");
 const fs = require("fs");
 const path = require("path");
+const actionButtonsHandlers = require("../screens/Repository/actionsController");
 
-function registerShortcutsFromJSON() {
+function registerShortcutsFromJSON(args) {
   const filePath = path.join(
     __dirname,
     "..",
@@ -35,7 +36,7 @@ function registerShortcutsFromJSON() {
         const shortcutRegistered = globalShortcut.register(
           formattedKeyCombination,
           () => {
-            executeAction(action);
+            executeAction(action, args);
           },
         );
 
@@ -53,7 +54,7 @@ function unregisterShortcuts() {
 }
 
 // TODO: Add current functions to actions
-function executeAction(action) {
+function executeAction(action, args) {
   switch (action) {
     case "Increase Text Size":
       console.log("Increase text size");
@@ -62,6 +63,7 @@ function executeAction(action) {
       console.log("Decrease text size");
       break;
     case "Undo":
+      actionButtonsHandlers.undo();
       console.log("Undo");
       break;
     case "Redo":
@@ -75,6 +77,7 @@ function executeAction(action) {
       break;
     case "Push":
       console.log("Push");
+      actionButtonsHandlers.push(args.repo, args.currentBranchId);
       break;
     case "Branch":
       console.log("Branch");
@@ -87,9 +90,11 @@ function executeAction(action) {
       break;
     case "Add":
       console.log("Add");
+      actionButtonsHandlers.add(args.repo);
       break;
     case "Commit":
       console.log("Commit");
+      actionButtonsHandlers.commit(args.repo);
       break;
     default:
       console.log("Action not recognized");

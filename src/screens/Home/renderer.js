@@ -4,12 +4,31 @@ const { workspaces } = require("./Tabs/Workspaces/workspacesController");
 const { shortcuts } = require("./Tabs/Shortcuts/shortcutsController");
 const help = require("./Tabs/Help/helpController");
 
+function changeTab(pageName) {
+  const pages = document.querySelectorAll(".pageContent");
+  pages.forEach((page) => {
+    page.style.display = "none";
+  });
+
+  const selectedPage = document.getElementById(`${pageName}Page`);
+  selectedPage.style.display = "flex";
+  selectedPage.style.flexGrow = 1;
+  selectedPage.style.flexDirection = "column";
+}
+
 function fetchNewContent(pageName) {
-  fetch(`./Tabs/${pageName}.html`)
+  fetch(`../screens/Home/Tabs/${pageName}.html`)
     .then((response) => response.text())
     .then((html) => {
-      const mainContainer = document.getElementById("main");
-      mainContainer.innerHTML = html;
+      const container = document.getElementById(`${pageName}Page`);
+      container.innerHTML = html;
+      if (pageName !== "workspaces") {
+        container.style.display = "none";
+      } else {
+        container.style.display = "flex";
+        container.style.flexGrow = 1;
+        container.style.flexDirection = "column";
+      }
 
       if (pageName === "workspaces") {
         workspaces();
@@ -37,20 +56,19 @@ const addEventListenerButtons = (buttons) => {
         const titleButton = button
           .querySelector(".title")
           .textContent.toLowerCase();
-        fetchNewContent(titleButton);
+        changeTab(titleButton);
       });
     });
   });
 };
 
 function homeController() {
+  fetchNewContent("shortcuts");
+  fetchNewContent("help");
   fetchNewContent("workspaces");
-  document.addEventListener("DOMContentLoaded", function () {
-    const buttons = document.querySelectorAll("#sidebar button");
-    addEventListenerButtons(buttons);
-  });
+
+  const buttons = document.querySelectorAll("#sidebar button");
+  addEventListenerButtons(buttons);
 }
 
-homeController();
-
-module.exports = { fetchNewContent, addEventListenerButtons };
+module.exports = { homeController, fetchNewContent, addEventListenerButtons };

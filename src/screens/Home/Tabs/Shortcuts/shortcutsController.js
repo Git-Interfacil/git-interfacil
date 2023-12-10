@@ -25,11 +25,11 @@ function editShortcut(row) {
 function changeButton(button) {
   const icon = button.querySelector("img");
   if (button.className === "edit") {
-    icon.src = "../../assets/save-icon.svg";
+    icon.src = "../assets/save-icon.svg";
     button.removeEventListener("click", editShortcutHandler);
     button.addEventListener("click", saveNewShortcutHandler);
   } else if (button.className == "save") {
-    icon.src = "../../assets/edit-icon.svg";
+    icon.src = "../assets/edit-icon.svg";
     button.removeEventListener("click", saveNewShortcutHandler);
     button.addEventListener("click", editShortcutHandler);
   } else {
@@ -82,7 +82,7 @@ async function generateShortcuts(fileName, type) {
         const row = table.insertRow();
         const editCell = row.insertCell();
         editCell.classList.add("edit");
-        editCell.innerHTML = '<img src="../../assets/edit-icon.svg" />';
+        editCell.innerHTML = '<img src="../assets/edit-icon.svg" />';
 
         const actionCell = row.insertCell();
         actionCell.classList.add("command");
@@ -143,7 +143,7 @@ function handleSearch(shortcutsData) {
 
 async function shortcuts(document) {
   const shortcutsData = await generateShortcuts(
-    "./Tabs/Shortcuts/shortcutsData.json",
+    "../screens/Home/Tabs/Shortcuts/shortcutsData.json",
     "json",
   );
   document.getElementById("searchInput").addEventListener("input", function () {

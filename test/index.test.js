@@ -2,7 +2,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const htmlPath = path.join(__dirname, "../src/index.html");
+const htmlPath = path.join(__dirname, "../src/screens/Repository/index.html");
 const htmlContent = fs.readFileSync(htmlPath, "utf-8");
 
 beforeAll(() => {
@@ -10,19 +10,14 @@ beforeAll(() => {
 });
 
 describe("layout skeleton interface", () => {
-  let appContainer, header, content;
+  let header, content;
 
   beforeAll(() => {
-    appContainer = document.getElementById("app-container");
-    header = appContainer.querySelector("#header");
-    content = appContainer.querySelector("#content");
+    header = document.querySelector("#header");
+    content = document.querySelector("#content");
   });
 
   describe("with passing", () => {
-    it("should render the application container", () => {
-      expect(appContainer).not.toBeNull();
-    });
-
     it("should render the header", () => {
       expect(header).not.toBeNull();
     });
@@ -38,11 +33,10 @@ describe("layout skeleton interface", () => {
 });
 
 describe("header skeleton interface", () => {
-  let header, navigation, actions;
+  let header, actions;
 
   beforeAll(() => {
     header = document.getElementById("header");
-    navigation = header.querySelector("#navigation");
     actions = header.querySelector("#actions");
   });
 
@@ -51,24 +45,15 @@ describe("header skeleton interface", () => {
       expect(header).not.toBeNull();
     });
 
-    it("should render the navigation", () => {
-      expect(navigation).not.toBeNull();
-    });
-
     it("should render the actions", () => {
       expect(actions).not.toBeNull();
-    });
-
-    it("should render actions after navigation", () => {
-      expect(navigation.nextElementSibling).toBe(actions);
     });
   });
 
   describe("with failing", () => {
-    it("should not render more than navigation and actions", () => {
-      expect(header.children[0]).toBe(navigation);
-      expect(header.children[1]).toBe(actions);
-      expect(header.children.length).toBe(2);
+    it("should not render more than actions", () => {
+      expect(header.children[0]).toBe(actions);
+      expect(header.children.length).toBe(1);
     });
   });
 });

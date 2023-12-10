@@ -1,0 +1,67 @@
+#app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+#navigation {
+  flex-direction: row;
+  display: flex;
+  background-color: #d9d9d9;
+  margin: 0;
+  padding: 0;
+}
+
+#tabcontent {
+  display: flex;
+  flex-grow: 1;
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", sans-serif;
+  flex-direction: column;
+}
+
+.tablinks {
+  flex-direction: row;
+  color: #575757;
+  margin: 8px;
+  padding: 0 10px;
+  background-color: transparent;
+  width: 250px;
+  height: 55px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  transition: all 0.6s;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  & .tabName {
+    font-size: 16px;
+  }
+
+  & .iconTab {
+    height: 25px;
+    width: 25px;
+  }
+  & .close {
+    margin-left: auto;
+    padding: 5px;
+    display: flex;
+    & img {
+      height: 10px;
+      width: 10px;
+    }
+  }
+  & .close:hover {
+    border-radius: 20px;
+    background-color: #d0d0d0;
+  }
+}
+
+.tablinks.selected {
+  border-radius: 10px;
+  border: none;
+  background-color: #e0e0e0;
+  box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.2);
+}

@@ -53,6 +53,10 @@ const ipcRendererManager = {
     ipcRenderer.send("open-new-shortcut-window");
   },
 
+  sendCurrentTab: (currentTab, repo) => {
+    ipcRenderer.send("current-tab", currentTab, repo);
+  },
+
   waitForUpdatedInputValue: () => {
     return new Promise((resolve) => {
       ipcRenderer.once("inputValue-updated", (event, inputValue) => {

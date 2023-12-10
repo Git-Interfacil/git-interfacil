@@ -14,11 +14,11 @@ function setFavorite(favoriteCell) {
 async function deleteWorkspace(row) {
   try {
     row.parentElement.removeChild(row);
-    await Toast.showToast("Workspace deleted", "../../assets/sucess-icon.svg");
+    await Toast.showToast("Workspace deleted", "../assets/sucess-icon.svg");
   } catch (error) {
     await Toast.showToast(
       "Error: delete workspace",
-      "../../assets/error-icon.svg",
+      "../assets/error-icon.svg",
     );
     console.error("Error deleting workspace: ", error);
   }
@@ -120,7 +120,7 @@ function createNew(path) {
   const newRow = document.createElement("tr");
 
   const favoriteIcon = document.createElement("img");
-  favoriteIcon.src = "../../assets/favorite-icon.svg";
+  favoriteIcon.src = "../assets/favorite-icon.svg";
 
   const favoriteCell = document.createElement("td");
   favoriteCell.classList.add("not-favorite");
@@ -151,7 +151,7 @@ function createNew(path) {
   timestampCell.appendChild(lastUpdatedSpan);
 
   const deleteIcon = document.createElement("img");
-  deleteIcon.src = "../../assets/delete-icon.svg";
+  deleteIcon.src = "../assets/delete-icon.svg";
 
   const deleteCell = document.createElement("td");
   deleteCell.classList.add("delete");
@@ -165,10 +165,19 @@ function createNew(path) {
   newRow.appendChild(timestampCell);
   newRow.appendChild(deleteCell);
 
-  newRow.addEventListener("click", function () {
+  newRow.addEventListener("click", async function () {
+    const {
+      selectTab,
+      loadCanvasInTab,
+    } = require("../../../../TabsSystem/tabsSystemController.js");
+    const { createNewTab } = require("../../../../TabsSystem/tabsSystem.js");
     timestampCell.dataset.lastClicked = Date.now();
     updateTimestamps();
-    ipcRendererManager.showScreenWithData("index", { path: path });
+    const pathArray = path.split("/");
+    const tabName = pathArray.pop();
+    await createNewTab(tabName);
+    await selectTab("../screens/Repository", tabName);
+    loadCanvasInTab(path, tabName);
   });
 
   table.appendChild(newRow);
@@ -181,10 +190,9 @@ function workspaces() {
   button.addEventListener("click", function () {
     ipcRendererManager.sendToMain("open-folder-dialog");
   });
-
+  ipcRendererManager.removeAllListeners("selected-folder");
   ipcRendererManager.listenToMain("selected-folder", (event, path) => {
     createNew(path);
-    // ipcRendererManager.showScreenWithData("index", { path: path });
   });
   updateTimestamps();
   setInterval(updateTimestamps, 60 * 1000);
