@@ -64,13 +64,12 @@ class RendererElements {
     this.#messagesElement.innerHTML = "";
   }
 
-  fillMessages(commits, branches) {
-    commits.forEach(({ message, branchId, author }) => {
-      const parentBranch = branches.find(({ id }) => id === branchId);
+  fillMessages(commits) {
+    commits.forEach(({ message, author, color }) => {
       const messageElement = messagesController.createMessage(
         message,
         author,
-        parentBranch.color,
+        color,
       );
       this.#messagesElement.appendChild(messageElement);
     });
