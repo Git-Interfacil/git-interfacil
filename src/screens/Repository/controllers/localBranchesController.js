@@ -18,6 +18,8 @@ function decreaseCount(countElement) {
 
 function createBranch(branch) {
   const branchElement = document.createElement("li");
+  branchElement.style.display = "flex";
+  branchElement.style.alignItems = "center";
 
   branchElement.dataset.branchId = branch.id;
 
@@ -26,11 +28,13 @@ function createBranch(branch) {
   checkbox.type = "checkbox";
   checkbox.checked = true;
   checkbox.id = "local-" + branch.id;
+  checkbox.style.accentColor = branch.color;
 
   const label = document.createElement("label");
   label.htmlFor = "local-" + branch.id;
   label.appendChild(document.createTextNode(branch.id));
   label.classList.add("active");
+  label.style.transition = "all .3s";
 
   branchElement.appendChild(checkbox);
   branchElement.appendChild(label);

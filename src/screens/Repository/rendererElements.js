@@ -34,6 +34,8 @@ class RendererElements {
       branches.length,
     );
 
+    console.log(branches);
+
     branches.forEach((branch) => {
       const branchElement = localBranchesController.createBranch(branch);
       this.#localBranchesElement.appendChild(branchElement);

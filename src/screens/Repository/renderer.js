@@ -181,9 +181,9 @@ class RepositoryRenderer {
     this.#rendererElements.fillMessages(filteredCommits, this.branches);
   }
 
-  fillLocalBranches(branches) {
+  fillLocalBranches() {
     this.#rendererElements.clearLocalBranches();
-    this.#rendererElements.fillLocalBranches(branches);
+    this.#rendererElements.fillLocalBranches(this.#branches);
   }
 
   fillChangedFiles(changedFiles) {
@@ -244,9 +244,7 @@ function loadRepoClient(repo) {
     rendererElements,
   );
 
-  const branches = repositoryRenderer.branches;
-
-  repositoryRenderer.fillLocalBranches(branches);
+  repositoryRenderer.fillLocalBranches();
   repositoryRenderer.fillChangedFiles(changedFiles);
   repositoryRenderer.fillMessages(messages);
   repositoryRenderer.drawBranches();
