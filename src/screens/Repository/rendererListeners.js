@@ -96,6 +96,9 @@ class RendererListeners {
       add: { repository },
       commit: { repository },
       push: { repository, currentBranchId },
+      stash: { repository },
+      pop: { repository },
+      pull: { repository },
       undo: {},
       redo: {},
     };

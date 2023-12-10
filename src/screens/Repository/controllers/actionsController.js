@@ -31,9 +31,13 @@ const actionButtonsHandlers = {
     console.log("Merge button clicked");
     // #TO-DO: Add your code here for the Merge button action
   },
-  pull: () => {
-    console.log("Pull button clicked");
-    // #TO-DO: Add your code here for the Pull button action
+  pull: async (repo) => {
+    try {
+      await repo.pull();
+    } catch (error) {
+      await Toast.showToast("Error: pull", "./assets/error-icon.svg");
+      throw new Error("Pull operation failed.", error);
+    }
   },
   add: async (repo) => {
     try {
@@ -78,13 +82,11 @@ const actionButtonsHandlers = {
     console.log("Branch button clicked");
     // #TO-DO: Add your code here for the Branch button action
   },
-  stash: () => {
-    console.log("Stash button clicked");
-    // #TO-DO: Add your code here for the Stash button action
+  stash: async (repo) => {
+    await repo.stash();
   },
-  pop: () => {
-    console.log("Pop button clicked");
-    // #TO-DO: Add your code here for the Pop button action
+  pop: async (repo) => {
+    await repo.pop_stash();
   },
 };
 
