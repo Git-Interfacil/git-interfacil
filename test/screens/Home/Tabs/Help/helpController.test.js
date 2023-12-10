@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-const help = require("../../../../../src/screens/Home/Tabs/Help/helpController.js");
+const help = require("../../../../../src/screens/Home/Tabs/Help/controllers/helpController.js");
 
 class TextEncoderMock {
   encode(str) {

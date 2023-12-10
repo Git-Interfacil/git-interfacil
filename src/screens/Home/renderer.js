@@ -1,8 +1,12 @@
 /* eslint-disable no-unused-vars */
 
-const { workspaces } = require("./Tabs/Workspaces/workspacesController");
-const { shortcuts } = require("./Tabs/Shortcuts/shortcutsController");
-const help = require("./Tabs/Help/helpController");
+const {
+  workspaces,
+} = require("./Tabs/Workspaces/controllers/workspacesController");
+const {
+  shortcuts,
+} = require("./Tabs/Shortcuts/controllers/shortcutsController");
+const help = require("./Tabs/Help/controllers/helpController");
 
 function changeTab(pageName) {
   const pages = document.querySelectorAll(".pageContent");

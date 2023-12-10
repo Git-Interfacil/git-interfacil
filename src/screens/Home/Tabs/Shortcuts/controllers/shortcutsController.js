@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 
-const ipcRendererManager = require("../../../../utils/ipcRendererManager");
+const ipcRendererManager = require("../../../../../utils/ipcRendererManager");
 
 function editShortcutHandler() {
   this.className = "edit";
