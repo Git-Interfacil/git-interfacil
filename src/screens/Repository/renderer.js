@@ -3,10 +3,8 @@ const constants = require("./constants.js");
 const git_module = require("./git.js");
 const RepoSelector = require("./RepoSelector.js");
 const CanvasController = require("./controllers/canvasController.js");
-const RendererElements = require("./RendererElements.js");
-const localBranchesController = require("./controllers/localBranchesController.js");
-const animationsController = require("./controllers/animationsController.js");
-const actionButtonHandlers = require("./controllers/actionsController.js");
+const RendererElements = require("./rendererElements.js");
+const RendererListeners = require("./rendererListeners.js");
 
 class RepositoryRenderer {
   constructor(commits, head, canvasController, rendererElements) {
@@ -15,6 +13,7 @@ class RepositoryRenderer {
     this.sortCommits();
     this.branches = this.generateAllBranches();
     this.activeBranches = this.branches.map(({ id }) => id);
+    this.activeChangedFiles = [];
 
     this.rendererElements = rendererElements;
     this.canvasController = canvasController;
@@ -165,85 +164,16 @@ class RepositoryRenderer {
   deactivateBranch(branchId) {
     this.activeBranches = this.activeBranches.filter((id) => id !== branchId);
   }
-}
 
-function addEventListenerToActionsBar(
-  buttons,
-  actionButtonHandlers,
-  repo,
-  currentBranchId,
-) {
-  const buttonParams = {
-    add: { repo },
-    commit: { repo },
-    push: { repo, currentBranchId },
-    undo: {},
-    redo: {},
-  };
-  buttons.forEach((button) => {
-    button.addEventListener("click", () => {
-      console.log("Clicked");
-      const buttonText = button.innerText;
+  activateChangedFile(fileId) {
+    this.activeChangedFiles.push(fileId);
+  }
 
-      if (buttonText in actionButtonHandlers) {
-        actionButtonHandlers[buttonText](
-          ...Object.values(buttonParams[buttonText]),
-        );
-      } else {
-        console.log("Button not found");
-      }
-    });
-  });
-}
-
-function addListenersToSidebar(dropdowns) {
-  dropdowns.forEach((dropdown) => {
-    const header = dropdown.querySelector(".header");
-    const submenu = dropdown.querySelector(".items");
-    animationsController.slideDown(submenu);
-    header.addEventListener("click", () => {
-      animationsController.slideToggle(submenu);
-
-      if (submenu.classList.contains("opened")) {
-        setTimeout(() => {
-          header.classList.toggle("opened");
-        }, 300);
-      } else {
-        header.classList.toggle("opened");
-      }
-
-      submenu.classList.toggle("opened");
-    });
-  });
-}
-
-function addListenersToLocalBranchesCheckboxes(
-  list,
-  counter,
-  repositoryRenderer,
-) {
-  list.forEach((item) => {
-    const checkbox = item.querySelector("input");
-    const branchId = item.dataset.branchId;
-
-    checkbox.addEventListener("change", () => {
-      if (!checkbox.checked) {
-        localBranchesController.deactivateBranch(item);
-        localBranchesController.decreaseCount(counter);
-
-        repositoryRenderer.deactivateBranch(branchId);
-        repositoryRenderer.drawBranches();
-        repositoryRenderer.fillMessages();
-      } else {
-        localBranchesController.activateBranch(item);
-        localBranchesController.increaseCount(counter);
-
-        repositoryRenderer.activateBranch(branchId);
-        repositoryRenderer.drawBranches();
-        repositoryRenderer.fillMessages();
-      }
-    });
-  });
+  deactivateChangedFile(fileId) {
+    this.activeChangedFiles = this.activeChangedFiles.filter(
+      (f) => f !== fileId,
+    );
+  }
 }
 
 function loadRepoClient(repo) {
@@ -257,8 +187,10 @@ function loadRepoClient(repo) {
   const canvas = document.querySelector("canvas");
   const canvasController = new CanvasController(canvas);
 
-  const messages = document.getElementById("messages");
   const sidebar = document.getElementById("sidebar");
+  const actionsbar = document.getElementById("actions");
+
+  const messages = document.getElementById("messages");
   const localBranches = document.getElementById("localList");
   const localBranchesCount = document.getElementById("localCount");
   const changedFilesList = document.getElementById("changedList");
@@ -280,28 +212,24 @@ function loadRepoClient(repo) {
 
   const branches = repositoryRenderer.branches;
 
-  const buttonActions = document.querySelectorAll(".button");
-  addEventListenerToActionsBar(
-    buttonActions,
-    actionButtonHandlers,
-    repo,
-    currentBranchId,
-  );
-
   repositoryRenderer.fillLocalBranches(branches);
   repositoryRenderer.fillChangedFiles(changedFiles);
   repositoryRenderer.fillMessages(messages);
   repositoryRenderer.drawBranches();
 
   const sidebarDropdowns = sidebar.querySelectorAll(".dropdown");
-  const localBranchesList = localBranches.querySelectorAll("li");
+  const actionsbarButtons = actionsbar.querySelectorAll(".button");
 
-  addListenersToSidebar(sidebarDropdowns);
-  addListenersToLocalBranchesCheckboxes(
-    localBranchesList,
-    localBranchesCount,
+  const listener = new RendererListeners(
     repositoryRenderer,
+    sidebarDropdowns,
+    actionsbarButtons,
   );
+
+  listener.addListenersToSidebar();
+  listener.addListenersToActionsBar(repo, currentBranchId);
+  listener.addListenersToLocalBranchesCheckboxes();
+  listener.addListenersToChangedFilesCheckboxes();
 }
 
 function handleStoreWindowArgs(path) {

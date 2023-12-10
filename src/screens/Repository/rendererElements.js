@@ -75,6 +75,26 @@ class RendererElements {
       this.#messagesElement.appendChild(messageElement);
     });
   }
+
+  getMessagesElement() {
+    return this.#messagesElement;
+  }
+
+  getLocalBranchesElement() {
+    return this.#localBranchesElement;
+  }
+
+  getCountLocalBranchesElement() {
+    return this.#countLocalBranchesElement;
+  }
+
+  getChangedFilesElement() {
+    return this.#changedFilesElement;
+  }
+
+  getCountChangedFilesElement() {
+    return this.#countChangedFilesElement;
+  }
 }
 
 module.exports = RendererElements;

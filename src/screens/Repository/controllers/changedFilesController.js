@@ -18,7 +18,7 @@ function decreaseCount(countElement) {
 
 function createChangedFile(changedFile, index) {
   const changedFileElement = document.createElement("li");
-  changedFileElement.dataset.changedId = index;
+  changedFileElement.dataset.changedId = changedFile;
 
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
@@ -28,7 +28,6 @@ function createChangedFile(changedFile, index) {
   const label = document.createElement("label");
   label.htmlFor = "changed-" + index;
   label.appendChild(document.createTextNode(changedFile));
-  label.classList.add("active");
 
   changedFileElement.appendChild(checkbox);
   changedFileElement.appendChild(label);
@@ -36,9 +35,21 @@ function createChangedFile(changedFile, index) {
   return changedFileElement;
 }
 
+function activateChangedFile(item) {
+  const label = item.querySelector("label");
+  label.classList.add("active");
+}
+
+function deactivateChangedFile(item) {
+  const label = item.querySelector("label");
+  label.classList.remove("active");
+}
+
 module.exports = {
   createChangedFile,
   setCount,
   increaseCount,
   decreaseCount,
+  activateChangedFile,
+  deactivateChangedFile,
 };
