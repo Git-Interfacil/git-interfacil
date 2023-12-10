@@ -2,7 +2,10 @@
 const fs = require("fs");
 const path = require("path");
 
-const htmlPath = path.join(__dirname, "../src/screens/Repository/index.html");
+const htmlPath = path.join(
+  __dirname,
+  "../../../src/screens/Repository/index.html",
+);
 const htmlContent = fs.readFileSync(htmlPath, "utf-8");
 
 beforeAll(() => {
