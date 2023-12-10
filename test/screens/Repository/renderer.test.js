@@ -1,9 +1,11 @@
 /* eslint-disable no-undef */
 
-jest.mock("../src/screens/Repository/canvasController.js");
-jest.mock("../src/screens/Repository/RepoSelector.js");
-jest.mock("../src/screens/Repository/messagesController.js");
-jest.mock("../src/screens/Repository/localBranchesController.js");
+jest.mock("../../../src/screens/Repository/controllers/canvasController.js");
+jest.mock("../../../src/screens/Repository/RepoSelector.js");
+jest.mock("../../../src/screens/Repository/controllers/messagesController.js");
+jest.mock(
+  "../../../src/screens/Repository/controllers/localBranchesController.js",
+);
 
 jest.mock("electron", () => ({
   ipcRenderer: {
@@ -25,7 +27,7 @@ describe.skip("renderer", () => {
   it("should not render if no canvas", () => {
     document.querySelector = jest.fn();
     try {
-      require("../src/renderer.js");
+      require("../../../src/renderer.js");
       repoSelector.dispatchEvent(new CustomEvent("change"));
       expect(true).toBe(false); // Above line should throw error
     } catch (e) {
@@ -36,7 +38,7 @@ describe.skip("renderer", () => {
   it("should not render if no canvas's 2d context", () => {
     document.querySelector = () => ({ getContext: () => null });
     try {
-      require("../src/renderer.js");
+      require("../../../src/renderer.js");
       repoSelector.dispatchEvent(new CustomEvent("change"));
       expect(true).toBe(false); // Above line should throw error
     } catch (e) {

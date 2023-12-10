@@ -1,12 +1,12 @@
 /* eslint-disable no-undef */
 
-const { fetchNewContent } = require("../src/screens/Home/renderer.js");
+const { fetchNewContent } = require("../../../src/screens/Home/renderer.js");
 
 const mockWorkspaces = jest.fn();
 const mockShortcuts = jest.fn();
 const mockHelp = jest.fn();
 
-jest.mock("../src/screens/Home/renderer.js", () => ({
+jest.mock("../../../src/screens/Home/renderer.js", () => ({
   fetchNewContent: jest.fn((pageName) => {
     if (pageName === "workspaces") {
       mockWorkspaces();
@@ -31,7 +31,7 @@ beforeEach(() => {
       },
       addEventListener: jest.fn(),
       querySelector: jest.fn(() => ({
-        textContent: "Button Title", 
+        textContent: "Button Title",
       })),
     },
     {
@@ -41,7 +41,7 @@ beforeEach(() => {
       },
       addEventListener: jest.fn(),
       querySelector: jest.fn(() => ({
-        textContent: "Another Button Title", 
+        textContent: "Another Button Title",
       })),
     },
   ];
@@ -94,7 +94,7 @@ describe("HomeController", () => {
     expect(fetchNewContent).toHaveBeenCalledWith('button title'); // Replace with expected title
 
     // Add more specific assertions based on your function's behavior
-  } 
+  }
   );
   */
 });

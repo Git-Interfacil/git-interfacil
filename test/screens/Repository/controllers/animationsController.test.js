@@ -2,7 +2,7 @@
 const {
   slideUp,
   slideToggle,
-} = require("../src/screens/Repository/animationsController.js");
+} = require("../../../../src/screens/Repository/controllers/animationsController.js");
 
 describe("slideUp", () => {
   it("should set the height to 0", () => {
