@@ -3,21 +3,20 @@ const constants = require("./constants.js");
 const git_module = require("./git.js");
 const RepoSelector = require("./RepoSelector.js");
 const CanvasController = require("./controllers/canvasController.js");
-const messagesController = require("./controllers/messagesController.js");
+const RendererElements = require("./RendererElements.js");
 const localBranchesController = require("./controllers/localBranchesController.js");
 const animationsController = require("./controllers/animationsController.js");
 const actionButtonHandlers = require("./controllers/actionsController.js");
 
 class RepositoryRenderer {
-  constructor(commits, head, canvasController, messagesElement) {
+  constructor(commits, head, canvasController, rendererElements) {
     this.head = head;
     this.commits = commits;
     this.sortCommits();
     this.branches = this.generateAllBranches();
-
-    this.messagesElement = messagesElement;
-
     this.activeBranches = this.branches.map(({ id }) => id);
+
+    this.rendererElements = rendererElements;
     this.canvasController = canvasController;
 
     this.setCanvasSize();
@@ -140,25 +139,23 @@ class RepositoryRenderer {
     });
   }
 
-  clearMessages() {
-    this.messagesElement.innerHTML = "";
-  }
-
   fillMessages() {
-    this.clearMessages();
+    this.rendererElements.clearMessages();
     const filteredCommits = this.commits.filter(({ branchId }) =>
       this.activeBranches.includes(branchId),
     );
 
-    filteredCommits.forEach(({ message, branchId, author }) => {
-      const parentBranch = this.branches.find(({ id }) => id === branchId);
-      const messageElement = messagesController.createMessage(
-        message,
-        author,
-        parentBranch.color,
-      );
-      this.messagesElement.appendChild(messageElement);
-    });
+    this.rendererElements.fillMessages(filteredCommits, this.branches);
+  }
+
+  fillLocalBranches(branches) {
+    this.rendererElements.clearLocalBranches();
+    this.rendererElements.fillLocalBranches(branches);
+  }
+
+  fillChangedFiles(changedFiles) {
+    this.rendererElements.clearChangedFiles();
+    this.rendererElements.fillChangedFiles(changedFiles);
   }
 
   activateBranch(branchId) {
@@ -197,38 +194,6 @@ function addEventListenerToActionsBar(
       }
     });
   });
-}
-
-function fillLocalBranches(list, count, branches) {
-  localBranchesController.setCount(count, branches.length, branches.length);
-
-  branches.forEach((branch) => {
-    const branchElement = localBranchesController.createBranch(branch);
-    list.appendChild(branchElement);
-  });
-}
-
-function fillChangedFiles(changedFiles, changedFilesList) {
-  for (let i = 0; i < changedFiles.length; i++) {
-    const changedFileElement = document.createElement("li");
-    changedFileElement.dataset.changedId = changedFiles[i];
-    const id = "changed-" + changedFiles[i];
-
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.checked = false;
-    checkbox.id = id;
-
-    const label = document.createElement("label");
-    label.htmlFor = id;
-    label.appendChild(document.createTextNode(changedFiles[i]));
-    label.classList.add("active");
-
-    changedFileElement.appendChild(checkbox);
-    changedFileElement.appendChild(label);
-
-    changedFilesList.appendChild(changedFileElement);
-  }
 }
 
 function addListenersToSidebar(dropdowns) {
@@ -293,12 +258,24 @@ function loadRepoClient(repo) {
   const canvasController = new CanvasController(canvas);
 
   const messages = document.getElementById("messages");
+  const sidebar = document.getElementById("sidebar");
+  const localBranches = document.getElementById("localList");
+  const localBranchesCount = document.getElementById("localCount");
+  const changedFilesList = document.getElementById("changedList");
+  const changedFilesCount = document.getElementById("changedCount");
+  const rendererElements = new RendererElements(
+    messages,
+    localBranches,
+    localBranchesCount,
+    changedFilesList,
+    changedFilesCount,
+  );
 
   const repositoryRenderer = new RepositoryRenderer(
     commits,
     head,
     canvasController,
-    messages,
+    rendererElements,
   );
 
   const branches = repositoryRenderer.branches;
@@ -311,21 +288,13 @@ function loadRepoClient(repo) {
     currentBranchId,
   );
 
-  const sidebar = document.getElementById("sidebar");
-  const localBranches = document.getElementById("localList");
-  const localBranchesCount = document.getElementById("localCount");
-
-  fillLocalBranches(localBranches, localBranchesCount, branches);
-  repositoryRenderer.drawBranches();
+  repositoryRenderer.fillLocalBranches(branches);
+  repositoryRenderer.fillChangedFiles(changedFiles);
   repositoryRenderer.fillMessages(messages);
+  repositoryRenderer.drawBranches();
 
   const sidebarDropdowns = sidebar.querySelectorAll(".dropdown");
   const localBranchesList = localBranches.querySelectorAll("li");
-
-  const changedFilesList = document.getElementById("changedList");
-  const changedFilesCount = document.getElementById("changedCount");
-  changedFilesCount.innerHTML = "0" + "/" + changedFiles.length;
-  fillChangedFiles(changedFiles, changedFilesList);
 
   addListenersToSidebar(sidebarDropdowns);
   addListenersToLocalBranchesCheckboxes(
