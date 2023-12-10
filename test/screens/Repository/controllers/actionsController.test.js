@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
-const actionButtonsHandlers = require("../src/screens/Repository/actionsController.js");
-const Toast = require("../src/components/Toast/toast.js");
+const actionButtonsHandlers = require("../../../../src/screens/Repository/controllers/actionsController.js");
+const Toast = require("../../../../src/components/Toast/toast.js");
 const { ipcRenderer } = require("electron");
 
 console.log = jest.fn();
@@ -14,7 +14,7 @@ jest.mock("electron", () => ({
   },
 }));
 
-jest.mock("../src/components/Toast/toast.js", () => ({
+jest.mock("../../../../src/components/Toast/toast.js", () => ({
   showToast: jest.fn(),
 }));
 

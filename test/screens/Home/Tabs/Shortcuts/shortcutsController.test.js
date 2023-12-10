@@ -7,7 +7,7 @@ const {
   saveNewShortcut,
   changeButton,
   editShortcut,
-} = require("../src/screens/Home/Tabs/Shortcuts/shortcutsController.js");
+} = require("../../../../../src/screens/Home/Tabs/Shortcuts/controllers/shortcutsController.js");
 
 jest.mock("electron", () => ({
   ipcRenderer: {

@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-const CanvasController = require("../src/screens/Repository/canvasController.js");
+const CanvasController = require("../../../../src/screens/Repository/controllers/canvasController.js");
 
 const ctxMock = {
   clearRect: jest.fn(),

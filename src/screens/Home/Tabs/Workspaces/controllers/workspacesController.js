@@ -1,5 +1,5 @@
-const ipcRendererManager = require("../../../../utils/ipcRendererManager.js");
-const Toast = require("../../../../components/Toast/toast.js");
+const ipcRendererManager = require("../../../../../utils/ipcRendererManager.js");
+const Toast = require("../../../../../components/Toast/toast.js");
 
 function setFavorite(favoriteCell) {
   if (favoriteCell.classList.contains("favorite")) {
@@ -169,8 +169,8 @@ function createNew(path) {
     const {
       selectTab,
       loadCanvasInTab,
-    } = require("../../../../TabsSystem/tabsSystemController.js");
-    const { createNewTab } = require("../../../../TabsSystem/tabsSystem.js");
+    } = require("../../../../../TabsSystem/tabsSystemController.js");
+    const { createNewTab } = require("../../../../../TabsSystem/tabsSystem.js");
     timestampCell.dataset.lastClicked = Date.now();
     updateTimestamps();
     const pathArray = path.split("/");

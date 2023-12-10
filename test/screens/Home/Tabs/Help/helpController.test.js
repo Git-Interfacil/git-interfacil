@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-const help = require("../src/screens/Home/Tabs/Help/helpController.js");
+const help = require("../../../../../src/screens/Home/Tabs/Help/controllers/helpController.js");
 
 class TextEncoderMock {
   encode(str) {
@@ -24,13 +24,13 @@ describe("help function", () => {
        <dl class="faq-section">
        <dt class="question">Q: What is this website about?</dt>
        <dd class="answer">A: This website provides information about...</dd>
-     
+
        <dt class="question">Q: How can I get started?</dt>
        <dd class="answer">A: To get started...</dd>
-     
+
        <dt class="question">Q: Can I modify my account settings?</dt>
        <dd class="answer">A: Yes, you can modify your account settings by...</dd>
-     </dl>     
+     </dl>
       `);
 
     document = dom.window.document;

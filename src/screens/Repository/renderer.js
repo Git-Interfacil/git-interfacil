@@ -1,12 +1,12 @@
 /* eslint-disable no-undef */
 const constants = require("./constants.js");
 const git_module = require("./git.js");
-const CanvasController = require("./canvasController.js");
-const messagesController = require("./messagesController.js");
-const localBranchesController = require("./localBranchesController.js");
-const animationsController = require("./animationsController.js");
-const actionButtonHandlers = require("./actionsController.js");
 const RepoSelector = require("./RepoSelector.js");
+const CanvasController = require("./controllers/canvasController.js");
+const messagesController = require("./controllers/messagesController.js");
+const localBranchesController = require("./controllers/localBranchesController.js");
+const animationsController = require("./controllers/animationsController.js");
+const actionButtonHandlers = require("./controllers/actionsController.js");
 
 class RepositoryRenderer {
   constructor(commits, head, canvasController, messagesElement) {

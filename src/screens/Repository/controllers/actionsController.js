@@ -1,5 +1,5 @@
-const Toast = require("../../components/Toast/toast.js");
-const ipcRendererManager = require("../../utils/ipcRendererManager.js");
+const Toast = require("../../../components/Toast/toast.js");
+const ipcRendererManager = require("../../../utils/ipcRendererManager.js");
 
 function openTextInputWindow() {
   return new Promise((resolve, reject) => {

@@ -3,7 +3,7 @@
 const { globalShortcut } = require("electron");
 const fs = require("fs");
 const path = require("path");
-const actionButtonsHandlers = require("../screens/Repository/actionsController");
+const actionButtonsHandlers = require("../screens/Repository/controllers/actionsController");
 
 function registerShortcutsFromJSON(args) {
   const filePath = path.join(

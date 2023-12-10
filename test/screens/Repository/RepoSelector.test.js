@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-const RepoSelector = require("../src/screens/Repository/RepoSelector.js");
+const RepoSelector = require("../../../src/screens/Repository/RepoSelector.js");
 
 const inputSelector = document.createElement("input");
 const inputLoading = document.createElement("div");
