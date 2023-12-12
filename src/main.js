@@ -97,6 +97,7 @@ app.on("ready", () => {
 
   ipcMain.on("submit-input", (event, inputValue) => {
     win.webContents.send("inputValue-updated", inputValue);
+    textInputWindow.close();
     textInputWindow = null;
   });
 
