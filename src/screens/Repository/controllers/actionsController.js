@@ -48,7 +48,8 @@ const actionButtonsHandlers = {
       await repo.pull();
       Toast.showToast("Done: pull", sucessIcon);
 
-      renderer.fillChangedFiles();
+      const changedFiles = repo.get_changed_and_untracked_files();
+      renderer.fillChangedFiles(changedFiles);
       renderer.resetActiveChangedFiles();
       this.addListenersToChangedFilesCheckboxes();
     } catch (error) {
@@ -74,7 +75,8 @@ const actionButtonsHandlers = {
       renderer.resetRenderer(commits, head);
       renderer.drawBranches();
       renderer.fillMessages();
-      renderer.fillChangedFiles();
+      const changedFilesFinal = repo.get_changed_and_untracked_files();
+      renderer.fillChangedFiles(changedFilesFinal);
       renderer.resetActiveChangedFiles();
       this.addListenersToChangedFilesCheckboxes();
     } catch (error) {
@@ -88,7 +90,8 @@ const actionButtonsHandlers = {
       repo.push(remote, branch);
       await Toast.showToast("Done: push", sucessIcon);
 
-      renderer.fillChangedFiles();
+      const changedFiles = repo.get_changed_and_untracked_files();
+      renderer.fillChangedFiles(changedFiles);
       renderer.resetActiveChangedFiles();
       this.addListenersToChangedFilesCheckboxes();
     } catch (error) {
@@ -101,7 +104,8 @@ const actionButtonsHandlers = {
       await repo.stash();
       await Toast.showToast("Done: stash", sucessIcon);
 
-      renderer.fillChangedFiles();
+      const changedFiles = repo.get_changed_and_untracked_files();
+      renderer.fillChangedFiles(changedFiles);
       renderer.resetActiveChangedFiles();
       this.addListenersToChangedFilesCheckboxes();
     } catch (error) {
@@ -114,7 +118,8 @@ const actionButtonsHandlers = {
       await repo.pop_stash();
       await Toast.showToast("Done: pop", sucessIcon);
 
-      renderer.fillChangedFiles();
+      const changedFiles = repo.get_changed_and_untracked_files();
+      renderer.fillChangedFiles(changedFiles);
       renderer.resetActiveChangedFiles();
       this.addListenersToChangedFilesCheckboxes();
     } catch (error) {
