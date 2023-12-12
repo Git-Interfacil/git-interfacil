@@ -108,10 +108,6 @@ class RendererListeners {
 
         if (action in actionButtonHandlers) {
           actionButtonHandlers[action](...Object.values(buttonParams[action]));
-
-          this.#repositoryRenderer.fillChangedFiles();
-          this.#repositoryRenderer.resetActiveChangedFiles();
-          this.addListenersToChangedFilesCheckboxes();
         } else {
           console.log("Button not found");
         }
