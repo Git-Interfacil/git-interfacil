@@ -51,7 +51,6 @@ const actionButtonsHandlers = {
       const changedFiles = repo.get_changed_and_untracked_files();
       renderer.fillChangedFiles(changedFiles);
       renderer.resetActiveChangedFiles();
-      this.addListenersToChangedFilesCheckboxes();
     } catch (error) {
       await Toast.showToast("Error: pull", errorIcon);
       console.error("Pull operation failed.", error);
@@ -89,7 +88,6 @@ const actionButtonsHandlers = {
       const changedFiles = repo.get_changed_and_untracked_files();
       renderer.fillChangedFiles(changedFiles);
       renderer.resetActiveChangedFiles();
-      this.addListenersToChangedFilesCheckboxes();
     } catch (error) {
       await Toast.showToast("Error: push", errorIcon);
       console.error("Push operation failed.", error);
@@ -103,7 +101,6 @@ const actionButtonsHandlers = {
       const changedFiles = repo.get_changed_and_untracked_files();
       renderer.fillChangedFiles(changedFiles);
       renderer.resetActiveChangedFiles();
-      this.addListenersToChangedFilesCheckboxes();
     } catch (error) {
       await Toast.showToast("Error: stash", errorIcon);
       console.error("Stash operation failed.", error);
@@ -117,7 +114,6 @@ const actionButtonsHandlers = {
       const changedFiles = repo.get_changed_and_untracked_files();
       renderer.fillChangedFiles(changedFiles);
       renderer.resetActiveChangedFiles();
-      this.addListenersToChangedFilesCheckboxes();
     } catch (error) {
       await Toast.showToast("Error: pop", errorIcon);
       console.error("Pop operation failed.", error);
