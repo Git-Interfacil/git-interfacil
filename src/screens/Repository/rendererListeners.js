@@ -93,12 +93,13 @@ class RendererListeners {
 
   addListenersToActionsBar(repository, currentBranchId) {
     const changedFiles = this.#repositoryRenderer.activeChangedFiles;
+    const renderer = this.#repositoryRenderer;
     const buttonParams = {
-      commit: { repository, changedFiles },
-      push: { repository, currentBranchId },
-      stash: { repository },
-      pop: { repository },
-      pull: { repository },
+      commit: { repository, changedFiles, renderer },
+      push: { repository, currentBranchId, renderer },
+      stash: { repository, renderer },
+      pop: { repository, renderer },
+      pull: { repository, renderer },
     };
     this.#buttonsElements.forEach((button) => {
       button.addEventListener("click", () => {
@@ -108,13 +109,6 @@ class RendererListeners {
         if (action in actionButtonHandlers) {
           actionButtonHandlers[action](...Object.values(buttonParams[action]));
 
-          if (action === "commit") {
-            const commits = repository.get_commit_info();
-            const head = repository.get_repo_head();
-            this.#repositoryRenderer.resetRenderer(commits, head);
-            this.#repositoryRenderer.drawBranches();
-            this.#repositoryRenderer.fillMessages();
-          }
           this.#repositoryRenderer.fillChangedFiles();
           this.#repositoryRenderer.resetActiveChangedFiles();
           this.addListenersToChangedFilesCheckboxes();
