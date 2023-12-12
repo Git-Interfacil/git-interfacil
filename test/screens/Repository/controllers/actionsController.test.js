@@ -33,21 +33,19 @@ describe("actionsController", () => {
 
   describe("add", () => {
     it("should show an error toast and invoke showErrorBox when no changes are detected", async () => {
-      repoMock.get_changed_files.mockResolvedValue([""]);
-      await actionButtonsHandlers.add(repoMock);
+      await actionButtonsHandlers.add(repoMock, [""]);
       expect(Toast.showToast).toHaveBeenCalledWith(
-        "Error: add",
+        "Error: add files not found",
         "../assets/error-icon.svg",
       );
       expect(ipcRenderer.invoke).toHaveBeenCalledWith(
         "showErrorBox",
-        "No changes detected",
+        "Files not found",
       );
     });
 
     it("should add files and show a success toast when changes are detected", async () => {
-      repoMock.get_changed_files.mockResolvedValue(["file1", "file2"]);
-      await actionButtonsHandlers.add(repoMock);
+      await actionButtonsHandlers.add(repoMock, ["file1", "file2"]);
       expect(repoMock.add_files).toHaveBeenCalledWith(["file1", "file2"]);
       expect(Toast.showToast).toHaveBeenCalledWith(
         "Done: add",

@@ -57,10 +57,6 @@ app.on("ready", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
 
-  /*   win.on("focus", () => {
-    registerShortcutsFromJSON();
-  }); */
-
   win.on("blur", () => {
     unregisterShortcuts();
   });
@@ -71,6 +67,7 @@ app.on("ready", () => {
   });
 
   ipcMain.on("open-text-input-window", () => {
+    const path = "/InputWindow/index.html";
     createPopupWindow(path);
   });
 

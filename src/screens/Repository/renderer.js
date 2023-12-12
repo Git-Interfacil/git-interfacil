@@ -43,6 +43,10 @@ class RepositoryRenderer {
     return this.#rendererElements;
   }
 
+  get activeChangedFiles() {
+    return this.#activeChangedFiles;
+  }
+
   #formatCommits(commits) {
     commits.sort(
       (a, b) =>

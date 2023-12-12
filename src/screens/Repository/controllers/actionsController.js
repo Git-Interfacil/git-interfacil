@@ -21,6 +21,27 @@ function openTextInputWindow() {
   });
 }
 
+async function add(repo, changedFiles = []) {
+  try {
+    if (changedFiles.length === 0) {
+      await Toast.showToast("Error: add without files", errorIcon);
+      ipcRendererManager.showErrorBox("No files selected");
+      return;
+    }
+    if (changedFiles[0] === "") {
+      await Toast.showToast("Error: add files not found", errorIcon);
+      ipcRendererManager.showErrorBox("Files not found");
+      return;
+    }
+
+    repo.add_files(changedFiles);
+    Toast.showToast("Done: add", sucessIcon);
+  } catch (error) {
+    await Toast.showToast("Error: add", errorIcon);
+    console.error("Add operation failed.", error);
+  }
+}
+
 const actionButtonsHandlers = {
   pull: async (repo) => {
     try {
@@ -31,24 +52,10 @@ const actionButtonsHandlers = {
       console.error("Pull operation failed.", error);
     }
   },
-  add: async (repo) => {
+  add: add,
+  commit: async (repo, changedFiles) => {
     try {
-      const changedFiles = await repo.get_changed_files();
-      if (changedFiles[0] === "") {
-        await Toast.showToast("Error: add", errorIcon);
-        ipcRendererManager.showErrorBox("No changes detected");
-        return;
-      }
-      repo.add_files(changedFiles);
-      Toast.showToast("Done: add", sucessIcon);
-    } catch (error) {
-      await Toast.showToast("Error: add", errorIcon);
-      console.error("Add operation failed.", error);
-    }
-  },
-  commit: async (repo) => {
-    try {
-      this.add(repo);
+      add(repo, changedFiles);
       const message = await openTextInputWindow();
       if (!message) {
         ipcRendererManager.showErrorBox("Message required");

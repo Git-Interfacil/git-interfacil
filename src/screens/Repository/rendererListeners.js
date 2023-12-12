@@ -92,8 +92,9 @@ class RendererListeners {
   }
 
   addListenersToActionsBar(repository, currentBranchId) {
+    const changedFiles = this.#repositoryRenderer.activeChangedFiles;
     const buttonParams = {
-      commit: { repository },
+      commit: { repository, changedFiles },
       push: { repository, currentBranchId },
       stash: { repository },
       pop: { repository },
