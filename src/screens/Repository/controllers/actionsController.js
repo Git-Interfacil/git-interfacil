@@ -75,10 +75,6 @@ const actionButtonsHandlers = {
       renderer.resetRenderer(commits, head);
       renderer.drawBranches();
       renderer.fillMessages();
-      const changedFilesFinal = repo.get_changed_and_untracked_files();
-      renderer.fillChangedFiles(changedFilesFinal);
-      renderer.resetActiveChangedFiles();
-      this.addListenersToChangedFilesCheckboxes();
     } catch (error) {
       console.error("Error in commit operation:", error);
       await Toast.showToast("Error: commit", errorIcon);
