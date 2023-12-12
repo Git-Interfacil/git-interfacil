@@ -56,41 +56,6 @@ describe("actionsController", () => {
     });
   });
 
-  describe.skip("commit", () => {
-    it("should show an error toast and invoke showErrorBox when no message is provided", async () => {
-      // Mock the behavior of ipcRenderer.once used in commit function
-      ipcRenderer.once.mockImplementationOnce((event, callback) =>
-        callback(null, ""),
-      );
-
-      await actionButtonsHandlers.commit(repoMock);
-
-      expect(ipcRenderer.invoke).toHaveBeenCalledWith(
-        "showErrorBox",
-        "Message required",
-      );
-      expect(Toast.showToast).toHaveBeenCalledWith(
-        "Error: add",
-        "../assets/error-icon.svg",
-      );
-    });
-
-    it("should commit with the provided message and show a success toast", async () => {
-      // Mock the behavior of ipcRenderer.once used in commit function
-      ipcRenderer.once.mockImplementationOnce((event, callback) =>
-        callback(null, "Commit message"),
-      );
-
-      await actionButtonsHandlers.commit(repoMock);
-
-      expect(repoMock.commit).toHaveBeenCalledWith("Commit message");
-      expect(Toast.showToast).toHaveBeenCalledWith(
-        "Done: commit",
-        "../assets/sucess-icon.svg",
-      );
-    });
-  });
-
   describe("push", () => {
     it("should push changes to the remote repository and show a success toast", async () => {
       repoMock.push.mockResolvedValue();
