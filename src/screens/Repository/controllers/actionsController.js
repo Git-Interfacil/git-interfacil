@@ -1,6 +1,9 @@
 const Toast = require("../../../components/Toast/toast.js");
 const ipcRendererManager = require("../../../utils/ipcRendererManager.js");
 
+const sucessIcon = "../assets/sucess-icon.svg";
+const errorIcon = "../assets/error-icon.svg";
+
 function openTextInputWindow() {
   return new Promise((resolve, reject) => {
     ipcRendererManager.openTextInputWindow();
@@ -19,72 +22,72 @@ function openTextInputWindow() {
 }
 
 const actionButtonsHandlers = {
-  undo: () => {
-    console.log("Undo button clicked");
-    // #TO-DO: Add your code here for the Undo button action
-  },
-  redo: () => {
-    console.log("Redo button clicked");
-    // #TO-DO: Add your code here for the Redo button action
-  },
-  merge: () => {
-    console.log("Merge button clicked");
-    // #TO-DO: Add your code here for the Merge button action
-  },
-  pull: () => {
-    console.log("Pull button clicked");
-    // #TO-DO: Add your code here for the Pull button action
+  pull: async (repo) => {
+    try {
+      await repo.pull();
+      Toast.showToast("Done: pull", sucessIcon);
+    } catch (error) {
+      await Toast.showToast("Error: pull", errorIcon);
+      console.error("Pull operation failed.", error);
+    }
   },
   add: async (repo) => {
     try {
       const changedFiles = await repo.get_changed_files();
       if (changedFiles[0] === "") {
-        await Toast.showToast("Error: add", "./assets/error-icon.svg");
+        await Toast.showToast("Error: add", errorIcon);
         ipcRendererManager.showErrorBox("No changes detected");
         return;
       }
       repo.add_files(changedFiles);
-      Toast.showToast("Done: add", "./assets/sucess-icon.svg");
+      Toast.showToast("Done: add", sucessIcon);
     } catch (error) {
-      await Toast.showToast("Error: add", "./assets/error-icon.svg");
-      throw new Error("Add operation failed.", error);
+      await Toast.showToast("Error: add", errorIcon);
+      console.error("Add operation failed.", error);
     }
   },
   commit: async (repo) => {
     try {
+      this.add(repo);
       const message = await openTextInputWindow();
       if (!message) {
         ipcRendererManager.showErrorBox("Message required");
         return;
       }
       repo.commit(message);
-      await Toast.showToast("Done: commit", "./assets/sucess-icon.svg");
+      await Toast.showToast("Done: commit", sucessIcon);
     } catch (error) {
       console.error("Error in commit operation:", error);
-      await Toast.showToast("Error: commit", "./assets/error-icon.svg");
-      throw new Error("Commit operation failed.", error);
+      await Toast.showToast("Error: commit", errorIcon);
+      console.error("Commit operation failed.", error);
     }
   },
   push: async (repo, branch, remote = "origin") => {
     try {
       repo.push(remote, branch);
-      await Toast.showToast("Done: push", "./assets/sucess-icon.svg");
+      await Toast.showToast("Done: push", sucessIcon);
     } catch (error) {
-      await Toast.showToast("Error: push", "./assets/error-icon.svg");
-      throw new Error("Push operation failed.", error);
+      await Toast.showToast("Error: push", errorIcon);
+      console.error("Push operation failed.", error);
     }
   },
-  branch: () => {
-    console.log("Branch button clicked");
-    // #TO-DO: Add your code here for the Branch button action
+  stash: async (repo) => {
+    try {
+      await repo.stash();
+      await Toast.showToast("Done: stash", sucessIcon);
+    } catch (error) {
+      await Toast.showToast("Error: stash", errorIcon);
+      console.error("Stash operation failed.", error);
+    }
   },
-  stash: () => {
-    console.log("Stash button clicked");
-    // #TO-DO: Add your code here for the Stash button action
-  },
-  pop: () => {
-    console.log("Pop button clicked");
-    // #TO-DO: Add your code here for the Pop button action
+  pop: async (repo) => {
+    try {
+      await repo.pop_stash();
+      await Toast.showToast("Done: pop", sucessIcon);
+    } catch (error) {
+      await Toast.showToast("Error: pop", errorIcon);
+      console.error("Pop operation failed.", error);
+    }
   },
 };
 

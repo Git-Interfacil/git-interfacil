@@ -93,11 +93,11 @@ class RendererListeners {
 
   addListenersToActionsBar(repository, currentBranchId) {
     const buttonParams = {
-      add: { repository },
       commit: { repository },
       push: { repository, currentBranchId },
-      undo: {},
-      redo: {},
+      stash: { repository },
+      pop: { repository },
+      pull: { repository },
     };
     this.#buttonsElements.forEach((button) => {
       button.addEventListener("click", () => {

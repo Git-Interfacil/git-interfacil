@@ -128,6 +128,18 @@ class Repository {
     return this.shell_exec(`git push "${remote}" "${branch}"`);
   }
 
+  pull() {
+    return this.shell_exec("git pull");
+  }
+
+  stash() {
+    return this.shell_exec("git stash");
+  }
+
+  pop_stash() {
+    return this.shell_exec("git stash pop");
+  }
+
   shell_exec(command) {
     return execSync(command, {
       cwd: this.path,
