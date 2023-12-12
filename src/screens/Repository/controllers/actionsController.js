@@ -22,18 +22,6 @@ function openTextInputWindow() {
 }
 
 const actionButtonsHandlers = {
-  /*   undo: () => {
-    console.log("Undo button clicked");
-    // #TO-DO: Add your code here for the Undo button action
-  },
-  redo: () => {
-    console.log("Redo button clicked");
-    // #TO-DO: Add your code here for the Redo button action
-  },
-  merge: () => {
-    console.log("Merge button clicked");
-    // #TO-DO: Add your code here for the Merge button action
-  }, */
   pull: async (repo) => {
     try {
       await repo.pull();
@@ -82,10 +70,6 @@ const actionButtonsHandlers = {
       await Toast.showToast("Error: push", errorIcon);
       console.error("Push operation failed.", error);
     }
-  },
-  branch: () => {
-    console.log("Branch button clicked");
-    // #TO-DO: Add your code here for the Branch button action
   },
   stash: async (repo) => {
     try {

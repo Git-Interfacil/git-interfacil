@@ -93,13 +93,10 @@ describe("actionsController", () => {
 
   describe("push", () => {
     it("should push changes to the remote repository and show a success toast", async () => {
-      // Mock the behavior of repo.push
       repoMock.push.mockResolvedValue();
 
-      // Ensure that the promise resolves successfully
       await actionButtonsHandlers.push(repoMock, "main");
 
-      // Ensure that repo.push is called with the correct arguments and success toast is shown
       expect(repoMock.push).toHaveBeenCalledWith("origin", "main");
       expect(Toast.showToast).toHaveBeenCalledWith(
         "Done: push",
@@ -107,39 +104,4 @@ describe("actionsController", () => {
       );
     });
   });
-
-  /* it('should handle "undo" button click', () => {
-    actionButtonsHandlers.undo();
-    expect(console.log).toHaveBeenCalledWith("Undo button clicked");
-  });
-
-  it('should handle "redo" button click', () => {
-    actionButtonsHandlers.redo();
-    expect(console.log).toHaveBeenCalledWith("Redo button clicked");
-  });
-
-  it("Merge Button", () => {
-    actionButtonsHandlers.merge();
-    expect(console.log).toHaveBeenCalledWith("Merge button clicked");
-  });
-
-  it("Pull Button", () => {
-    actionButtonsHandlers.pull();
-    expect(console.log).toHaveBeenCalledWith("Pull button clicked");
-  });
-
-  it("Branch Button", () => {
-    actionButtonsHandlers.branch();
-    expect(console.log).toHaveBeenCalledWith("Branch button clicked");
-  });
-
-  it("Stash Button", () => {
-    actionButtonsHandlers.stash();
-    expect(console.log).toHaveBeenCalledWith("Stash button clicked");
-  });
-
-  it("Pop Button", () => {
-    actionButtonsHandlers.pop();
-    expect(console.log).toHaveBeenCalledWith("Pop button clicked");
-  }); */
 });
