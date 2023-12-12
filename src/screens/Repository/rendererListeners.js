@@ -109,8 +109,9 @@ class RendererListeners {
           actionButtonHandlers[action](...Object.values(buttonParams[action]));
           this.#repositoryRenderer.drawBranches();
           this.#repositoryRenderer.fillMessages();
-          this.#repositoryRenderer.fillLocalBranches();
           this.#repositoryRenderer.fillChangedFiles();
+          this.#repositoryRenderer.resetActiveChangedFiles();
+          this.addListenersToChangedFilesCheckboxes();
         } else {
           console.log("Button not found");
         }
