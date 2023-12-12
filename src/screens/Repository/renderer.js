@@ -51,6 +51,14 @@ class RepositoryRenderer {
     this.#activeChangedFiles = [];
   }
 
+  resetRenderer(commits, head) {
+    this.#head = head;
+    this.#commits = this.#formatCommits(commits);
+
+    this.#setCanvasSize();
+    this.#calculateCommitsPositionsAndColors();
+  }
+
   #formatCommits(commits) {
     commits.sort(
       (a, b) =>

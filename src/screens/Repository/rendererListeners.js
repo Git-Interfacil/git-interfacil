@@ -107,8 +107,14 @@ class RendererListeners {
 
         if (action in actionButtonHandlers) {
           actionButtonHandlers[action](...Object.values(buttonParams[action]));
-          this.#repositoryRenderer.drawBranches();
-          this.#repositoryRenderer.fillMessages();
+
+          if (action === "commit") {
+            const commits = repository.get_commit_info();
+            const head = repository.get_repo_head();
+            this.#repositoryRenderer.resetRenderer(commits, head);
+            this.#repositoryRenderer.drawBranches();
+            this.#repositoryRenderer.fillMessages();
+          }
           this.#repositoryRenderer.fillChangedFiles();
           this.#repositoryRenderer.resetActiveChangedFiles();
           this.addListenersToChangedFilesCheckboxes();
