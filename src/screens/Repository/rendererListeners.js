@@ -92,12 +92,14 @@ class RendererListeners {
   }
 
   addListenersToActionsBar(repository, currentBranchId) {
+    const changedFiles = this.#repositoryRenderer.activeChangedFiles;
+    const renderer = this.#repositoryRenderer;
     const buttonParams = {
-      commit: { repository },
-      push: { repository, currentBranchId },
-      stash: { repository },
-      pop: { repository },
-      pull: { repository },
+      commit: { repository, changedFiles, renderer },
+      push: { repository, currentBranchId, renderer },
+      stash: { repository, renderer },
+      pop: { repository, renderer },
+      pull: { repository, renderer },
     };
     this.#buttonsElements.forEach((button) => {
       button.addEventListener("click", () => {

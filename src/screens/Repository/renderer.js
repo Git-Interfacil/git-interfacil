@@ -43,6 +43,22 @@ class RepositoryRenderer {
     return this.#rendererElements;
   }
 
+  get activeChangedFiles() {
+    return this.#activeChangedFiles;
+  }
+
+  resetActiveChangedFiles() {
+    this.#activeChangedFiles = [];
+  }
+
+  resetRenderer(commits, head) {
+    this.#head = head;
+    this.#commits = this.#formatCommits(commits);
+
+    this.#setCanvasSize();
+    this.#calculateCommitsPositionsAndColors();
+  }
+
   #formatCommits(commits) {
     commits.sort(
       (a, b) =>
@@ -211,9 +227,9 @@ class RepositoryRenderer {
 }
 
 function loadRepoClient(repo) {
-  const commits = repo.get_commit_info();
-  const changedFiles = repo.get_changed_and_untracked_files();
-  const head = repo.get_repo_head();
+  let commits = repo.get_commit_info();
+  let changedFiles = repo.get_changed_and_untracked_files();
+  let head = repo.get_repo_head();
 
   const headCommit = commits.find((commit) => head.startsWith(commit.id));
   const currentBranchId = headCommit ? headCommit.branchId : null;
@@ -262,6 +278,17 @@ function loadRepoClient(repo) {
   listener.addListenersToActionsBar(repo, currentBranchId);
   listener.addListenersToLocalBranchesCheckboxes();
   listener.addListenersToChangedFilesCheckboxes();
+
+  setInterval(() => {
+    const newChangedFiles = repo.get_changed_and_untracked_files();
+
+    if (newChangedFiles.length !== changedFiles.length) {
+      changedFiles = newChangedFiles;
+      repositoryRenderer.fillChangedFiles(changedFiles);
+      repositoryRenderer.resetActiveChangedFiles();
+      listener.addListenersToChangedFilesCheckboxes();
+    }
+  }, 1000);
 }
 
 function handleStoreWindowArgs(path) {

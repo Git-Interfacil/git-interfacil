@@ -21,34 +21,45 @@ function openTextInputWindow() {
   });
 }
 
+async function add(repo, changedFiles = []) {
+  try {
+    if (changedFiles.length === 0) {
+      await Toast.showToast("Error: add without files", errorIcon);
+      ipcRendererManager.showErrorBox("No files selected");
+      return;
+    }
+    if (changedFiles[0] === "") {
+      await Toast.showToast("Error: add files not found", errorIcon);
+      ipcRendererManager.showErrorBox("Files not found");
+      return;
+    }
+
+    repo.add_files(changedFiles);
+    Toast.showToast("Done: add", sucessIcon);
+  } catch (error) {
+    await Toast.showToast("Error: add", errorIcon);
+    console.error("Add operation failed.", error);
+  }
+}
+
 const actionButtonsHandlers = {
-  pull: async (repo) => {
+  pull: async (repo, renderer) => {
     try {
       await repo.pull();
       Toast.showToast("Done: pull", sucessIcon);
+
+      const changedFiles = repo.get_changed_and_untracked_files();
+      renderer.fillChangedFiles(changedFiles);
+      renderer.resetActiveChangedFiles();
     } catch (error) {
       await Toast.showToast("Error: pull", errorIcon);
       console.error("Pull operation failed.", error);
     }
   },
-  add: async (repo) => {
+  add: add,
+  commit: async (repo, changedFiles, renderer) => {
     try {
-      const changedFiles = await repo.get_changed_files();
-      if (changedFiles[0] === "") {
-        await Toast.showToast("Error: add", errorIcon);
-        ipcRendererManager.showErrorBox("No changes detected");
-        return;
-      }
-      repo.add_files(changedFiles);
-      Toast.showToast("Done: add", sucessIcon);
-    } catch (error) {
-      await Toast.showToast("Error: add", errorIcon);
-      console.error("Add operation failed.", error);
-    }
-  },
-  commit: async (repo) => {
-    try {
-      this.add(repo);
+      add(repo, changedFiles);
       const message = await openTextInputWindow();
       if (!message) {
         ipcRendererManager.showErrorBox("Message required");
@@ -56,34 +67,53 @@ const actionButtonsHandlers = {
       }
       repo.commit(message);
       await Toast.showToast("Done: commit", sucessIcon);
+
+      const commits = repo.get_commit_info();
+      const head = repo.get_repo_head();
+
+      renderer.resetRenderer(commits, head);
+      renderer.drawBranches();
+      renderer.fillMessages();
     } catch (error) {
       console.error("Error in commit operation:", error);
       await Toast.showToast("Error: commit", errorIcon);
       console.error("Commit operation failed.", error);
     }
   },
-  push: async (repo, branch, remote = "origin") => {
+  push: async (repo, branch, renderer, remote = "origin") => {
     try {
       repo.push(remote, branch);
       await Toast.showToast("Done: push", sucessIcon);
+
+      const changedFiles = repo.get_changed_and_untracked_files();
+      renderer.fillChangedFiles(changedFiles);
+      renderer.resetActiveChangedFiles();
     } catch (error) {
       await Toast.showToast("Error: push", errorIcon);
       console.error("Push operation failed.", error);
     }
   },
-  stash: async (repo) => {
+  stash: async (repo, renderer) => {
     try {
       await repo.stash();
       await Toast.showToast("Done: stash", sucessIcon);
+
+      const changedFiles = repo.get_changed_and_untracked_files();
+      renderer.fillChangedFiles(changedFiles);
+      renderer.resetActiveChangedFiles();
     } catch (error) {
       await Toast.showToast("Error: stash", errorIcon);
       console.error("Stash operation failed.", error);
     }
   },
-  pop: async (repo) => {
+  pop: async (repo, renderer) => {
     try {
       await repo.pop_stash();
       await Toast.showToast("Done: pop", sucessIcon);
+
+      const changedFiles = repo.get_changed_and_untracked_files();
+      renderer.fillChangedFiles(changedFiles);
+      renderer.resetActiveChangedFiles();
     } catch (error) {
       await Toast.showToast("Error: pop", errorIcon);
       console.error("Pop operation failed.", error);

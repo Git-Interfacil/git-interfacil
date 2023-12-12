@@ -5,6 +5,7 @@
   "main": "src/main.js",
   "scripts": {
     "start": "electron-forge start",
+    "start-prod": "NODE_ENV=production electron-forge start",
     "test": "jest",
     "package": "electron-forge package",
     "make": "electron-forge make",
