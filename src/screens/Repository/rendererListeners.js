@@ -107,6 +107,10 @@ class RendererListeners {
 
         if (action in actionButtonHandlers) {
           actionButtonHandlers[action](...Object.values(buttonParams[action]));
+          this.#repositoryRenderer.drawBranches();
+          this.#repositoryRenderer.fillMessages();
+          this.#repositoryRenderer.fillLocalBranches();
+          this.#repositoryRenderer.fillChangedFiles();
         } else {
           console.log("Button not found");
         }
